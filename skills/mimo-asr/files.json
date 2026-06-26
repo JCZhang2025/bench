@@ -1,0 +1,26 @@
+{
+  "count": 4,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "517811bf3e043d99711f8e3f4ac3eb72d938eff193a4c8bb4ce9cf54575b6fa3",
+      "size": 2703
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "8cc38354f73fe64730cc9c7b5fbb96b392ce072625fad7fd620b3f31fa9b8681",
+      "size": 127
+    },
+    {
+      "path": "scripts/mimo_asr.py",
+      "sha256": "c1ce5d030e1087f6130b59a59d8fd777b5ea9ea3fe0ccf1f8930531fa5003bba",
+      "size": 3193
+    },
+    {
+      "path": "scripts/mimo_asr_api.py",
+      "sha256": "cb9ced1202c3888dfbc4b63c2ab87ecf442d9096bf75c19cbe9c15c12177ab42",
+      "size": 4541
+    }
+  ],
+  "version": "1.0.0"
+}

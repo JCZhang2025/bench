@@ -1,0 +1,27 @@
+```yaml
+# Data Visualization Skill Configuration
+# Modify these values to customize your report
+
+# Data source: leave empty to use built-in sample dataset
+data_source: ""  # e.g., "data.csv" or "data.json"
+
+# Data format (auto-detected from extension if empty)
+data_format: "csv"  # "csv" or "json"
+
+# Visualization settings
+chart_type: "bar"   # Options: bar, line, scatter
+x_column: ""        # Column for X-axis (auto-pick if empty)
+y_column: ""        # Column for Y-axis (auto-pick if empty)
+title: "Data Visualization Report"
+color_theme: "blue" # Reserved for future use
+
+# Output options
+output_file: "visualization_report.md"
+include_mermaid: true   # Add processing flowchart
+include_data_table: true # Show raw data table (first 10 rows)
+
+# Styling (advanced)
+table_max_rows: 10
+card_metrics: ["mean", "max", "min"]  # Statistics to show in cards
+```
+```

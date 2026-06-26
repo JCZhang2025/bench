@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774716813156,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "sxliuyu",
+    "handle": "sxliuyu",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=ff199d76a016878a70113a939124a225",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/412985_f9e3589088a9c976963b8ac6f762c184.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782260705%3B1813796705&q-key-time=1782260705%3B1813796705&q-header-list=host&q-url-param-list=&q-signature=05ccd06b9cac189804d8f5a5224e85092d9fc890",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "knowledge-management",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1773929742499,
+    "displayName": "Screenshot Ocr",
+    "githubAuthorLogin": "sxliuyu",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/f7fabcfa-0496-4dc7-9258-df9b7c751850.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "screenshot-ocr",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/sxliuyu/screenshot-ocr",
+    "stats": {
+      "comments": 0,
+      "downloads": 4381,
+      "installs": 619,
+      "stars": 2,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "knowledge-retrieval",
+        "name": "信息检索"
+      }
+    ],
+    "summary": "截图 OCR 识别工具。截图→自动识别文字→复制/保存，适合提取图片内容、表格数据、验证码。",
+    "summary_zh": "截图 OCR 识别工具。截图→自动识别文字→复制/保存，适合提取图片内容、表格数据、验证码。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317339196,
+    "upstream_owner_login": "sxliuyu",
+    "upstream_url": "https://clawhub.ai/sxliuyu/screenshot-ocr",
+    "verified": false
+  }
+}

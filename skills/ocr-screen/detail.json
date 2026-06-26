@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1776526356778,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "user_25ab92ec",
+    "handle": "user_25ab92ec",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=fbf753f59b8a340e8b48a416187eb1d4",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/423619_33202b3918650c5a600f57cfa9b2bd80.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782271023%3B1813807023&q-key-time=1782271023%3B1813807023&q-header-list=host&q-url-param-list=&q-signature=0bb43765006d423d104246fdf3fbabdc123f4c4e",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1776526356778,
+    "displayName": "ocr-screen",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/401a454b-4b16-4aee-a18c-4e3467ca48f1.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "ocr-screen",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 1202,
+      "installs": 228,
+      "stars": 1,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-pdf",
+        "name": "PDF 处理"
+      }
+    ],
+    "summary": "截图文字识别",
+    "summary_zh": "截图文字识别",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317414572,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

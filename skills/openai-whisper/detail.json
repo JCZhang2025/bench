@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774623080103,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "steipete",
+    "handle": "steipete",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=e07f533ae4184458c718c40fafbead62",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/466077_bc63d73d03658215b320c60365e8367c.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782240066%3B1813776066&q-key-time=1782240066%3B1813776066&q-header-list=host&q-url-param-list=&q-signature=70eff9bce36c385cc2947b9513aea4a11b72f38a",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "design-media",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772739796115,
+    "displayName": "Openai Whisper",
+    "githubAuthorLogin": "steipete",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/0c9b068f-f22e-44e2-96fe-d2b6f5b43b07.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "openai-whisper",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/steipete/openai-whisper",
+    "stats": {
+      "comments": 0,
+      "downloads": 93591,
+      "installs": 11622,
+      "stars": 330,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "design-audio",
+        "name": "音频处理"
+      }
+    ],
+    "summary": "Local speech-to-text with the Whisper CLI (no API key).",
+    "summary_zh": "使用 Whisper CLI 进行本地语音转文字（无需 API 密钥）",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782318299011,
+    "upstream_owner_login": "steipete",
+    "upstream_url": "https://clawhub.ai/steipete/openai-whisper",
+    "verified": false
+  }
+}

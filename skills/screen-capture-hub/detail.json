@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1773920522577,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "datappt8",
+    "handle": "datappt8",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=a7e74b9327b05a9723d5b3ee8fc4b691",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/412636_c7e56a1c98f9efeac11814296a0145b5.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782260415%3B1813796415&q-key-time=1782260415%3B1813796415&q-header-list=host&q-url-param-list=&q-signature=0986f1e6f4cc93e7fc12249c15cd323e70f7a285",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "ai-agent",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1773920522577,
+    "displayName": "一个功能强大的屏幕浏览、OCR识别和屏幕分析技能包，专为AI助手设计",
+    "githubAuthorLogin": "datappt8",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/e089b3bb-5a99-41bc-8881-40980028b748.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "screen-capture-hub",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/datappt8/screen-capture-hub",
+    "stats": {
+      "comments": 0,
+      "downloads": 1124,
+      "installs": 268,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "agent-tool-use",
+        "name": "工具调用"
+      }
+    ],
+    "summary": "此技能应被用于任何需要捕获屏幕截图、分析屏幕内容或处理屏幕图像的任务。包括：使用Python PIL库捕获整个屏幕或特定区域的截图；保存截图到指定位置；分析截图中的文字内容（支持中英文OCR识别）；对截图进行基本图像处理（裁剪、旋转、调整大小）。当用户提到\"屏幕截图\"、\"截屏\"、\"查看屏幕\"或需要分析屏幕上的内容...",
+    "summary_zh": "此技能应被用于任何需要捕获屏幕截图、分析屏幕内容或处理屏幕图像的任务。包括：使用Python PIL库捕获整个屏幕或特定区域的截图；保存截图到指定位置；分析截图中的文字内容（支持中英文OCR识别）；对截图进行基本图像处理（裁剪、旋转、调整大小）。当用户提到\"屏幕截图\"、\"截屏\"、\"查看屏幕\"或需要分析屏幕上的内容...",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317213067,
+    "upstream_owner_login": "datappt8",
+    "upstream_url": "https://clawhub.ai/datappt8/screen-capture-hub",
+    "verified": false
+  }
+}

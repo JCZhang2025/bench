@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1777007402931,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "user_8353d908",
+    "handle": "user_8353d908",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=5b240b9f82a043c06ce4cdd78290486f",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/411752_c3aabf517a0bbeece0a63013e9b5c843.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782271612%3B1813807612&q-key-time=1782271612%3B1813807612&q-header-list=host&q-url-param-list=&q-signature=7e961b2330d824b287b6e5a84459f1f9f6c6d875",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1777007402931,
+    "displayName": "OCR-Local-1.0",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/a00e31c7-8d6a-4e65-84fc-16a177f95674.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "ocr-rlocal",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 261,
+      "installs": 31,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-pdf",
+        "name": "PDF 处理"
+      }
+    ],
+    "summary": "Extract text from images using Tesseract.js OCR (100% local, no API key required). Supports Chinese (simplified/traditional) and English.",
+    "summary_zh": "Extract text from images using Tesseract.js OCROCR (100% local, no API key required). Supports Chinese (simplified/traditional) and English.",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317332653,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

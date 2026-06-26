@@ -1,0 +1,26 @@
+{
+  "count": 4,
+  "files": [
+    {
+      "path": "references/chart-config-guide.md",
+      "sha256": "c90f4720c89674dd9ace0192bf94aed16169476e96f3c34025aef2d3e21307c2",
+      "size": 4158
+    },
+    {
+      "path": "references/theme-tokens.md",
+      "sha256": "80ec746b8bb7b3ce230d878f03122ce4b913f0650ba77bca7fe14527b1478eeb",
+      "size": 1887
+    },
+    {
+      "path": "scripts/generate_report.py",
+      "sha256": "c068e63e400674a604b5f1ecafc63543e7d93531d61d69c2eaf5eb6dd7bf91d6",
+      "size": 13526
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "8b4e2bd151bd4f09c26387e7618b9d5da38453bc6095c7f4fe88231a70853249",
+      "size": 4997
+    }
+  ],
+  "version": "1.0.0"
+}

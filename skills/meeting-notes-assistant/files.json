@@ -1,0 +1,126 @@
+{
+  "count": 24,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "462c103656426671d05290a99637c37bd4216343bed5a5beed89598e239ac18b",
+      "size": 1113
+    },
+    {
+      "path": "DISCLAIMER.md",
+      "sha256": "b58f5887aa62df3a2817742abbf164d9fb5061a6ba576bb078a3f547100a87e3",
+      "size": 3417
+    },
+    {
+      "path": "FEISHU_QUICK_START.md",
+      "sha256": "96fde74034d1395774fdddb22cc0fed4b04b9be01ab1a3f10c6c80acffe6ddf1",
+      "size": 4987
+    },
+    {
+      "path": "IMPROVEMENT_PLAN.md",
+      "sha256": "fbd2a787c07e91e322090c7f54dd4fd7ea3b0082aec5e3ea9f8b920778b69252",
+      "size": 8639
+    },
+    {
+      "path": "PRIVACY.md",
+      "sha256": "543da5d2eb1646bdb92193078c3745616be1bd9c1b999e3429d6841be3bc613a",
+      "size": 7050
+    },
+    {
+      "path": "README.md",
+      "sha256": "d4fdd703cbfd30769d1263334725edfdd0f7e7a8cfc344591e36dbdf0d8ecc92",
+      "size": 7109
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "5c625523be14d0163d999467ff9d0b10002070aa5e60a019cf5b76e37293a723",
+      "size": 418
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "85ec4bde467c8ebc7637780abfa8287a597a24da4433fa7751eee424769395e9",
+      "size": 15540
+    },
+    {
+      "path": "USER_GUIDE.md",
+      "sha256": "2c039e632ec1a027c303a369002888a6767e796023857116b34c2dec7b1168ef",
+      "size": 8388
+    },
+    {
+      "path": "docs/domain-adaptive-architecture.md",
+      "sha256": "53800e9a7528bb14e5168c628bafff4c0bf09e7500170ce07ee028c1cc251280",
+      "size": 19236
+    },
+    {
+      "path": "docs/universal-domain-recognition-plan.md",
+      "sha256": "1434e4da88a13bb1f36971688317df12eb64e02f8d3ef8e6a24c56ad587e73f5",
+      "size": 9286
+    },
+    {
+      "path": "domains/finance/glossary.json",
+      "sha256": "bf51617ba31e68757240ab1288847c37c8f552bfe89c711f15d9b20440308f2e",
+      "size": 8795
+    },
+    {
+      "path": "references/template_guide.md",
+      "sha256": "0fa136751fd07c7aae5ef0c3b2433894d56a71a731b86091fa1d79fc6ac054f1",
+      "size": 2172
+    },
+    {
+      "path": "scripts/domain_dictionary.py",
+      "sha256": "54c4a31f4ba4535461ee74f4e1b7bd762d51d0a1d55dc037a4e086e6432b4c73",
+      "size": 10602
+    },
+    {
+      "path": "scripts/export_pdf.py",
+      "sha256": "844da0445e428d8916ad9fb46348e6a42377710cef05c643761cb5df70189acb",
+      "size": 13638
+    },
+    {
+      "path": "scripts/export_transcript_word.py",
+      "sha256": "6d583264104435656bd9059e281a0740b91cccb9117f6c1277ce31ff7f449048",
+      "size": 8442
+    },
+    {
+      "path": "scripts/export_word.py",
+      "sha256": "acde6e13c600a49e2b28f1d33ff8abe61e4b433f55ed8de849ec4f05c4cde7a7",
+      "size": 27120
+    },
+    {
+      "path": "scripts/generate_notes.py",
+      "sha256": "429c7030502ff1c88fba14e341c683db2d3d8d3fa87764f88fdae063b4fac590",
+      "size": 15726
+    },
+    {
+      "path": "scripts/input_validator.py",
+      "sha256": "e9431415523a5a430d11c0dc879256231fe979f35b9aae35223bf6fb7fa97c93",
+      "size": 11230
+    },
+    {
+      "path": "scripts/interactive_meeting_notes.py",
+      "sha256": "3636142cf5339815f4fa439f2f9566ffe5a19b7cde206c5c61ffe6566239ca95",
+      "size": 32764
+    },
+    {
+      "path": "scripts/model_downloader.py",
+      "sha256": "32811a9e01d97bf0fe1b38b52e97ffa267fdf35b2f1da94097fb74366125e536",
+      "size": 7842
+    },
+    {
+      "path": "scripts/progress.py",
+      "sha256": "f77cb88ab132d8c6e2a2fba3bc9262efe705a4c677ce7277865f28620235ae79",
+      "size": 5903
+    },
+    {
+      "path": "scripts/templates.py",
+      "sha256": "c2980b87cc33ab4733da0e0e101542aa3d9446385d3a4df63827eaa55c5aa1e4",
+      "size": 4464
+    },
+    {
+      "path": "scripts/transcribe_audio.py",
+      "sha256": "8e5b966f48e68e2e3ecea99bc1b893b34d67ea0632e6411d219cd590089ba8de",
+      "size": 9755
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1776532851779,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "EastSeaO",
+    "handle": "user_d82fedf3",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=b95928e0b462b316a1223169d94d3423",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/423630_6bc22d01cba8c61ac4e1fd992bcfb536.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782271034%3B1813807034&q-key-time=1782271034%3B1813807034&q-header-list=host&q-url-param-list=&q-signature=88ce918c6bdd23e31395789e94c633a620ceeaf5",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1776532851779,
+    "displayName": "Typora视觉架构师",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/7920727c-4e7d-496a-9223-d9c6673e9e53.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "typora-visual-architect",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 159,
+      "installs": 8,
+      "stars": 1,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-pdf",
+        "name": "PDF 处理"
+      }
+    ],
+    "summary": "将结构化或半结构化数据转化为高质量 Markdown 可视化报告，适用于 Typora / Markor / PDF 导出",
+    "summary_zh": "将结构化或半结构化数据转化为高质量 Markdown 可视化报告，适用于 Typora / Markor，并通过PDF 导出",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782319000698,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774706071852,
+    "version": "1.0.23"
+  },
+  "owner": {
+    "displayName": "yang1002378395-cmyk",
+    "handle": "yang1002378395-cmyk",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=646d87da5fab17227143abb92c969130",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/411759_8a17c4b62b6162b0d4218ec97e31c228.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782259623%3B1813795623&q-key-time=1782259623%3B1813795623&q-header-list=host&q-url-param-list=&q-signature=d128c5d5a5470d5bfca9b407c5be041169b938a5",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1773820467215,
+    "displayName": "Data Analyst Cn",
+    "githubAuthorLogin": "yang1002378395-cmyk",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/27205dc2-3c4b-4854-85b1-8902f05745a3.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "data-analyst-cn",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/yang1002378395-cmyk/data-analyst-cn",
+    "stats": {
+      "comments": 0,
+      "downloads": 5692,
+      "installs": 575,
+      "stars": 8,
+      "versions": 2
+    },
+    "subCategories": [
+      {
+        "key": "data-cleaning",
+        "name": "数据清洗"
+      },
+      {
+        "key": "data-visualization",
+        "name": "数据可视化"
+      },
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      }
+    ],
+    "summary": "数据分析助手 - 数据清洗、统计分析、可视化建议。适合：数据分析师、产品经理、运营。",
+    "summary_zh": "数据分析助手 - 数据清洗、统计分析、可视化建议。适合：数据分析师、产品经理、运营。",
+    "tags": {
+      "latest": "1.0.23"
+    },
+    "updatedAt": 1782318898813,
+    "upstream_owner_login": "yang1002378395-cmyk",
+    "upstream_url": "https://clawhub.ai/yang1002378395-cmyk/data-analyst-cn",
+    "verified": false
+  }
+}

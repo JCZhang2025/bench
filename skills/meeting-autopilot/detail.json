@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774739864390,
+    "version": "0.1.2"
+  },
+  "owner": {
+    "displayName": "tkuehnl",
+    "handle": "tkuehnl",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=ab3d3d3334a392949ab258bc73f917b6",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/398006_704f643e43a8361c58d7b1ef94a94195.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782247368%3B1813783368&q-key-time=1782247368%3B1813783368&q-header-list=host&q-url-param-list=&q-signature=40ba9f93561acc01866cff548c8450e05b5af80f",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772783552884,
+    "displayName": "meeting-autopilot",
+    "githubAuthorLogin": "tkuehnl",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/f7fabcfa-0496-4dc7-9258-df9b7c751850.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "true"
+    },
+    "last_synced_at": null,
+    "slug": "meeting-autopilot",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/tkuehnl/meeting-autopilot",
+    "stats": {
+      "comments": 0,
+      "downloads": 1209,
+      "installs": 45,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-meeting-notes",
+        "name": "会议纪要"
+      },
+      {
+        "key": "office-email",
+        "name": "邮件处理"
+      }
+    ],
+    "summary": "Turn meeting transcripts into operational outputs — action items, decisions, follow-up email drafts, and ticket drafts. Not a summarizer. An operator. Accept...",
+    "summary_zh": "将会议记录转化为可执行产出——行动项、决策、跟进邮件及工单草稿。不是总结器，而是执行者。接受...",
+    "tags": {
+      "latest": "0.1.2"
+    },
+    "updatedAt": 1782317215809,
+    "upstream_owner_login": "tkuehnl",
+    "upstream_url": "https://clawhub.ai/tkuehnl/meeting-autopilot",
+    "verified": false
+  }
+}

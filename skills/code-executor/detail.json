@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774730442737,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "miguelguerra200022-sudo",
+    "handle": "miguelguerra200022-sudo",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=ec9ed5d00a4ba2106cbab3b9f198dfaa",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/401599_1624c867b2d54967d87d8cf0167fb191.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782250568%3B1813786568&q-key-time=1782250568%3B1813786568&q-header-list=host&q-url-param-list=&q-signature=8147467f74b7e9b2a3cfb5bb458ba5345ff3c003",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "dev-programming",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772799829810,
+    "displayName": "Code Executor",
+    "githubAuthorLogin": "miguelguerra200022-sudo",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/60484da4-21ca-4044-b2ff-2b3a1ddcd63f.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "code-executor",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/miguelguerra200022-sudo/code-executor",
+    "stats": {
+      "comments": 0,
+      "downloads": 2802,
+      "installs": 105,
+      "stars": 1,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "dev-code-gen",
+        "name": "代码生成"
+      },
+      {
+        "key": "dev-script",
+        "name": "脚本工具"
+      }
+    ],
+    "summary": "Ejecuta código Python, JavaScript, Bash dinámicamente. El bot puede crear y ejecutar código al vuelo.",
+    "summary_zh": "动态执行 Python、JavaScript、Bash 代码，机器人可即时生成并运行代码。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782319000748,
+    "upstream_owner_login": "miguelguerra200022-sudo",
+    "upstream_url": "https://clawhub.ai/miguelguerra200022-sudo/code-executor",
+    "verified": false
+  }
+}

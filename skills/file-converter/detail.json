@@ -1,0 +1,68 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774724505704,
+    "version": "2.1.0"
+  },
+  "owner": {
+    "displayName": "ckchzh",
+    "handle": "ckchzh",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=cce0b62f224b7ccff4f7c5c89087c492",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/408712_96dbca0795be3a730cd5f2c364763855.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782256885%3B1813792885&q-key-time=1782256885%3B1813792885&q-header-list=host&q-url-param-list=&q-signature=d9d91d56ce14ecb76eddad0ab39072ccf903e25b",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "dev-programming",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1773285670384,
+    "displayName": "File Converter",
+    "githubAuthorLogin": "ckchzh",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/27205dc2-3c4b-4854-85b1-8902f05745a3.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "file-converter",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/ckchzh/file-converter",
+    "stats": {
+      "comments": 0,
+      "downloads": 1952,
+      "installs": 72,
+      "stars": 1,
+      "versions": 4
+    },
+    "subCategories": [
+      {
+        "key": "dev-script",
+        "name": "脚本工具"
+      }
+    ],
+    "summary": "File format converter. Detect formats, convert between JSON/YAML/XML/CSV/Markdown, minify and prettify code. Commands: detect, json2yaml, yaml2json, csv2md.",
+    "summary_zh": "文件格式转换器。支持检测格式，在JSON/YAML/XML/CSV/Markdown间转换，以及代码压缩与美化。命令包括：detect, 2yaml, yaml2, csv2md。",
+    "tags": {
+      "chinese": "2.1.0",
+      "latest": "2.1.0",
+      "productivity": "2.1.0"
+    },
+    "updatedAt": 1782317336367,
+    "upstream_owner_login": "ckchzh",
+    "upstream_url": "https://clawhub.ai/ckchzh/file-converter",
+    "verified": false
+  }
+}

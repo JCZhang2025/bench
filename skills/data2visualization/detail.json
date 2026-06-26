@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "增加run.py、config.yaml、prompt.md、schema.json",
+    "createdAt": 1776076727398,
+    "version": "0.0.6"
+  },
+  "owner": {
+    "displayName": "EastSeaO",
+    "handle": "user_d82fedf3",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=fdcfa4303543086e318ee8fe0a792f81",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/422509_67efa0c725285c0e64575eecac1b099a.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782269912%3B1813805912&q-key-time=1782269912%3B1813805912&q-header-list=host&q-url-param-list=&q-signature=ec9b19653f8d25f5296089aa4c00929956a57b8d",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1775555595617,
+    "displayName": "文档、报告、纪要、数据 typora/markor 可视化",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/7920727c-4e7d-496a-9223-d9c6673e9e53.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "data2visualization",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 754,
+      "installs": 68,
+      "stars": 1,
+      "versions": 6
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-report",
+        "name": "日报周报"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "将结构化或半结构化数据转化为高质量 Markdown 可视化报告，适用于 Typora / Markor / PDF 导出",
+    "tags": {
+      "latest": "0.0.6"
+    },
+    "updatedAt": 1782317222744,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

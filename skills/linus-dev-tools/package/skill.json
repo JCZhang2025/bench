@@ -1,0 +1,48 @@
+{
+  "name": "linus-dev-tools",
+  "version": "1.0.0",
+  "description": "开发者工具合集 - 加密、编码、网络、令牌、数据格式转换等常用工具",
+  "author": "Linus",
+  "license": "PROPRIETARY",
+  "category": "development",
+  "tags": ["dev-tools", "crypto", "encoding", "network", "token", "formatter"],
+
+  "pricing": {
+    "type": "freemium",
+    "tiers": [
+      {
+        "name": "free",
+        "price": 0,
+        "limits": {
+          "operations_per_day": 100,
+          "features": "all"
+        }
+      },
+      {
+        "name": "pro",
+        "price": 9.99,
+        "currency": "USD",
+        "billing": "monthly",
+        "limits": {
+          "operations_per_day": "unlimited",
+          "features": "all",
+          "ai_calls": 100
+        }
+      }
+    ]
+  },
+
+  "requirements": {
+    "python": ">=3.9.0"
+  },
+
+  "permissions": [
+    "file_access",
+    "network_request"
+  ],
+
+  "dependencies": [],
+
+  "entry_point": "src/main.py",
+  "repository": "https://github.com/yourname/linus-dev-tools"
+}

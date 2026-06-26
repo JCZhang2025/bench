@@ -1,0 +1,26 @@
+{
+  "count": 4,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "3d875b277fb23a9b9fa46e689beace0c0a696b74b604a397b651b2830dbfa049",
+      "size": 3444
+    },
+    {
+      "path": "references/chart-types.md",
+      "sha256": "9bb5545dfc3f67ada7942ac12284ebf56d308181a9a92dc0e0d876a211227911",
+      "size": 3431
+    },
+    {
+      "path": "references/data-format.md",
+      "sha256": "13b357e0e1407c03922fb7400fc6eeeb63704f1896df9d0c4b56476b322431e7",
+      "size": 3506
+    },
+    {
+      "path": "scripts/generate_chart.py",
+      "sha256": "dae1912cb08cd5778021d5e2e3a4161862556c3166a85ea9c4efe9806a9107b6",
+      "size": 39304
+    }
+  ],
+  "version": "1.0.0"
+}

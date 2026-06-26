@@ -1,0 +1,38 @@
+name: Typora Visual Architect
+code: TVA-001
+version: 1.0.0
+
+description: >
+  将任意内容转换为Typora兼容的视觉化Markdown文档，
+  支持HTML增强排版、卡片布局、表格美化与流程图生成。
+
+mode: structured_output
+
+output:
+  format: markdown
+  wrapper: "```markdown"
+  html_support: true
+  typora_optimized: true
+
+style:
+  theme:
+    primary: "#e3f2fd"
+    border: "#bbdefb"
+    accent: "#2196f3"
+    header: "#b3e5fc"
+    gradient: "#b2dfdb"
+    text: "#333333"
+
+capabilities:
+  - heading_structure
+  - html_ui_blocks
+  - flex_cards
+  - styled_tables
+  - mermaid_diagrams
+  - summary_gradient_box
+  - anti_ai_tone_rewrite
+
+constraints:
+  - strict_html_closing: true
+  - no_external_css: true
+  - typora_compatibility_mode: true

@@ -1,0 +1,22 @@
+{
+  "name": "screenshot-ocr",
+  "version": "1.0.0",
+  "description": "截图文字识别 - 从图片中提取文字",
+  "author": "Your Name",
+  "license": "PROPRIETARY",
+  "category": "productivity",
+  "tags": ["ocr", "screenshot", "text", "productivity"],
+
+  "pricing": {
+    "type": "freemium",
+    "tiers": [
+      { "name": "free", "price": 0, "limits": { "images_per_day": 5 } },
+      { "name": "pro", "price": 14.99, "currency": "USD", "billing": "monthly", "limits": { "images_per_day": "unlimited" } }
+    ]
+  },
+
+  "requirements": { "python": ">=3.9.0" },
+  "permissions": ["file_access"],
+  "dependencies": ["pytesseract", "PIL"],
+  "entry_point": "src/main.py"
+}

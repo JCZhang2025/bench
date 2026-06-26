@@ -1,0 +1,31 @@
+{
+  "count": 5,
+  "files": [
+    {
+      "path": "_meta.json",
+      "sha256": "23c1261d47257bce24e686c5e28a1966684897220d45d4d54a085d6d5a6ed2c8",
+      "size": 151
+    },
+    {
+      "path": "ods.py",
+      "sha256": "68fb99b8e91331b0d2bed6af74ff98b91f7669e999d43ea44771c74c1822e10e",
+      "size": 5414
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "20afdc7b8503c8bb2eef23f26d00b59e3720f737c1751dfe712e5f4115b536f4",
+      "size": 31
+    },
+    {
+      "path": "setup.sh",
+      "sha256": "e149b9f9e13e9dd85e949ff4907b223c59314ee8a1902839d777c304e6b52ad5",
+      "size": 346
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "ed178a8658f98b34890ce04d94122ce739cbf5479dd0cd61c7ab485eb96a1214",
+      "size": 1048
+    }
+  ],
+  "version": "1.0.2"
+}

@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774786136824,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "mohdalhashemi98-hue",
+    "handle": "mohdalhashemi98-hue",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=7f77bca377a5e8c8ca60afeedab974f8",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/400429_37e51d0172bbab86a72c150712bbdcbf.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782249523%3B1813785523&q-key-time=1782249523%3B1813785523&q-header-list=host&q-url-param-list=&q-signature=efe0823a557659b9e328d1a4c537e2cb4e0c8986",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "design-media",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772794674806,
+    "displayName": "MH openai-whisper-api",
+    "githubAuthorLogin": "mohdalhashemi98-hue",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/10f9d8ff-5e7f-434f-9992-5e71e1d4e990.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "true"
+    },
+    "last_synced_at": null,
+    "slug": "mh-openai-whisper-api",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/mohdalhashemi98-hue/mh-openai-whisper-api",
+    "stats": {
+      "comments": 0,
+      "downloads": 910,
+      "installs": 33,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "design-audio",
+        "name": "音频处理"
+      }
+    ],
+    "summary": "Transcribe audio via OpenAI Audio Transcriptions API (Whisper).",
+    "summary_zh": "使用 OpenAI 音频转录 API（Whisper）进行音频转录。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317140945,
+    "upstream_owner_login": "mohdalhashemi98-hue",
+    "upstream_url": "https://clawhub.ai/mohdalhashemi98-hue/mh-openai-whisper-api",
+    "verified": false
+  }
+}

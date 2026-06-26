@@ -1,0 +1,71 @@
+{
+  "count": 13,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "df194e4838f480a8f7321900a84daf393940c4ce18c243ccabdf514582404cc4",
+      "size": 1663
+    },
+    {
+      "path": "README.md",
+      "sha256": "e1571cf2de4e0260bf58dc7bd358100e8f97f1f079e01df5c70aeee2d05de10b",
+      "size": 5355
+    },
+    {
+      "path": "scripts/common.sh",
+      "sha256": "8fb9ba03bca20201158da00cdde20eaaeaf1c1407ea65276a628e6f62f705e9a",
+      "size": 4794
+    },
+    {
+      "path": "scripts/extract-items.sh",
+      "sha256": "65aab073ea28c71b49f7feaa2b500e5d24d80fbc9e51838693693a5a9cbcce12",
+      "size": 7537
+    },
+    {
+      "path": "scripts/generate-outputs.sh",
+      "sha256": "7b1cfd450cc89df4d3584c138b1524b5245ceea0d6b3b5fa0c4321697b96f1f4",
+      "size": 9305
+    },
+    {
+      "path": "scripts/meeting-autopilot.sh",
+      "sha256": "a2f6fbea3e1b60720063e45fd8f3b9883cb7b13f6475a4e43a80b02f01634cc9",
+      "size": 7540
+    },
+    {
+      "path": "scripts/parse-transcript.sh",
+      "sha256": "25eb06c25b4ee456bff661b813a4e05a8359fb0aa54bc3f53fa18279a702fd90",
+      "size": 5396
+    },
+    {
+      "path": "SECURITY.md",
+      "sha256": "b599050ea1d0a21dd996909a08c613481d71b0e47bdbf0cdb2db19c9e6d5ba19",
+      "size": 4277
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "9eac4c0e3cc32473777ac05dbe7a8b1d7a75dee7bd8b04a75fbe414430367df2",
+      "size": 5437
+    },
+    {
+      "path": "templates/classification-prompt.md",
+      "sha256": "8362182601ef306753546ec830109e27836194a9f160cba162c3b0a045de8d85",
+      "size": 683
+    },
+    {
+      "path": "templates/extraction-prompt.md",
+      "sha256": "b35f81b85835c9d4f28bbed06f1de69074a8e0017907d2b0327c90c9b4e4961d",
+      "size": 2297
+    },
+    {
+      "path": "templates/outputs-prompt.md",
+      "sha256": "de968e9c90b7fe5edacebcc9acc6570f4a527ff40eefa47ccf1571ceac6242d6",
+      "size": 1806
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "5ae841dd648a6b81b8e81297790c5090d5ad8bbd6b7a6b6e466c4a4081688ac8",
+      "size": 136
+    }
+  ],
+  "version": "0.1.2"
+}

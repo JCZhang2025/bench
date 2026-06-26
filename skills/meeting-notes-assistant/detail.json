@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1775648104615,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "吴土土",
+    "handle": "user_cffec473",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=24737502c61737715c895bf9776ebf67",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/422644_00372288f2cdc61d95747ffb73625ced.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782270051%3B1813806051&q-key-time=1782270051%3B1813806051&q-header-list=host&q-url-param-list=&q-signature=381eea89785acd03df10c7b30b909dabadd14dca",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1775648104615,
+    "displayName": "Meeting Notes Assistant",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/2d8152d9-7618-454e-9d87-2487f1b4457f.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "true"
+    },
+    "last_synced_at": null,
+    "slug": "meeting-notes-assistant",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 3023,
+      "installs": 24,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-meeting-notes",
+        "name": "会议纪要"
+      },
+      {
+        "key": "office-automation",
+        "name": "流程自动化"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "会议纪要智能助手。使用本地 Whisper 音频转写（离线、隐私安全），生成结构化会议纪要（时间、议题、结论、待办、关键词），提取 Action Items。支持 Word / PDF / 邮件输出，适合录音转写、会议归档与待办分发。触发关键词：「整理会议纪要」、「生成会议纪要」、「录音转纪要」。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782316904274,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

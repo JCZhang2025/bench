@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1776139171693,
+    "version": "0.1.0"
+  },
+  "owner": {
+    "displayName": "PingAI 品智",
+    "handle": "user_2c495456",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=33463847ddd18b26d0f4010e83a8bcd3",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/423151_67fa8a488793b225d752e1b95ec18661.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782270577%3B1813806577&q-key-time=1782270577%3B1813806577&q-header-list=host&q-url-param-list=&q-signature=68f383bf37093eb4e97f5d0984d962b0b1cbbee1",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1776139171693,
+    "displayName": "All to Markdown",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/401a454b-4b16-4aee-a18c-4e3467ca48f1.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "all-to-markdown",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 146,
+      "installs": 1,
+      "stars": 1,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-pdf",
+        "name": "PDF 处理"
+      },
+      {
+        "key": "office-automation",
+        "name": "流程自动化"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "将任意文件（PDF、Word、Excel、PPT、图片、音频、网页等）转换为 Markdown",
+    "tags": {
+      "latest": "0.1.0"
+    },
+    "updatedAt": 1782317400005,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

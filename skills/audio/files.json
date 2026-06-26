@@ -1,0 +1,36 @@
+{
+  "count": 6,
+  "files": [
+    {
+      "path": "commands.md",
+      "sha256": "869e877ae63e0178aa3490431f57645d713b0df7642db905557b46d4332c9e9e",
+      "size": 5754
+    },
+    {
+      "path": "loudness.md",
+      "sha256": "3932f04fd3446c10b7ba1ff64098edd2f64ec5c035ec7840cb4ea76c33b104fc",
+      "size": 2903
+    },
+    {
+      "path": "podcast.md",
+      "sha256": "f888af3e81752566617523d3ad120f48178232631379f7f47772f6417ff87276",
+      "size": 3839
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "7d7300fc92ac84fd834e41e6740d2013b31ad84a266b3c7e9872605d4a6ca6a4",
+      "size": 2870
+    },
+    {
+      "path": "transcription.md",
+      "sha256": "36d9c49e74aae6d4831276f5ba154e93d1b1b260e77fe58d1324ab62d89f1391",
+      "size": 5061
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "17100a3871b874b02ce16e1688c6929178a3c56b66fc255e742ef561ad7bc851",
+      "size": 124
+    }
+  ],
+  "version": "1.0.1"
+}

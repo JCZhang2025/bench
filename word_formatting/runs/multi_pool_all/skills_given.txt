@@ -1,0 +1,14 @@
+word-docx
+office-document-specialist-suite
+file-converter
+all-to-markdown
+markdown-converter
+code-executor
+data-reconciliation-exceptions
+data-anomaly-detector
+data-analysis
+user-analysis-matrix
+typora-visual-architect
+generate-report123
+sql-report-generator
+data2visualization

@@ -1,0 +1,16 @@
+{
+  "count": 2,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "c766da489810acf03290283780ba9d3be798678d689255ace34477caeb6d7541",
+      "size": 7887
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "bf173c91d79a54874fd7e872fc7d38e61a6ae5b4056f9a289b5b287ad717a0e4",
+      "size": 128
+    }
+  ],
+  "version": "1.0.2"
+}

@@ -1,0 +1,26 @@
+{
+  "count": 4,
+  "files": [
+    {
+      "path": "assets/exceptions-report-template.csv",
+      "sha256": "66f41f98e8e85b17e04d36d4503b46adc2d706aa77e1aafacaa6110b7a36db7b",
+      "size": 339
+    },
+    {
+      "path": "references/matching-rules.md",
+      "sha256": "20fbed5d2e48e3f7fb219767f003061084b9438f385609cad54fb0b7b82f04e0",
+      "size": 413
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "5adbb2326e5f77690e79fbabe57c4f2f727c4673b2594c62b256104d2c1332fb",
+      "size": 3551
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "aedc7a36904c5b6a1509b7f36e9f7bb2dbff2bb5d4312f8febdd47f79a10639b",
+      "size": 149
+    }
+  ],
+  "version": "1.0.0"
+}

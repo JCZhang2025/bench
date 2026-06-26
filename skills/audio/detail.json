@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774720517621,
+    "version": "1.0.1"
+  },
+  "owner": {
+    "displayName": "ivangdavila",
+    "handle": "ivangdavila",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=75b0173973ae2240d12cc13024c7b995",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/395659_007ab90835aef7c3e26b6cae23729d64.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782245279%3B1813781279&q-key-time=1782245279%3B1813781279&q-header-list=host&q-url-param-list=&q-signature=ea391e1d4e16c6b93178a1ed13b710861325ffdb",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "design-media",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772769576687,
+    "displayName": "Audio",
+    "githubAuthorLogin": "ivangdavila",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/10f9d8ff-5e7f-434f-9992-5e71e1d4e990.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "audio",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/ivangdavila/audio",
+    "stats": {
+      "comments": 0,
+      "downloads": 2534,
+      "installs": 95,
+      "stars": 2,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "design-audio",
+        "name": "音频处理"
+      }
+    ],
+    "summary": "Process, enhance, and convert audio files with noise removal, normalization, format conversion, transcription, and podcast workflows.",
+    "summary_zh": "处理、提升并转换音频文件，包含降噪、归一化、格式转换、转录和播客工作流。",
+    "tags": {
+      "latest": "1.0.1"
+    },
+    "updatedAt": 1782317325988,
+    "upstream_owner_login": "ivangdavila",
+    "upstream_url": "https://clawhub.ai/ivangdavila/audio",
+    "verified": false
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774623178186,
+    "version": "1.0.2"
+  },
+  "owner": {
+    "displayName": "ivangdavila",
+    "handle": "ivangdavila",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=56d137db6ea859875795b96ccd8fd371",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/389972_c69c1e7289cc3d3ec697f61d2bc0f7cb.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782240428%3B1813776428&q-key-time=1782240428%3B1813776428&q-header-list=host&q-url-param-list=&q-signature=b14db1cf02592c1d296b2eb53364c83fec8eb8e8",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772740083296,
+    "displayName": "Excel / XLSX",
+    "githubAuthorLogin": "ivangdavila",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/27205dc2-3c4b-4854-85b1-8902f05745a3.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "excel-xlsx",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/ivangdavila/excel-xlsx",
+    "stats": {
+      "comments": 0,
+      "downloads": 145830,
+      "installs": 24636,
+      "stars": 384,
+      "versions": 2
+    },
+    "subCategories": [
+      {
+        "key": "office-spreadsheet",
+        "name": "表格处理"
+      }
+    ],
+    "summary": "Create, inspect, and edit Microsoft Excel workbooks and XLSX files with reliable formulas, dates, types, formatting, recalculation, and template preservation...",
+    "summary_zh": "创建、检查和编辑 Microsoft Excel 工作簿及 XLSX 文件，支持可靠的公式、日期、类型、格式、重算及模板保留功能。",
+    "tags": {
+      "latest": "1.0.2"
+    },
+    "updatedAt": 1782319423210,
+    "upstream_owner_login": "ivangdavila",
+    "upstream_url": "https://clawhub.ai/ivangdavila/excel-xlsx",
+    "verified": false
+  }
+}

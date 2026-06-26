@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "初始化版本",
+    "createdAt": 1776492738572,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "user_25ab92ec",
+    "handle": "user_25ab92ec",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=21f9b58faad9f0be7fcd548697816662",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/423584_c0c765225d4d442c720abf81fc0253e8.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782270995%3B1813806995&q-key-time=1782270995%3B1813806995&q-header-list=host&q-url-param-list=&q-signature=db8cf84ac59617d463474c0f18540c1ab814e533",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "dev-programming",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1776492738572,
+    "displayName": "linus-dev-tools",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/64ea6fd6-ebe7-418c-af4f-2cafff71f2ec.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "linus-dev-tools",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 229,
+      "installs": 0,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "dev-backend",
+        "name": "后端开发"
+      },
+      {
+        "key": "dev-script",
+        "name": "脚本工具"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "适合AI和开发人员调用的开发人员工具合集,md5各种算法,json,签名校验,token等",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317113269,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

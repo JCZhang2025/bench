@@ -1,0 +1,51 @@
+{
+  "count": 9,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "86dd9c586efd2a428d92c85754657fd172fea3d3bc8abdc8c29683d68b16deff",
+      "size": 14940
+    },
+    {
+      "path": "SPEC.md",
+      "sha256": "679066571fee861da7638bf173edb42bb0631840b5df9f107af28d551c7daa11",
+      "size": 4413
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "41f58de20bbac31139c24365b497d1438e2e5494b7d5ba13c0a59203f75f75ba",
+      "size": 141
+    },
+    {
+      "path": "references/competing-hypotheses.md",
+      "sha256": "819e0530bcba198562cf173becbd6af0b635bfc39ea5bc885a7b4d347aa3090b",
+      "size": 3653
+    },
+    {
+      "path": "references/defense-in-depth.md",
+      "sha256": "0732a1abd846d5301866021d2e7d461007ebb77a6397691c107629f2354cbcde",
+      "size": 3350
+    },
+    {
+      "path": "references/root-cause-tracing.md",
+      "sha256": "678e6b80989b5e80dfe2109b6b5b65ed2bdf3ebed7739189f388463800fba582",
+      "size": 2863
+    },
+    {
+      "path": "references/specialized-patterns.md",
+      "sha256": "b524509f7f531f27b2006e29b908a39b5d3107d316ccd2cca1fa8daa8879767c",
+      "size": 4788
+    },
+    {
+      "path": "scripts/collect-diagnostics.sh",
+      "sha256": "d11b7d571ac857792f4b2d8e134f0b46d1126a9bdde0b858f9f800d8a33e3742",
+      "size": 4067
+    },
+    {
+      "path": "skill-card.md",
+      "sha256": "48dabdda763cb51387e022f6c33ef21b16bcc07f2ed704ed9701ef56aae2fc28",
+      "size": 2118
+    }
+  ],
+  "version": "4.1.1"
+}

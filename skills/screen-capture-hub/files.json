@@ -1,0 +1,111 @@
+{
+  "count": 21,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "942d44d25be9de4ff5726fc16e814c7b99385d8e66d51031921e692a38ca29ed",
+      "size": 1747
+    },
+    {
+      "path": "docs/OCR_SETUP_GUIDE.md",
+      "sha256": "60bd8273430cc68082a9b52e35d57f0d4ac78205661d608d5e35dfa1c78f5f56",
+      "size": 5380
+    },
+    {
+      "path": "examples/run_examples.py",
+      "sha256": "17c857b2490454c5980281e826d2d689cb8e4437070d477fc0c05489297062c4",
+      "size": 8658
+    },
+    {
+      "path": "INSTALL.md",
+      "sha256": "2d3393813d4e3c8ad9862224e1e507ea2bb18f740b01cccd2b36779ec99229ac",
+      "size": 2069
+    },
+    {
+      "path": "package.json",
+      "sha256": "ca224f47258e63338cb57fbb165559a178d923fe03e5a1d3fbc74da90e32cc7a",
+      "size": 2464
+    },
+    {
+      "path": "README.md",
+      "sha256": "5536d47f9e13fbf31fdd25d454e00cb13e00b092ab1a6d4715a6964c7baf59f8",
+      "size": 7814
+    },
+    {
+      "path": "references/usage_examples.md",
+      "sha256": "97ae55977d5d748b644f6fbf4c06296348cf206ab522b16ac935c76bb5d8588f",
+      "size": 7590
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "f3074b2646ad33cb55c41c65f6d69c614fddf278967d0652e922a166defdb9c7",
+      "size": 285
+    },
+    {
+      "path": "scripts/__init__.py",
+      "sha256": "f3b345bf0bdeee2959c775522663bd7139d9385e8771eeb29e03b4a647e5fe33",
+      "size": 286
+    },
+    {
+      "path": "scripts/analyze_screen.py",
+      "sha256": "a784cc8ab0bdb02509e5d7e7a3426a9f9d89245a5fc124837cd7ef927c743fff",
+      "size": 10070
+    },
+    {
+      "path": "scripts/dependency_check.py",
+      "sha256": "9fa9feee79df545b764cb66dbfee74e097e4dc5cd1941fa8d3fa57324e876e68",
+      "size": 9232
+    },
+    {
+      "path": "scripts/install_tesseract.py",
+      "sha256": "b6f984e6a8c85c9f9ddad4ba9bf5131fe4569de7a16033d9280a27185ededbd2",
+      "size": 12797
+    },
+    {
+      "path": "scripts/ocr_screenshot.py",
+      "sha256": "bef5f8668189b60b46ecea79d7d99cb4f34eba5f74c8825aec6ca8ebc4ef375e",
+      "size": 7380
+    },
+    {
+      "path": "scripts/package_skill.py",
+      "sha256": "bbc57ebb4b9a707198ee2681d1aa43ace16e35b378bb412f6030711899b6fd9b",
+      "size": 9810
+    },
+    {
+      "path": "scripts/quick_capture.py",
+      "sha256": "3a91a147da4e0fa1cee9b8f5f9972273c55d14445a2460cf5ff27e79d0cc75f0",
+      "size": 3415
+    },
+    {
+      "path": "scripts/screenshot.py",
+      "sha256": "c6564bb60972eb7d8a0a319fbd898f9fffacffdf8fa47513ae127bc660151490",
+      "size": 4061
+    },
+    {
+      "path": "scripts/setup.py",
+      "sha256": "fad77ae57349fea1eb41993f50d1755650d13ff6bc0b79bc376ec2678e763794",
+      "size": 6017
+    },
+    {
+      "path": "scripts/test_ocr.py",
+      "sha256": "47125f97c56c00599f00cadbb0e05e355e34bb34224e63cadf22a319bb5b955b",
+      "size": 8389
+    },
+    {
+      "path": "scripts/test_screenshot.py",
+      "sha256": "a367f100c7f42ba06d0ce2fc5caebc35c1e9b7dcf4575aa2e96f6ac6d84ba0e7",
+      "size": 4583
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "c9ddf8c48539e46beb1f7166b3d4d3607e8a237e121964fb3f4addc96d38a154",
+      "size": 4492
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "08a6af1b9a5be0f7ec7f438859bddd83341cc928b262075205b979d1586af59f",
+      "size": 137
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774663786545,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "kowl64",
+    "handle": "kowl64",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=35dbb2de7fef3acf99600839732644a0",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/390345_f0b4673d8b21ce6512f488024dd8ae1e.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782240563%3B1813776563&q-key-time=1782240563%3B1813776563&q-header-list=host&q-url-param-list=&q-signature=6383e211c9491aef092aaa46e00e4856a9190dc2",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772740145897,
+    "displayName": "Data quality & reconciliation with exception",
+    "githubAuthorLogin": "kowl64",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/60484da4-21ca-4044-b2ff-2b3a1ddcd63f.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "data-reconciliation-exceptions",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/kowl64/data-reconciliation-exceptions",
+    "stats": {
+      "comments": 0,
+      "downloads": 4827,
+      "installs": 453,
+      "stars": 3,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "data-cleaning",
+        "name": "数据清洗"
+      },
+      {
+        "key": "data-report",
+        "name": "报表生成"
+      },
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      }
+    ],
+    "summary": "Reconciles data sources using stable identifiers (Pay Number, driving licence, driver card, and driver qualification card numbers), producing exception reports and “no silent failure” checks. Use when you need weekly matching with explicit reasons for non-joins and mismatches.",
+    "summary_zh": "利用稳定标识符（工资号、驾驶证、驾驶员卡及驾驶员资格证号）核对数据源，生成异常报告并进行“无静默失败”检查。适用于需要每周匹配并明确说明未关联及不匹配原因的场景。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317401184,
+    "upstream_owner_login": "kowl64",
+    "upstream_url": "https://clawhub.ai/kowl64/data-reconciliation-exceptions",
+    "verified": false
+  }
+}

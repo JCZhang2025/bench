@@ -1,0 +1,17 @@
+all-to-markdown
+markdown-converter
+file-converter
+chat2duckdb
+excel-xlsx
+multi-source-data-cleaner-pro
+data-analysis
+data-analyst-cn
+code-executor
+data-reconciliation-exceptions
+data-anomaly-detector
+sql-master
+typora-visual-architect
+generate-report123
+data2visualization
+sql-report-generator
+generate-chart

@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1778654891585,
+    "version": "1.0.1"
+  },
+  "owner": {
+    "displayName": "user_15246c10",
+    "handle": "user_15246c10",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=3ac1e9f02534004deab7252892787565",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/460313_3c18ba29d36e261765b86455f2f82136.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782198426%3B1813734426&q-key-time=1782198426%3B1813734426&q-header-list=host&q-url-param-list=&q-signature=24bc329cbaf83bb67378ed465370d7e39f626b52",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1778653254785,
+    "displayName": "用户矩阵分析",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/401a454b-4b16-4aee-a18c-4e3467ca48f1.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "user-analysis-matrix",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 97,
+      "installs": 0,
+      "stars": 0,
+      "versions": 2
+    },
+    "subCategories": [
+      {
+        "key": "data-cleaning",
+        "name": "数据清洗"
+      },
+      {
+        "key": "data-visualization",
+        "name": "数据可视化"
+      },
+      {
+        "key": "data-user-analysis",
+        "name": "用户分析"
+      }
+    ],
+    "summary": "用户使用数据可视化分析全流程，从原始数据清洗、多维度聚合到生成单文件 HTML 可视化报告。支持按身份（部门/产品线/角色/大区/用户角色/层级）、时间（周/月/季度）、能力（具体功能/场景）三个维度做交叉分析。触发词：帮我做用户分析矩阵、用户活跃分析、大区活跃分析、产品线活跃分析、活跃分析、用户分析、生成数据看板。当用户需要将用户使用行为数据生成可视化 HTML 报告时触发此技能。流程为 Python 清洗聚合 + Chart.js 单文件 HTML 可视化，产物可直接浏览器打开。",
+    "summary_zh": "用户使用数据可视化分析全流程，从原始数据清洗、多维度聚合到生成单文件 HTML 可视化报告。支持按身份（部门/产品线/角色/大区/用户角色/层级）、时间（周/月/季度）、能力（具体功能/场景）三个维度做交叉分析。触发词：帮我做用户分析矩阵、用户活跃分析、大区活跃分析、产品线活跃分析、活跃分析、用户分析、生成数据看板。当用户需要将用户使用行为数据生成可视化 HTML 报告时触发此技能。流程为 Python 清洗聚合 + Chart.js 单文件 HTML 可视化，产物可直接浏览器打开。",
+    "tags": {
+      "latest": "1.0.1"
+    },
+    "updatedAt": 1782317406510,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

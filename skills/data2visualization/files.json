@@ -1,0 +1,31 @@
+{
+  "count": 5,
+  "files": [
+    {
+      "path": "config.yaml",
+      "sha256": "2a58eaac8bbc9330ed53ef948419efda1c5c29d1ce83be7a31e5a2af4083c4b8",
+      "size": 891
+    },
+    {
+      "path": "run.py",
+      "sha256": "7329d0e237aea08d80b4e934f119e69ac6a3c062c47feeca9ebd2d62903d928d",
+      "size": 4563
+    },
+    {
+      "path": "schema.json",
+      "sha256": "6be2dfae3cd841b98bfff869044c31ebbf6ed7b33257e9a65dbbecdb27e68273",
+      "size": 572
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "004261fb0d7924ceaa39ad8ff7e5c24057d49fb845426b965ae02518e2efef23",
+      "size": 4208
+    },
+    {
+      "path": "prompt.md",
+      "sha256": "8bee39680261dd41b7d519c47f429de41af4d9ff0b5ba854e9a29557664eca74",
+      "size": 942
+    }
+  ],
+  "version": "0.0.6"
+}

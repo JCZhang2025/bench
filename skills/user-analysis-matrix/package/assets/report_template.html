@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户分层矩阵分析报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+
+        .cover {
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        .cover h1 { font-size: 42px; color: #1a1a2e; margin-bottom: 20px; font-weight: 700; }
+        .cover .subtitle { font-size: 18px; color: #666; margin-bottom: 40px; }
+        .cover .stats { display: flex; justify-content: center; gap: 60px; margin-bottom: 30px; }
+        .stat-box { text-align: center; }
+        .stat-box .number { font-size: 56px; font-weight: 800; color: #667eea; }
+        .stat-box .label { font-size: 16px; color: #666; margin-top: 8px; }
+        .stat-box .method-note { font-size: 12px; color: #999; margin-top: 4px; }
+        .stat-box .highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .explain-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .explain-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+        .note { font-size: 12px; color: #999; margin-top: 15px; }
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
+        .tab {
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 15px 15px 0 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab.active { background: white; color: #667eea; }
+        .tab:hover:not(.active) { color: #667eea; }
+
+        .content {
+            background: white;
+            border-radius: 0 20px 20px 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            min-height: 600px;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+
+        .matrix-section { margin-bottom: 50px; }
+        .matrix-title {
+            font-size: 24px;
+            color: #1a1a2e;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .matrix-subtitle { font-size: 14px; color: #666; margin-bottom: 20px; padding-left: 32px; }
+        .matrix-location {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin-left: 15px;
+        }
+
+        .matrix-wrapper {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: flex-start;
+        }
+        .matrix-row { display: table-row; }
+        .y-label-cell {
+            width: 30px;
+            padding-right: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        .y-label-spacer {
+            height: 40px;
+        }
+        .y-label-vertical {
+            font-size: 12px; color: #666; font-weight: 500;
+            writing-mode: vertical-rl; text-orientation: mixed;
+            letter-spacing: 3px;
+        }
+        .y-ticks-cell {
+            display: flex;
+            flex-direction: column;
+            width: 50px;
+        }
+        .y-tick {
+            font-size: 11px; color: #999; text-align: center;
+            height: 60px; display: flex; align-items: center; justify-content: center;
+        }
+        .y-tick:nth-child(1) { margin-top: 40px; }
+        .y-tick:nth-child(2) { margin-top: 0px; }
+        .y-tick:nth-child(3) { margin-top: 0px; }
+        .y-tick:nth-child(4) { margin-top: 0px; }
+        .y-tick:nth-child(5) { margin-top: 0px; }
+        .y-tick:nth-child(6) { margin-top: 0px; }
+        .y-tick:nth-child(7) { margin-top: 0px; }
+        .y-tick-value { font-weight: 600; color: #667eea; font-size: 14px; background: #f0f0f8; padding: 4px 12px; border-radius: 12px; }
+        .matrix-container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .heatmap { display: table; width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .heatmap-summary-row { display: table-row; }
+        .heatmap-summary-cell {
+            display: table-cell; width: 14.28%; text-align: center; padding: 6px 0;
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            border-radius: 8px; vertical-align: middle;
+        }
+
+        .heatmap-with-y-summary {
+            display: flex; align-items: stretch; flex: 1; height: 420px;
+        }
+        .heatmap-with-y-summary .heatmap {
+            height: 100%;
+        }
+        .heatmap-summary-count { font-size: 14px; font-weight: 700; color: #667eea; }
+        .heatmap-summary-percent { font-size: 10px; color: #999; }
+
+        .x-labels { display: flex; width: 100%; }
+        .x-label { flex: 1; text-align: center; font-size: 11px; color: #999; padding: 5px 0; }
+        .x-label-value { font-weight: 600; color: #667eea; }
+        .x-title { text-align: center; font-size: 12px; color: #666; font-weight: 500; padding: 8px 0 15px 0; }
+
+        .heatmap { display: table; width: 100%; border-collapse: collapse; table-layout: fixed; }
+        .heatmap-row { display: table-row; }
+        .heatmap-cell {
+            display: table-cell; width: 14.28%; height: 60px;
+            text-align: center; vertical-align: middle;
+            border: 1px solid #f0f0f0; cursor: pointer; transition: all 0.2s; position: relative;
+        }
+        .heatmap-cell:hover { transform: scale(1.05); z-index: 10; box-shadow: 0 5px 20px rgba(0,0,0,0.2); }
+        .heatmap-cell .count { font-size: 18px; font-weight: 700; color: #333; }
+        .heatmap-cell .count.zero { color: #ccc; }
+        .heatmap-cell .detail-link { font-size: 10px; color: #667eea; display: block; margin-top: 2px; }
+
+        .heat-0 { background: #f5f5f5; }
+        .heat-1 { background: #e8e5f9; }
+        .heat-2 { background: #d4cff5; }
+        .heat-3 { background: #b8a9ed; }
+        .heat-4 { background: #9d86e5; }
+        .heat-5 { background: #7c5fd9; }
+        .heat-6 { background: #5b3fc9; }
+
+        .matrix2-wrapper .heatmap-cell { width: 10%; height: 42px; }
+        .matrix2-wrapper .x-labels { padding-right: 40px; }
+        .matrix2-wrapper .heatmap-cell .count { font-size: 14px; }
+        .matrix2-wrapper .y-ticks { height: 420px; }
+        .matrix2-wrapper .y-tick { height: 42px; }
+
+        .modal {
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000;
+            justify-content: center; align-items: center;
+        }
+        .modal.show { display: flex; }
+        .modal-content {
+            background: white; border-radius: 20px; padding: 30px;
+            max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto;
+            position: relative; animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-close { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; color: #999; }
+        .modal-close:hover { color: #333; }
+        .modal-title { font-size: 20px; color: #1a1a2e; margin-bottom: 20px; }
+        .modal-subtitle {
+            font-size: 14px; color: #666; margin-bottom: 15px;
+            padding-bottom: 10px; border-bottom: 1px solid #eee;
+        }
+        .role-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f5f5f5; }
+        .role-item .role-name { color: #333; }
+        .role-item .role-count { font-weight: 600; color: #667eea; }
+        .role-item .role-percent { color: #999; font-size: 12px; margin-left: 10px; }
+
+        .analysis-section { margin-top: 40px; }
+        .analysis-title { font-size: 24px; color: #1a1a2e; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .insight-card {
+            background: linear-gradient(135deg, #f8f9fa, #fff); border-radius: 15px;
+            padding: 25px; margin-bottom: 20px; border-left: 4px solid #667eea;
+        }
+        .insight-card h3 { font-size: 18px; color: #1a1a2e; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .insight-card p { color: #555; line-height: 1.8; font-size: 14px; }
+        .insight-card .highlight { color: #667eea; font-weight: 600; }
+        .insight-card .warning { color: #e74c3c; font-weight: 600; }
+        .insight-card .success { color: #27ae60; font-weight: 600; }
+
+        .role-list { margin-top: 15px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .role-tag { background: #667eea; color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; }
+        .role-tag.warning-tag { background: #e74c3c; }
+
+        .role-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        .role-table th { background: #667eea; color: white; padding: 12px 10px; text-align: center; }
+        .role-table td { padding: 10px; border-bottom: 1px solid #eee; text-align: center; }
+        .role-table tr:hover { background: #f8f9fa; }
+        .role-table .num { text-align: center; font-weight: 600; }
+        .role-table td:first-child { text-align: left; }
+        .role-table .total-row { background: #f0f0f8; font-weight: 600; }
+        .role-table .total-row td { border-top: 2px solid #667eea; }
+
+        .filter-bar { margin-bottom: 20px; display: flex; gap: 10px; }
+        .filter-btn {
+            padding: 8px 20px; border: 2px solid #eee; background: white;
+            border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s;
+        }
+        .filter-btn.active { border-color: #667eea; background: #667eea; color: white; }
+        .filter-btn:hover:not(.active) { border-color: #667eea; }
+
+        .view-toggle { margin-bottom: 20px; display: flex; justify-content: flex-end; gap: 10px; }
+        .view-toggle-btn {
+            padding: 8px 20px; border: 2px solid #667eea; background: white;
+            border-radius: 20px; font-size: 13px; cursor: pointer; transition: all 0.2s;
+            color: #667eea; font-weight: 500;
+        }
+        .view-toggle-btn.active { background: #667eea; color: white; }
+        .view-toggle-btn:hover:not(.active) { background: #e8e5f9; }
+
+        .compact-cell {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 100%; font-size: 11px;
+        }
+        .compact-cell .count-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 2px; }
+        .compact-cell .main-count { font-size: 16px; font-weight: 700; color: #333; }
+        .compact-cell .main-count.zero { color: #ccc; }
+        .compact-cell .percent { font-size: 11px; color: #667eea; }
+        .compact-cell .roles-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px; max-width: 100%; }
+        .compact-cell .role-tag-mini {
+            background: #f0f0f8; color: #555; padding: 1px 4px; border-radius: 4px;
+            font-size: 9px; white-space: nowrap; max-width: 100%; overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .explain-modal { max-width: 700px; }
+        .explain-modal h3 { font-size: 16px; color: #1a1a2e; margin: 20px 0 10px; }
+        .explain-modal p { color: #555; line-height: 1.8; font-size: 14px; }
+        .explain-modal .formula { background: #f5f5f5; padding: 15px 20px; border-radius: 8px; font-family: monospace; margin: 10px 0; }
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        .comparison-table th, .comparison-table td { padding: 12px; border: 1px solid #eee; text-align: left; }
+        .comparison-table th { background: #f8f9fa; }
+
+        .has-org-note { font-size: 12px; color: #27ae60; font-style: italic; margin-top: 5px; }
+
+        /* 横纵汇总样式 */
+        .matrix-container-with-summary { display: flex; flex-direction: column; }
+        .x-summary-row { display: table; width: 100%; margin-bottom: 5px; table-layout: fixed; border-collapse: collapse; }
+        .x-summary-row > div { display: table-cell; }
+        .x-summary-cell {
+            width: 14.28%; text-align: center; padding: 6px 0;
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            border-radius: 8px; vertical-align: middle;
+        }
+        .x-summary-cell:first-child { visibility: hidden; }
+        .x-summary-count { font-size: 14px; font-weight: 700; color: #667eea; }
+        .x-summary-percent { font-size: 10px; color: #999; }
+        .matrix-inner { display: flex; }
+        .y-summary-col {
+            display: flex;
+            flex-direction: column;
+            width: 60px;
+            padding-left: 8px;
+            height: 400px;
+        }
+        .y-summary-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px;
+        }
+        .y-summary-cell:nth-child(1) { margin-top: 40px; }
+        .y-summary-cell:nth-child(2) { margin-top: 0; }
+        .y-summary-cell:nth-child(3) { margin-top: 0; }
+        .y-summary-cell:nth-child(4) { margin-top: 0; }
+        .y-summary-cell:nth-child(5) { margin-top: 0; }
+        .y-summary-cell:nth-child(6) { margin-top: 0; }
+        .y-summary-cell:nth-child(7) { margin-top: 0; }
+        .y-summary-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            width: 100%;
+        }
+        .y-summary-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            background: linear-gradient(135deg, #f8f9fa, #fff);
+            border-radius: 8px;
+            padding: 4px 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .y-summary-count { font-size: 14px; font-weight: 700; color: #667eea; }
+        .y-summary-percent { font-size: 10px; color: #999; }
+
+        /* 矩阵二汇总样式 */
+        .matrix2-wrapper .y-summary-col { height: 420px; }
+        .matrix2-wrapper .heatmap-summary-cell { width: 10%; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cover">
+            <h1>📊 用户分层矩阵分析报告</h1>
+            <p class="subtitle" id="coverSubtitle">基于使用数据（在职用户）</p>
+            <div class="stats">
+                <div class="stat-box">
+                    <div class="number highlight" id="totalUsers">--</div>
+                    <div class="label">在职用户数</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number highlight" id="totalWeeks">--</div>
+                    <div class="label" id="weeksLabel">统计周期（周）</div>
+                </div>
+                <div class="stat-box">
+                    <div class="number highlight" id="userRate">--</div>
+                    <div class="label">平均活跃率</div>
+                    <div class="method-note">👤 用户维度</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tabs" id="tabBar">
+            <!-- tabs 动态生成 -->
+        </div>
+
+        <div class="content">
+            <!-- 矩阵一 Tab -->
+            <div id="matrix1" class="tab-content active">
+                <div class="matrix-section">
+                    <div class="matrix-title">
+                        活跃度 × 能力广度（7×7）
+                        <span class="matrix-location">📍 第一象限：右上角 = 高活跃 + 多能力 = 高价值用户</span>
+                    </div>
+                    <div class="matrix-subtitle">Y轴：使用能力数（0-6个） | X轴：活跃率档位（0%-100%）</div>
+                    <div class="filter-bar" id="filterBar1">
+                        <!-- 筛选按钮动态生成 -->
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="normal" onclick="switchMatrix1View('normal')">📋 普通视图</button>
+                        <button class="view-toggle-btn" data-view="compact" onclick="switchMatrix1View('compact')">📊 紧凑视图</button>
+                    </div>
+                    <div class="matrix-wrapper">
+                        <div class="y-label-cell">
+                            <div class="y-label-spacer"></div>
+                            <div class="y-label-vertical">使用能力数 ↑</div>
+                        </div>
+                        <div class="y-ticks-cell">
+                            <div class="y-tick"><span class="y-tick-value">6</span></div>
+                            <div class="y-tick"><span class="y-tick-value">5</span></div>
+                            <div class="y-tick"><span class="y-tick-value">4</span></div>
+                            <div class="y-tick"><span class="y-tick-value">3</span></div>
+                            <div class="y-tick"><span class="y-tick-value">2</span></div>
+                            <div class="y-tick"><span class="y-tick-value">1</span></div>
+                            <div class="y-tick"><span class="y-tick-value">0</span></div>
+                        </div>
+                        <div class="matrix-container">
+                            <div class="heatmap" id="heatmap1"></div>
+                            <div class="x-labels">
+                                <div class="x-label"><span class="x-label-value">0%</span></div>
+                                <div class="x-label"><span class="x-label-value">0-20%</span></div>
+                                <div class="x-label"><span class="x-label-value">20-40%</span></div>
+                                <div class="x-label"><span class="x-label-value">40-60%</span></div>
+                                <div class="x-label"><span class="x-label-value">60-80%</span></div>
+                                <div class="x-label"><span class="x-label-value">80-100%</span></div>
+                                <div class="x-label"><span class="x-label-value">100%</span></div>
+                            </div>
+                            <div class="x-title">活跃率（活跃周数/在职周数）</div>
+                        </div>
+                        <div class="y-summary-col" id="ySummary1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 矩阵二 Tab（使用次数 × 活跃度） -->
+            <div id="matrix2" class="tab-content">
+                <div class="matrix-section">
+                    <div class="matrix-title">
+                        使用次数 × 活跃度（10×10）
+                    </div>
+                    <div class="matrix-subtitle">Y轴：使用次数档位（0~150+次） | X轴：活跃率档位</div>
+                    <div class="filter-bar" id="filterBar2">
+                        <!-- 筛选按钮动态生成 -->
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-toggle-btn active" data-view="normal" onclick="switchMatrix2View('normal')">📋 普通视图</button>
+                        <button class="view-toggle-btn" data-view="compact" onclick="switchMatrix2View('compact')">📊 紧凑视图</button>
+                    </div>
+                    <div class="matrix-wrapper matrix2-wrapper">
+                        <div class="y-label-cell">
+                            <div class="y-label-spacer"></div>
+                            <div class="y-label-vertical">使用次数 ↑</div>
+                        </div>
+                        <div class="y-ticks-cell y-ticks">
+                            <div class="y-tick"><span class="y-tick-value">150+</span></div>
+                            <div class="y-tick"><span class="y-tick-value">101-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">81-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">61-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">41-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">21-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">11-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">6-</span></div>
+                            <div class="y-tick"><span class="y-tick-value">1-5</span></div>
+                            <div class="y-tick"><span class="y-tick-value">0</span></div>
+                        </div>
+                        <div class="matrix-container">
+                            <div class="heatmap" id="heatmap2"></div>
+                            <div class="x-labels" style="padding-right:40px;">
+                                <div class="x-label"><span class="x-label-value">0%</span></div>
+                                <div class="x-label"><span class="x-label-value">0-12%</span></div>
+                                <div class="x-label"><span class="x-label-value">12-25%</span></div>
+                                <div class="x-label"><span class="x-label-value">25-37%</span></div>
+                                <div class="x-label"><span class="x-label-value">37-50%</span></div>
+                                <div class="x-label"><span class="x-label-value">50-62%</span></div>
+                                <div class="x-label"><span class="x-label-value">62-75%</span></div>
+                                <div class="x-label"><span class="x-label-value">75-87%</span></div>
+                                <div class="x-label"><span class="x-label-value">87-100%</span></div>
+                                <div class="x-label"><span class="x-label-value">100%</span></div>
+                            </div>
+                            <div class="x-title">活跃率</div>
+                        </div>
+                        <div class="y-summary-col" id="ySummary2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分析结论 Tab -->
+            <div id="analysis" class="tab-content">
+                <div class="analysis-section">
+                    <div class="analysis-title">📋 分析结论与运营建议</div>
+                    <div class="insight-card">
+                        <h3>🌟 高价值用户群体</h3>
+                        <p id="highValueInsight"></p>
+                    </div>
+                    <div class="insight-card">
+                        <h3>⚠️ 沉默及流失用户分析</h3>
+                        <p id="silentUserInsight"></p>
+                    </div>
+                    <div class="insight-card">
+                        <h3>🚀 增长机会</h3>
+                        <p id="growthInsight"></p>
+                    </div>
+                    <div class="insight-card">
+                        <h3>📊 各产品线用户活跃分层分布</h3>
+                        <p style="font-size:12px;color:#999;margin-bottom:15px;">* 高价值：能力3+ 且 活跃率>80%；沉默流失：能力0且活跃0%；增长：其余用户</p>
+                        <div style="position:relative;height:320px;">
+                            <canvas id="buBarChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <h3>📋 角色分析</h3>
+                        <p style="font-size:12px;color:#999;margin-bottom:10px;">* 平均活跃率采用用户维度计算：每位用户的活跃率求平均</p>
+                        <table class="role-table">
+                            <thead>
+                                <tr><th>角色</th><th>用户数</th><th>平均活跃率（用户维度）</th><th>总使用次数</th><th>平均使用能力数</th></tr>
+                            </thead>
+                            <tbody id="roleTableBody"></tbody>
+                        </table>
+                    </div>
+                    <div class="insight-card">
+                        <h3>💡 运营建议</h3>
+                        <p id="suggestionText"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="detailModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('detailModal')">&times;</span>
+            <div class="modal-title" id="modalTitle">象限详情</div>
+            <div class="modal-subtitle" id="modalSubTitle1">角色分布</div>
+            <div id="level1Roles"></div>
+            <div class="modal-subtitle" style="margin-top:20px;" id="modalSubTitle2">明细角色分布</div>
+            <div id="level2Roles"></div>
+        </div>
+    </div>
+
+    <div class="modal explain-modal" id="explainModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('explainModal')">&times;</span>
+            <div class="modal-title">📊 活跃率计算方式说明</div>
+            <h3>用户维度活跃率</h3>
+            <p>计算公式：用户活跃率平均</p>
+            <div class="formula">活跃率 = Σ(用户活跃周数 / 总周数) / 用户数</div>
+            <p>衡量的是：一个典型用户有多活跃。每个用户权重相同。</p>
+        </div>
+    </div>
+
+    <script>
+    // === DATA PLACEHOLDER ===
+    const data = __DATA_PLACEHOLDER__;
+
+    // 初始化变量（必须在函数调用之前）
+    let currentFilter1 = 'all';
+    let currentFilter2 = 'all';
+    let currentView1 = 'normal';
+    let currentView2 = 'normal';
+
+    // 动态获取矩阵筛选维度名称
+    const matrixDim = data.meta?.matrix_dim || '角色';
+    const filterGroups = data.meta?.filter_groups || ['all'];
+
+    // ===== 动态初始化页面 =====
+    function initPage() {
+        // 封面统计
+        document.getElementById('totalUsers').textContent = data.summary.total_users.toLocaleString();
+        document.getElementById('totalWeeks').textContent = data.summary.total_weeks;
+
+        const grainLabels = { week: '周', month: '月', quarter: '季度' };
+        const grain = data.meta?.time_grain || 'week';
+        document.getElementById('weeksLabel').textContent = '统计周期（' + (grainLabels[grain] || '周') + '）';
+
+        document.getElementById('userRate').textContent = (data.summary.avg_activity_rate * 100).toFixed(1) + '%';
+
+        // 封面副标题
+        const timeRange = data.meta?.time_range || '';
+        document.getElementById('coverSubtitle').textContent =
+            '基于 ' + (timeRange || '使用数据') + '（在职用户）';
+
+        // 动态生成 Tabs
+        const tabBar = document.getElementById('tabBar');
+        tabBar.innerHTML = `
+            <button class="tab active" onclick="switchTab('matrix1')">📈 矩阵一：活跃度 × 能力广度</button>
+            <button class="tab" onclick="switchTab('matrix2')">📈 矩阵二：使用次数 × 活跃度</button>
+            <button class="tab" onclick="switchTab('analysis')">📋 分析结论与建议</button>
+        `;
+
+        // 动态生成筛选按钮（矩阵一）
+        const filterBar1 = document.getElementById('filterBar1');
+        let filterHtml1 = `<button class="filter-btn active" data-filter="all" onclick="filterMatrix1('all')">全部用户</button>`;
+        filterGroups.slice(1).forEach(g => {
+            filterHtml1 += `<button class="filter-btn" data-filter="${g}" onclick="filterMatrix1('${g}')">${g}</button>`;
+        });
+        filterBar1.innerHTML = filterHtml1;
+
+        // 动态生成筛选按钮（矩阵二）
+        const filterBar2 = document.getElementById('filterBar2');
+        let filterHtml2 = `<button class="filter-btn active" data-filter="all" onclick="filterMatrix2('all')">全部用户</button>`;
+        filterGroups.slice(1).forEach(g => {
+            filterHtml2 += `<button class="filter-btn" data-filter="${g}" onclick="filterMatrix2('${g}')">${g}</button>`;
+        });
+        filterBar2.innerHTML = filterHtml2;
+
+        // 更新弹窗标题
+        document.getElementById('modalSubTitle1').textContent = matrixDim + ' 分布';
+
+        // 渲染
+        renderMatrix1();
+        renderMatrix2();
+        renderAnalysis();
+    }
+
+    // ===== 矩阵一横纵汇总 =====
+    function getMatrix1Summary() {
+        const matrix = data.matrix1[currentFilter1];
+        if (!matrix) return { xSummary: '', ySummary: '', filteredTotal: 0 };
+
+        let filteredTotal = 0;
+        for (let row = 0; row < 7; row++) {
+            for (let col = 0; col < 7; col++) {
+                filteredTotal += matrix[row] ? matrix[row][col] : 0;
+            }
+        }
+
+        let xSummaryHtml = '<div class="heatmap-summary-row">';
+        for (let col = 0; col < 7; col++) {
+            let colSum = 0;
+            for (let row = 0; row < 7; row++) {
+                colSum += matrix[row] ? matrix[row][col] : 0;
+            }
+            const percent = filteredTotal > 0 ? ((colSum / filteredTotal) * 100).toFixed(1) : '0';
+            xSummaryHtml += `<div class="heatmap-summary-cell">
+                <div class="heatmap-summary-count">${colSum}</div>
+                <div class="heatmap-summary-percent">${percent}%</div>
+            </div>`;
+        }
+        xSummaryHtml += '</div>';
+
+        let ySummaryHtml = '';
+        for (let row = 6; row >= 0; row--) {
+            let rowSum = 0;
+            for (let col = 0; col < 7; col++) {
+                rowSum += matrix[row] ? matrix[row][col] : 0;
+            }
+            const percent = filteredTotal > 0 ? ((rowSum / filteredTotal) * 100).toFixed(1) : '0';
+            ySummaryHtml += `<div class="y-summary-cell"><div class="y-summary-inner">
+                <div class="y-summary-count">${rowSum}</div>
+                <div class="y-summary-percent">${percent}%</div>
+            </div></div>`;
+        }
+        return { xSummary: xSummaryHtml, ySummary: ySummaryHtml, filteredTotal: filteredTotal };
+    }
+
+    // ===== 矩阵二横纵汇总 =====
+    function getMatrix2Summary() {
+        const matrix = data.matrix2[currentFilter2];
+        if (!matrix) return { xSummary: '', ySummary: '' };
+        const totalUsers = data.summary.total_users;
+
+        let xSummaryHtml = '<div class="heatmap-summary-row">';
+        for (let col = 0; col < 10; col++) {
+            let colSum = 0;
+            for (let row = 0; row < 10; row++) {
+                colSum += matrix[row] ? matrix[row][col] : 0;
+            }
+            const percent = totalUsers > 0 ? ((colSum / totalUsers) * 100).toFixed(1) : '0';
+            xSummaryHtml += `<div class="heatmap-summary-cell">
+                <div class="heatmap-summary-count">${colSum}</div>
+                <div class="heatmap-summary-percent">${percent}%</div>
+            </div>`;
+        }
+        xSummaryHtml += '</div>';
+
+        let ySummaryHtml = '';
+        for (let row = 9; row >= 0; row--) {
+            let rowSum = 0;
+            for (let col = 0; col < 10; col++) {
+                rowSum += matrix[row] ? matrix[row][col] : 0;
+            }
+            const percent = totalUsers > 0 ? ((rowSum / totalUsers) * 100).toFixed(1) : '0';
+            ySummaryHtml += `<div class="y-summary-cell"><div class="y-summary-inner">
+                <div class="y-summary-count">${rowSum}</div>
+                <div class="y-summary-percent">${percent}%</div>
+            </div></div>`;
+        }
+        return { xSummary: xSummaryHtml, ySummary: ySummaryHtml };
+    }
+
+    // ===== 渲染矩阵一 =====
+    function renderMatrix1() {
+        const container = document.getElementById('heatmap1');
+        const matrix = data.matrix1[currentFilter1];
+        if (!matrix) { container.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">无数据</p>'; return; }
+
+        const detail = data.matrix1_detail[currentFilter1] || data.matrix1_detail['all'] || {};
+        const summary = getMatrix1Summary();
+        const filteredTotal = summary.filteredTotal;
+        let html = summary.xSummary;
+
+        for (let row = 6; row >= 0; row--) {
+            html += '<div class="heatmap-row">';
+            for (let col = 0; col < 7; col++) {
+                const count = matrix[row] ? matrix[row][col] : 0;
+                const heatLevel = getHeatLevel(count, 500);
+
+                if (currentView1 === 'compact') {
+                    const key = `${row}_${col}`;
+                    const detailData = detail && detail[key];
+                    const percent = filteredTotal > 0 ? ((count / filteredTotal) * 100).toFixed(1) : '0';
+
+                    let rolesHtml = '';
+                    if (detailData && detailData.roles && Object.keys(detailData.roles).length > 0) {
+                        const sortedRoles = Object.entries(detailData.roles).sort((a, b) => b[1] - a[1]).slice(0, 3);
+                        rolesHtml = sortedRoles.map(([role, rc]) => {
+                            return `<span class="role-tag-mini" title="${role}: ${rc}人">${role}(${rc})</span>`;
+                        }).join('');
+                    }
+
+                    html += `<div class="heatmap-cell heat-${heatLevel}" onclick="showDetail(1, ${row}, ${col})">
+                        <div class="compact-cell" style="cursor: pointer;">
+                            <div class="count-row">
+                                <span class="main-count ${count === 0 ? 'zero' : ''}">${count}</span>
+                                <span class="percent">(${percent}%)</span>
+                            </div>
+                            ${rolesHtml ? `<div class="roles-row">${rolesHtml}</div>` : ''}
+                        </div>
+                    </div>`;
+                } else {
+                    html += `<div class="heatmap-cell heat-${heatLevel}" onclick="showDetail(1, ${row}, ${col})">
+                        <span class="count ${count === 0 ? 'zero' : ''}">${count}</span>
+                        ${count > 0 ? '<span class="detail-link">查看详情</span>' : ''}
+                    </div>`;
+                }
+            }
+            html += '</div>';
+        }
+        container.innerHTML = html;
+        document.getElementById('ySummary1').innerHTML = summary.ySummary;
+    }
+
+    // ===== 渲染矩阵二 =====
+    function renderMatrix2() {
+        const container = document.getElementById('heatmap2');
+        const matrix = data.matrix2[currentFilter2];
+        if (!matrix) { container.innerHTML = '<p style="text-align:center;color:#999;padding:40px;">无数据</p>'; return; }
+
+        const detail = data.matrix2_detail[currentFilter2] || data.matrix2_detail['all'] || {};
+        const summary = getMatrix2Summary();
+        const totalUsers = data.summary.total_users;
+        let html = summary.xSummary;
+
+        for (let row = 9; row >= 0; row--) {
+            html += '<div class="heatmap-row">';
+            for (let col = 0; col < 10; col++) {
+                const count = matrix[row] ? matrix[row][col] : 0;
+                const heatLevel = getHeatLevel(count, 200);
+
+                if (currentView2 === 'compact') {
+                    const key = `${row}_${col}`;
+                    const detailData = detail && detail[key];
+                    const percent = totalUsers > 0 ? ((count / totalUsers) * 100).toFixed(1) : '0';
+
+                    let rolesHtml = '';
+                    if (detailData && Object.keys(detailData).length > 0) {
+                        const sortedRoles = Object.entries(detailData).sort((a, b) => b[1] - a[1]).slice(0, 3);
+                        rolesHtml = sortedRoles.map(([role, rc]) => {
+                            return `<span class="role-tag-mini" title="${role}: ${rc}人">${role}(${rc})</span>`;
+                        }).join('');
+                    }
+
+                    html += `<div class="heatmap-cell heat-${heatLevel}" onclick="showDetail(2, ${row}, ${col})">
+                        <div class="compact-cell" style="cursor: pointer;">
+                            <div class="count-row">
+                                <span class="main-count ${count === 0 ? 'zero' : ''}">${count}</span>
+                                <span class="percent">(${percent}%)</span>
+                            </div>
+                            ${rolesHtml ? `<div class="roles-row">${rolesHtml}</div>` : ''}
+                        </div>
+                    </div>`;
+                } else {
+                    html += `<div class="heatmap-cell heat-${heatLevel}" onclick="showDetail(2, ${row}, ${col})">
+                        <span class="count ${count === 0 ? 'zero' : ''}">${count}</span>
+                        ${count > 0 ? '<span class="detail-link">查看详情</span>' : ''}
+                    </div>`;
+                }
+            }
+            html += '</div>';
+        }
+        container.innerHTML = html;
+        document.getElementById('ySummary2').innerHTML = summary.ySummary;
+    }
+
+    function switchMatrix1View(view) {
+        currentView1 = view;
+        document.querySelectorAll('#matrix1 .view-toggle-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.view === view);
+        });
+        renderMatrix1();
+    }
+
+    function switchMatrix2View(view) {
+        currentView2 = view;
+        document.querySelectorAll('#matrix2 .view-toggle-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.view === view);
+        });
+        renderMatrix2();
+    }
+
+    function getHeatLevel(count, max) {
+        if (count === 0) return 0;
+        const ratio = count / max;
+        if (ratio < 0.05) return 1;
+        if (ratio < 0.1) return 2;
+        if (ratio < 0.2) return 3;
+        if (ratio < 0.4) return 4;
+        if (ratio < 0.6) return 5;
+        return 6;
+    }
+
+    function filterMatrix1(filter) {
+        currentFilter1 = filter;
+        document.querySelectorAll('#filterBar1 .filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+        renderMatrix1();
+    }
+
+    function filterMatrix2(filter) {
+        currentFilter2 = filter;
+        document.querySelectorAll('#filterBar2 .filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.filter === filter);
+        });
+        renderMatrix2();
+    }
+
+    function showDetail(matrixType, row, col) {
+        if (matrixType === 1) {
+            const detail = data.matrix1_detail[currentFilter1] || data.matrix1_detail['all'] || {};
+            const key = `${row}_${col}`;
+            const detailData = detail && detail[key];
+
+            if (!detailData || !detailData.roles || Object.keys(detailData.roles).length === 0) {
+                alert('该象限暂无数据');
+                return;
+            }
+
+            const capLabels = ['0个能力', '1个能力', '2个能力', '3个能力', '4个能力', '5个能力', '6个能力'];
+            const rateLabels = ['0%', '0-20%', '20-40%', '40-60%', '60-80%', '80-100%', '100%'];
+            document.getElementById('modalTitle').textContent = `${capLabels[row]} + ${rateLabels[col]}活跃率`;
+
+            const roles = detailData.roles || {};
+            const totalCount = Object.values(roles).reduce((a, b) => a + b, 0);
+
+            // 角色分布
+            if (currentFilter1 === 'all') {
+                const level1Html = Object.entries(roles).sort((a, b) => b[1] - a[1]).map(([role, count]) => {
+                    const percent = ((count / totalCount) * 100).toFixed(1);
+                    return `<div class="role-item"><span class="role-name">${role}</span><span><span class="role-count">${count}人</span><span class="role-percent">${percent}%</span></span></div>`;
+                }).join('');
+                document.getElementById('level1Roles').innerHTML = level1Html || '<p>无数据</p>';
+            } else {
+                document.getElementById('level1Roles').innerHTML = `<p style="color:#666;">${currentFilter1} 共 <strong>${totalCount}</strong> 人</p>`;
+            }
+
+            // 明细角色分布（使用 roles 数据，格式为 "产品线-角色" 或纯角色）
+            const level2Html = Object.entries(roles).sort((a, b) => b[1] - a[1]).map(([role, count]) => {
+                const percent = ((count / totalCount) * 100).toFixed(1);
+                return `<div class="role-item"><span class="role-name">${role}</span><span><span class="role-count">${count}人</span><span class="role-percent">${percent}%</span></span></div>`;
+            }).join('');
+            document.getElementById('level2Roles').innerHTML = level2Html || '<p>无数据</p>';
+        } else if (matrixType === 2) {
+            const detail = data.matrix2_detail[currentFilter2] || data.matrix2_detail['all'] || {};
+            const key = `${row}_${col}`;
+            const detailData = detail && detail[key];
+
+            if (!detailData || Object.keys(detailData).length === 0) {
+                alert('该象限暂无数据');
+                return;
+            }
+
+            const usageLabels = ['0次', '1-5次', '6-10次', '11-20次', '21-40次', '41-60次', '61-80次', '81-100次', '101-150次', '150+次'];
+            const rateLabels = ['0%', '0-12.5%', '12.5-25%', '25-37.5%', '37.5-50%', '50-62.5%', '62.5-75%', '75-87.5%', '87.5-100%', '100%'];
+            document.getElementById('modalTitle').textContent = `${usageLabels[row]} + ${rateLabels[col]}活跃率`;
+
+            const roles = detailData || {};
+            const totalCount = Object.values(roles).reduce((a, b) => a + b, 0);
+
+            const level1Html = Object.entries(roles).sort((a, b) => b[1] - a[1]).map(([role, count]) => {
+                const percent = ((count / totalCount) * 100).toFixed(1);
+                return `<div class="role-item"><span class="role-name">${role}</span><span><span class="role-count">${count}人</span><span class="role-percent">${percent}%</span></span></div>`;
+            }).join('');
+            document.getElementById('level1Roles').innerHTML = level1Html || '<p>无数据</p>';
+
+            const level2Html = Object.entries(roles).sort((a, b) => b[1] - a[1]).map(([role, count]) => {
+                const percent = ((count / totalCount) * 100).toFixed(1);
+                return `<div class="role-item"><span class="role-name">${role}</span><span><span class="role-count">${count}人</span><span class="role-percent">${percent}%</span></span></div>`;
+            }).join('');
+            document.getElementById('level2Roles').innerHTML = level2Html || '<p>无数据</p>';
+        }
+        document.getElementById('detailModal').classList.add('show');
+    }
+
+    function renderAnalysis() {
+        const hvDetail = data.matrix1_detail['all'] || {};
+        // 高价值用户（活跃率>80% + 能力数3-6）
+        const highValueRoles = {};
+        Object.entries(hvDetail).forEach(([key, val]) => {
+            const [cap, rate] = key.split('_').map(Number);
+            if (rate >= 5 && cap >= 3) {
+                Object.entries(val.roles || {}).forEach(([role, count]) => {
+                    highValueRoles[role] = (highValueRoles[role] || 0) + count;
+                });
+            }
+        });
+        const totalHighValue = Object.values(highValueRoles).reduce((a, b) => a + b, 0);
+        const topHVRoles = Object.entries(highValueRoles).sort((a, b) => b[1] - a[1]).slice(0, 15);
+        const hvHtml = topHVRoles.map(([role, count]) => `<span class="role-tag">${role} (${count}人)</span>`).join('');
+        document.getElementById('highValueInsight').innerHTML = `高价值用户（高活跃>80% + 多能力3-6个）共 <span class="success">${totalHighValue}人</span>：<div class="role-list">${hvHtml}</div><p style="margin-top:10px;">这部分用户是核心深度使用者，具有最高的使用价值和示范效应。</p>`;
+
+        // 沉默及流失用户分析
+        const churnedCount = data.summary.churned_users || 0;
+        const silentRoles = hvDetail['0_0']?.roles || {};
+        const totalSilent = Object.values(silentRoles).reduce((a, b) => a + b, 0);
+        const topSilentRoles = Object.entries(silentRoles).sort((a, b) => b[1] - a[1]).slice(0, 15);
+        const silentHtml = topSilentRoles.map(([role, count]) => `<span class="role-tag warning-tag">${role} (${count}人)</span>`).join('');
+
+        // 低活跃用户
+        const lowActiveRoles = {};
+        Object.entries(hvDetail).forEach(([key, val]) => {
+            const [cap, rate] = key.split('_').map(Number);
+            if (rate >= 1 && rate < 3) {
+                Object.entries(val.roles || {}).forEach(([role, count]) => {
+                    lowActiveRoles[role] = (lowActiveRoles[role] || 0) + count;
+                });
+            }
+        });
+        const totalLowActive = Object.values(lowActiveRoles).reduce((a, b) => a + b, 0);
+        const topLowActiveRoles = Object.entries(lowActiveRoles).sort((a, b) => b[1] - a[1]).slice(0, 15);
+        const lowActiveHtml = topLowActiveRoles.map(([role, count]) => `<span class="role-tag warning-tag">${role} (${count}人)</span>`).join('');
+
+        document.getElementById('silentUserInsight').innerHTML = `
+            <p><strong>流失客户（账号冻结）</strong>共 <span class="warning">${churnedCount}人</span>：<p style="margin-top:5px;">建议开通账号重新激活使用。</p></p>
+            <p style="margin-top:15px;"><strong>沉默用户（账号未冻结但活跃为0）</strong>共 <span class="warning">${totalSilent}人</span>：<div class="role-list">${silentHtml}</div><p style="margin-top:5px;">需要调研原因并制定针对性激活策略。</p></p>
+            <p style="margin-top:15px;"><strong>低活跃用户（活跃度0%-40%）</strong>共 <span class="warning">${totalLowActive}人</span>：<div class="role-list">${lowActiveHtml}</div><p style="margin-top:5px;">这部分用户有一定使用但活跃度不足，需分析原因并提升参与度。</p></p>
+        `;
+
+        // 增长机会
+        const lowCapRoles = {};
+        const lowActRoles = {};
+        Object.entries(hvDetail).forEach(([key, val]) => {
+            const [cap, rate] = key.split('_').map(Number);
+            if (cap >= 1 && cap <= 2 && rate >= 3) {
+                Object.entries(val.roles || {}).forEach(([role, count]) => {
+                    lowCapRoles[role] = (lowCapRoles[role] || 0) + count;
+                });
+            }
+            if (cap >= 1 && cap <= 6 && rate >= 3 && rate < 5) {
+                Object.entries(val.roles || {}).forEach(([role, count]) => {
+                    lowActRoles[role] = (lowActRoles[role] || 0) + count;
+                });
+            }
+        });
+
+        const totalLowCap = Object.values(lowCapRoles).reduce((a, b) => a + b, 0);
+        const totalLowAct = Object.values(lowActRoles).reduce((a, b) => a + b, 0);
+        const topLowCapRoles = Object.entries(lowCapRoles).sort((a, b) => b[1] - a[1]).slice(0, 15);
+        const topLowActRoles = Object.entries(lowActRoles).sort((a, b) => b[1] - a[1]).slice(0, 15);
+        const lowCapHtml = topLowCapRoles.map(([role, count]) => `<span class="role-tag">${role} (${count}人)</span>`).join('');
+        const lowActHtml = topLowActRoles.map(([role, count]) => `<span class="role-tag">${role} (${count}人)</span>`).join('');
+
+        document.getElementById('growthInsight').innerHTML = `
+            <p><strong>能力深度不足用户（能力1-2个 + 活跃40-100%）</strong>共 <span class="highlight">${totalLowCap}人</span>：<div class="role-list">${lowCapHtml}</div><p style="margin-top:5px;">有使用习惯但只用1-2个能力，可引导拓展能力使用范围。</p></p>
+            <p style="margin-top:15px;"><strong>活跃度可提升用户（能力1-6个 + 活跃40-80%）</strong>共 <span class="highlight">${totalLowAct}人</span>：<div class="role-list">${lowActHtml}</div><p style="margin-top:5px;">具备能力基础但活跃度有提升空间，可提升使用频次。</p></p>
+        `;
+
+        // 角色分析表
+        const tbody = document.getElementById('roleTableBody');
+        const sortedRoles = data.role_analysis || [];
+        let rows = '';
+        sortedRoles.forEach(r => {
+            rows += `<tr><td>${r.role}</td><td class="num">${r.user_count}</td><td class="num">${(r.avg_activity * 100).toFixed(1)}%</td><td class="num">${r.total_usage.toLocaleString()}</td><td class="num">${(r.avg_capability || 0).toFixed(2)}</td></tr>`;
+        });
+
+        const totalUserCount = sortedRoles.reduce((sum, r) => sum + r.user_count, 0);
+        const totalUsage = sortedRoles.reduce((sum, r) => sum + r.total_usage, 0);
+        const avgActivity = totalUserCount > 0 ? sortedRoles.reduce((sum, r) => sum + r.avg_activity * r.user_count, 0) / totalUserCount : 0;
+        const avgCapability = totalUserCount > 0 ? sortedRoles.reduce((sum, r) => sum + (r.avg_capability || 0) * r.user_count, 0) / totalUserCount : 0;
+
+        rows += `<tr class="total-row"><td><strong>Total</strong></td><td class="num"><strong>${totalUserCount}</strong></td><td class="num"><strong>${(avgActivity * 100).toFixed(1)}%</strong></td><td class="num"><strong>${totalUsage.toLocaleString()}</strong></td><td class="num"><strong>${avgCapability.toFixed(2)}</strong></td></tr>`;
+        tbody.innerHTML = rows;
+
+        // 运营建议
+        const buData = data.bu_analysis || [];
+        let suggestionHtml = `<p style="margin-bottom:12px;color:#555;">按产品线逐层拆解，各产品线高价值 / 增长 / 沉默流失用户分布及运营重点：</p>`;
+        buData.forEach(b => {
+            const hvPct = b.total > 0 ? (b.high_value / b.total * 100).toFixed(1) : '0.0';
+            const grPct = b.total > 0 ? (b.growth / b.total * 100).toFixed(1) : '0.0';
+            const scPct = b.total > 0 ? (b.silent_churned / b.total * 100).toFixed(1) : '0.0';
+            let advice = '';
+            if (b.total > 0 && b.high_value / b.total > 0.3) advice = '高价值用户占比高，重点维护并发挥示范效应。';
+            else if (b.total > 0 && b.silent_churned / b.total > 0.2) advice = '沉默流失比例偏高，需优先排查原因并制定激活策略。';
+            else advice = '增长用户为主体，重点引导拓展能力使用，提升活跃深度。';
+            suggestionHtml += `
+            <div style="margin-bottom:16px;padding:14px 16px;background:#f8f9fa;border-radius:10px;border-left:4px solid #667eea;">
+                <div style="font-weight:700;color:#1a1a2e;margin-bottom:8px;font-size:14px;">📌 ${b.bu}（共 ${b.total} 人）</div>
+                <div style="display:flex;gap:20px;margin-bottom:8px;font-size:13px;">
+                    <span style="color:#27ae60;">🌟 高价值：${b.high_value}人 (${hvPct}%)</span>
+                    <span style="color:#667eea;">📈 增长：${b.growth}人 (${grPct}%)</span>
+                    <span style="color:#e74c3c;">⚠️ 沉默流失：${b.silent_churned}人 (${scPct}%)</span>
+                </div>
+                <div style="font-size:13px;color:#555;">→ ${advice}</div>
+            </div>`;
+        });
+        document.getElementById('suggestionText').innerHTML = suggestionHtml;
+
+        // 渲染堆叠柱状图
+        renderBuChart();
+    }
+
+    function renderBuChart() {
+        const buData = data.bu_analysis || [];
+        if (!buData.length) return;
+        const labels = buData.map(b => b.bu);
+        const highValues = buData.map(b => b.high_value);
+        const growths = buData.map(b => b.growth);
+        const silentChurned = buData.map(b => b.silent_churned);
+
+        const ctx = document.getElementById('buBarChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels,
+                datasets: [
+                    { label: '高价值', data: highValues, backgroundColor: '#27ae60', borderRadius: 0 },
+                    { label: '增长', data: growths, backgroundColor: '#667eea', borderRadius: 0 },
+                    { label: '沉默流失', data: silentChurned, backgroundColor: '#e74c3c', borderRadius: 0 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: ctx => {
+                                const total = buData[ctx.dataIndex].total;
+                                const pct = total > 0 ? (ctx.raw / total * 100).toFixed(1) : '0';
+                                return ` ${ctx.dataset.label}：${ctx.raw}人 (${pct}%)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { stacked: true, beginAtZero: true, title: { display: true, text: '人数' } }
+                }
+            }
+        });
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab').forEach(t => {
+            if (t.getAttribute('onclick')?.includes(`'${tabId}'`)) t.classList.add('active');
+        });
+        document.getElementById(tabId).classList.add('active');
+    }
+
+    function showExplainModal() { document.getElementById('explainModal').classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', e => { if (e.target === modal) modal.classList.remove('show'); });
+    });
+
+    // 页面初始化
+    initPage();
+    </script>
+</body>
+</html>

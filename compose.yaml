@@ -1,0 +1,9 @@
+services:
+  benchmark:
+    build:
+      context: .
+    image: skill-composition-pilot:local
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: ["python", "-m", "tasks.pubtables.task", "prepare"]

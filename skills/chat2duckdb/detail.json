@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1779789322063,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "cloudcba",
+    "handle": "cloudcba",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=c03e9f26b16d31d87d4aa97bb4a8b0b3",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/27/466979_f65c5f509a6c1192740d33b8a334c0eb.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782202718%3B1813738718&q-key-time=1782202718%3B1813738718&q-header-list=host&q-url-param-list=&q-signature=625e6a0967c49e20db70f1b8a070bc020afe8edc",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1779789322063,
+    "displayName": "chat2duckdb",
+    "githubAuthorLogin": "cloudcba",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/0c9b068f-f22e-44e2-96fe-d2b6f5b43b07.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "chat2duckdb",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/cloudcba/chat2duckdb",
+    "stats": {
+      "comments": 0,
+      "downloads": 444,
+      "installs": 16,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "data-cleaning",
+        "name": "数据清洗"
+      },
+      {
+        "key": "data-report",
+        "name": "报表生成"
+      },
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      }
+    ],
+    "summary": "基于 DuckDB 引擎的高效数据分析工具；当用户需要对 CSV/JSON/Parquet/Excel 等数据文件进行 SQL 查询、数据分析、数据抽样或需要自动纠错的查询执行时使用",
+    "summary_zh": "基于 DuckDB 引擎的高效数据分析工具，用于对 CSV/JSON/Parquet/Excel 等文件进行 SQL 查询、数据分析、抽样及自动纠错执行。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317126864,
+    "upstream_owner_login": "cloudcba",
+    "upstream_url": "https://clawhub.ai/cloudcba/chat2duckdb",
+    "verified": false
+  }
+}

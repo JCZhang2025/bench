@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1778137931438,
+    "version": "1.0.1"
+  },
+  "owner": {
+    "displayName": "dingtom336-gif",
+    "handle": "dingtom336-gif",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=9479635bc6a1c9184c84da5d543ad785",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/445184_1895364ee5272a8b73e3574946d2f770.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782314918%3B1813850918&q-key-time=1782314918%3B1813850918&q-header-list=host&q-url-param-list=&q-signature=80e7ff64bf5398af25e3f16bf2af8a40105e16f1",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "life-service",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1778137931438,
+    "displayName": "Budget Trip Planner",
+    "githubAuthorLogin": "dingtom336-gif",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/a78375f1-773e-4817-b4f3-0557b6afd777.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "budget-trip-planner",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/dingtom336-gif/budget-trip-planner",
+    "stats": {
+      "comments": 0,
+      "downloads": 351,
+      "installs": 13,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "life-travel",
+        "name": "旅行规划"
+      }
+    ],
+    "summary": "Plan amazing trips on a tight budget — cheapest flights, budget hotels, free attractions, and money-saving hacks for every aspect of travel. Also supports: f...",
+    "summary_zh": "在有限预算内策划精彩旅行——提供最便宜的机票、经济型酒店、免费景点以及各种省钱技巧。亦支持：...",
+    "tags": {
+      "latest": "1.0.1"
+    },
+    "updatedAt": 1782317032610,
+    "upstream_owner_login": "dingtom336-gif",
+    "upstream_url": "https://clawhub.ai/dingtom336-gif/budget-trip-planner",
+    "verified": false
+  }
+}

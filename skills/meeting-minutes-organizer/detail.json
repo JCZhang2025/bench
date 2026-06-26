@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774925855422,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "yongjie666888",
+    "handle": "yongjie666888",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=776c797893d95925b066c2c4e4d79981",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/421130_919ec3f3528f08748612740e9bfa87d7.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782268541%3B1813804541&q-key-time=1782268541%3B1813804541&q-header-list=host&q-url-param-list=&q-signature=4018e8fb955b26b5adb653eb8ed6ebe2068a2be9",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1774925855422,
+    "displayName": "会议纪要自动整理工具",
+    "githubAuthorLogin": "yongjie666888",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/f7fabcfa-0496-4dc7-9258-df9b7c751850.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "meeting-minutes-organizer",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/yongjie666888/meeting-minutes-organizer",
+    "stats": {
+      "comments": 0,
+      "downloads": 4623,
+      "installs": 558,
+      "stars": 2,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-meeting-notes",
+        "name": "会议纪要"
+      }
+    ],
+    "summary": "会议纪要自动整理工具 | 将原始会议记录智能整理为结构化会议纪要（议题、决议、待办、责任人和截止日期）",
+    "summary_zh": "会议纪要自动整理工具 | 将原始会议记录智能整理为结构化会议纪要（议题、决议、待办、责任人和截止日期）",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317103083,
+    "upstream_owner_login": "yongjie666888",
+    "upstream_url": "https://clawhub.ai/yongjie666888/meeting-minutes-organizer",
+    "verified": false
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774679585460,
+    "version": "2.1.0"
+  },
+  "owner": {
+    "displayName": "datadrivenconstruction",
+    "handle": "datadrivenconstruction",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=e8eecadd22fd3de616d77e5efc360a01",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/392645_2b70332db984fcd9e4d7a0ae64f1a69d.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782242601%3B1813778601&q-key-time=1782242601%3B1813778601&q-header-list=host&q-url-param-list=&q-signature=e8c21f6b477434c810c1412f8ed54b8e734132a1",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772745498696,
+    "displayName": "Data Anomaly Detector",
+    "githubAuthorLogin": "datadrivenconstruction",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/e9a58ede-ead5-43fd-9523-d1ba7f1b78cd.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "data-anomaly-detector",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/datadrivenconstruction/data-anomaly-detector",
+    "stats": {
+      "comments": 0,
+      "downloads": 4587,
+      "installs": 172,
+      "stars": 2,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      },
+      {
+        "key": "data-metrics-monitoring",
+        "name": "指标监控"
+      }
+    ],
+    "summary": "Detect anomalies and outliers in construction data: unusual costs, schedule variances, productivity spikes. Statistical and ML-based detection methods.",
+    "summary_zh": "检测施工数据中的异常和离群值：如异常成本、进度偏差、生产率波动。采用统计和机器学习方法。",
+    "tags": {
+      "latest": "2.1.0"
+    },
+    "updatedAt": 1782317337050,
+    "upstream_owner_login": "datadrivenconstruction",
+    "upstream_url": "https://clawhub.ai/datadrivenconstruction/data-anomaly-detector",
+    "verified": false
+  }
+}

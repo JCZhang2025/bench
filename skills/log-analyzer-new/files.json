@@ -1,0 +1,16 @@
+{
+  "count": 2,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "caab24f0960ed0af4ac2837addb27dd344c61ec540de1a20fbee3eadc93f1431",
+      "size": 10579
+    },
+    {
+      "path": "install.sh",
+      "sha256": "9a6de9895a5eff2dab4144850888a8c2bd53b1ef4916e6a757cad90fde2dc8fa",
+      "size": 3087
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,21 @@
+{
+  "count": 3,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "295c7ccee4860c3f81a59ede492fec7b917fad64263ca10f84ebd7b1e876bc1b",
+      "size": 698
+    },
+    {
+      "path": "skill.json",
+      "sha256": "3f7d247bf876d59098153528e1bf7c5e593d7022bc4f02ba7c22b9f4646ab0a2",
+      "size": 676
+    },
+    {
+      "path": "src/main.py",
+      "sha256": "990a7625ad6b653225fa0c415c20ccff339a8928438652e46188f53b73997d9a",
+      "size": 1926
+    }
+  ],
+  "version": "1.0.0"
+}

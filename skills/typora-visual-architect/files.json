@@ -1,0 +1,31 @@
+{
+  "count": 5,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "004261fb0d7924ceaa39ad8ff7e5c24057d49fb845426b965ae02518e2efef23",
+      "size": 4208
+    },
+    {
+      "path": "结构化输出.md",
+      "sha256": "3c75123be0254b0bcd7a59b0dbcaad9e69effd4c92a5449a38627e0404f5e6ef",
+      "size": 3429
+    },
+    {
+      "path": "config.yaml",
+      "sha256": "0ab08e12154a488b8912ee0fde21fc41f6a33c2cd33b3c85f493c41cd19b471c",
+      "size": 795
+    },
+    {
+      "path": "prompt.md",
+      "sha256": "5dc32b446778f865978d13b4a3186fa84fd7d9f44c976b7adc39a8cb6d53649e",
+      "size": 1593
+    },
+    {
+      "path": "run.py",
+      "sha256": "2e83002ea4386b90f8e5cac1693727d17b01126afd2c1f8f0f479d53c467dd3f",
+      "size": 1146
+    }
+  ],
+  "version": "1.0.0"
+}

@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774626656886,
+    "version": "1.0.2"
+  },
+  "owner": {
+    "displayName": "robert-janssen",
+    "handle": "robert-janssen",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=f548307ed9ef363e0e491f08e9599ba6",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/391224_6fde9d8bc8f464699105db03391ed026.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782241346%3B1813777346&q-key-time=1782241346%3B1813777346&q-header-list=host&q-url-param-list=&q-signature=f0121e0e0d5ffb45b5bc0365c1c79c0a5165d924",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772744693128,
+    "displayName": "Office Document Specialist Suite",
+    "githubAuthorLogin": "robert-janssen",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/7920727c-4e7d-496a-9223-d9c6673e9e53.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "office-document-specialist-suite",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/robert-janssen/office-document-specialist-suite",
+    "stats": {
+      "comments": 0,
+      "downloads": 20509,
+      "installs": 2833,
+      "stars": 24,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      },
+      {
+        "key": "office-spreadsheet",
+        "name": "表格处理"
+      },
+      {
+        "key": "office-ppt",
+        "name": "PPT 生成"
+      }
+    ],
+    "summary": "Advanced suite for creating, editing, and analyzing Microsoft Office documents (Word, Excel, PowerPoint). Provides specialized tools for automated reporting...",
+    "summary_zh": "高级套件，用于创建、编辑和分析 Microsoft Office 文档（Word、Excel、PowerPoint），提供专业的自动化报告工具。",
+    "tags": {
+      "latest": "1.0.2"
+    },
+    "updatedAt": 1782316903041,
+    "upstream_owner_login": "robert-janssen",
+    "upstream_url": "https://clawhub.ai/robert-janssen/office-document-specialist-suite",
+    "verified": false
+  }
+}

@@ -1,0 +1,373 @@
+{
+  "no_skill": {
+    "label": "No-skill baseline",
+    "condition_type": "baseline",
+    "sample_seed": "",
+    "pool_samples": {},
+    "skill_pools": {},
+    "skills": []
+  },
+  "multi_pool_all": {
+    "label": "All candidates from every skill pool",
+    "condition_type": "multi_pool_all",
+    "sample_seed": "",
+    "pool_samples": {},
+    "skill_pools": {
+      "table_extraction": [
+        "all-to-markdown",
+        "markdown-converter",
+        "file-converter",
+        "chat2duckdb",
+        "excel-xlsx"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro",
+        "data-analysis",
+        "data-analyst-cn",
+        "excel-xlsx",
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "code-executor",
+        "data-reconciliation-exceptions",
+        "data-anomaly-detector",
+        "data-analysis",
+        "sql-master"
+      ],
+      "summary_reporting": [
+        "typora-visual-architect",
+        "generate-report123",
+        "data2visualization",
+        "sql-report-generator",
+        "generate-chart"
+      ]
+    },
+    "skills": [
+      "all-to-markdown",
+      "markdown-converter",
+      "file-converter",
+      "chat2duckdb",
+      "excel-xlsx",
+      "multi-source-data-cleaner-pro",
+      "data-analysis",
+      "data-analyst-cn",
+      "code-executor",
+      "data-reconciliation-exceptions",
+      "data-anomaly-detector",
+      "sql-master",
+      "typora-visual-architect",
+      "generate-report123",
+      "data2visualization",
+      "sql-report-generator",
+      "generate-chart"
+    ]
+  },
+  "multi_pool_sample_s01": {
+    "label": "One sampled skill from each pool, seed 1",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 1,
+    "pool_samples": {
+      "table_extraction": "markdown-converter",
+      "data_cleaning": "chat2duckdb",
+      "validation_audit": "code-executor",
+      "summary_reporting": "data2visualization"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "markdown-converter"
+      ],
+      "data_cleaning": [
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "code-executor"
+      ],
+      "summary_reporting": [
+        "data2visualization"
+      ]
+    },
+    "skills": [
+      "markdown-converter",
+      "chat2duckdb",
+      "code-executor",
+      "data2visualization"
+    ]
+  },
+  "multi_pool_sample_s02": {
+    "label": "One sampled skill from each pool, seed 2",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 2,
+    "pool_samples": {
+      "table_extraction": "all-to-markdown",
+      "data_cleaning": "multi-source-data-cleaner-pro",
+      "validation_audit": "code-executor",
+      "summary_reporting": "data2visualization"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "all-to-markdown"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro"
+      ],
+      "validation_audit": [
+        "code-executor"
+      ],
+      "summary_reporting": [
+        "data2visualization"
+      ]
+    },
+    "skills": [
+      "all-to-markdown",
+      "multi-source-data-cleaner-pro",
+      "code-executor",
+      "data2visualization"
+    ]
+  },
+  "multi_pool_sample_s03": {
+    "label": "One sampled skill from each pool, seed 3",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 3,
+    "pool_samples": {
+      "table_extraction": "markdown-converter",
+      "data_cleaning": "chat2duckdb",
+      "validation_audit": "sql-master",
+      "summary_reporting": "generate-report123"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "markdown-converter"
+      ],
+      "data_cleaning": [
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "sql-master"
+      ],
+      "summary_reporting": [
+        "generate-report123"
+      ]
+    },
+    "skills": [
+      "markdown-converter",
+      "chat2duckdb",
+      "sql-master",
+      "generate-report123"
+    ]
+  },
+  "multi_pool_sample_s04": {
+    "label": "One sampled skill from each pool, seed 4",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 4,
+    "pool_samples": {
+      "table_extraction": "markdown-converter",
+      "data_cleaning": "data-analyst-cn",
+      "validation_audit": "code-executor",
+      "summary_reporting": "sql-report-generator"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "markdown-converter"
+      ],
+      "data_cleaning": [
+        "data-analyst-cn"
+      ],
+      "validation_audit": [
+        "code-executor"
+      ],
+      "summary_reporting": [
+        "sql-report-generator"
+      ]
+    },
+    "skills": [
+      "markdown-converter",
+      "data-analyst-cn",
+      "code-executor",
+      "sql-report-generator"
+    ]
+  },
+  "multi_pool_sample_s05": {
+    "label": "One sampled skill from each pool, seed 5",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 5,
+    "pool_samples": {
+      "table_extraction": "excel-xlsx",
+      "data_cleaning": "data-analyst-cn",
+      "validation_audit": "data-anomaly-detector",
+      "summary_reporting": "generate-chart"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "excel-xlsx"
+      ],
+      "data_cleaning": [
+        "data-analyst-cn"
+      ],
+      "validation_audit": [
+        "data-anomaly-detector"
+      ],
+      "summary_reporting": [
+        "generate-chart"
+      ]
+    },
+    "skills": [
+      "excel-xlsx",
+      "data-analyst-cn",
+      "data-anomaly-detector",
+      "generate-chart"
+    ]
+  },
+  "multi_pool_sample_s06": {
+    "label": "One sampled skill from each pool, seed 6",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 6,
+    "pool_samples": {
+      "table_extraction": "excel-xlsx",
+      "data_cleaning": "multi-source-data-cleaner-pro",
+      "validation_audit": "data-analysis",
+      "summary_reporting": "data2visualization"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "excel-xlsx"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro"
+      ],
+      "validation_audit": [
+        "data-analysis"
+      ],
+      "summary_reporting": [
+        "data2visualization"
+      ]
+    },
+    "skills": [
+      "excel-xlsx",
+      "multi-source-data-cleaner-pro",
+      "data-analysis",
+      "data2visualization"
+    ]
+  },
+  "multi_pool_sample_s07": {
+    "label": "One sampled skill from each pool, seed 7",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 7,
+    "pool_samples": {
+      "table_extraction": "file-converter",
+      "data_cleaning": "data-analysis",
+      "validation_audit": "data-analysis",
+      "summary_reporting": "typora-visual-architect"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "file-converter"
+      ],
+      "data_cleaning": [
+        "data-analysis"
+      ],
+      "validation_audit": [
+        "data-analysis"
+      ],
+      "summary_reporting": [
+        "typora-visual-architect"
+      ]
+    },
+    "skills": [
+      "file-converter",
+      "data-analysis",
+      "typora-visual-architect"
+    ]
+  },
+  "multi_pool_sample_s08": {
+    "label": "One sampled skill from each pool, seed 8",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 8,
+    "pool_samples": {
+      "table_extraction": "markdown-converter",
+      "data_cleaning": "data-analyst-cn",
+      "validation_audit": "data-analysis",
+      "summary_reporting": "generate-report123"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "markdown-converter"
+      ],
+      "data_cleaning": [
+        "data-analyst-cn"
+      ],
+      "validation_audit": [
+        "data-analysis"
+      ],
+      "summary_reporting": [
+        "generate-report123"
+      ]
+    },
+    "skills": [
+      "markdown-converter",
+      "data-analyst-cn",
+      "data-analysis",
+      "generate-report123"
+    ]
+  },
+  "multi_pool_sample_s09": {
+    "label": "One sampled skill from each pool, seed 9",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 9,
+    "pool_samples": {
+      "table_extraction": "chat2duckdb",
+      "data_cleaning": "chat2duckdb",
+      "validation_audit": "data-anomaly-detector",
+      "summary_reporting": "data2visualization"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "chat2duckdb"
+      ],
+      "data_cleaning": [
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "data-anomaly-detector"
+      ],
+      "summary_reporting": [
+        "data2visualization"
+      ]
+    },
+    "skills": [
+      "chat2duckdb",
+      "data-anomaly-detector",
+      "data2visualization"
+    ]
+  },
+  "multi_pool_sample_s10": {
+    "label": "One sampled skill from each pool, seed 10",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 10,
+    "pool_samples": {
+      "table_extraction": "excel-xlsx",
+      "data_cleaning": "multi-source-data-cleaner-pro",
+      "validation_audit": "data-analysis",
+      "summary_reporting": "sql-report-generator"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "excel-xlsx"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro"
+      ],
+      "validation_audit": [
+        "data-analysis"
+      ],
+      "summary_reporting": [
+        "sql-report-generator"
+      ]
+    },
+    "skills": [
+      "excel-xlsx",
+      "multi-source-data-cleaner-pro",
+      "data-analysis",
+      "sql-report-generator"
+    ]
+  }
+}

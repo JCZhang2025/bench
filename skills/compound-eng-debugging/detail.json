@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1780698131241,
+    "version": "4.1.1"
+  },
+  "owner": {
+    "displayName": "iliaal",
+    "handle": "iliaal",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "",
+      "status": "queued",
+      "statusText": "排队中"
+    },
+    "sanbu": {
+      "reportUrl": "",
+      "status": "queued",
+      "statusText": "排队中"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "dev-programming",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1777600085877,
+    "displayName": "ia-debugging",
+    "githubAuthorLogin": "iliaal",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/34a07e4e-fec8-4ce0-aaf8-a83e46546c2d.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "compound-eng-debugging",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/iliaal/compound-eng-debugging",
+    "stats": {
+      "comments": 0,
+      "downloads": 986,
+      "installs": 36,
+      "stars": 0,
+      "versions": 5
+    },
+    "subCategories": [
+      {
+        "key": "dev-code-review",
+        "name": "代码审查"
+      },
+      {
+        "key": "dev-bug-fix",
+        "name": "Bug 修复"
+      }
+    ],
+    "summary": "Systematic root-cause debugging with verification. Use for errors, stack traces, broken tests, flaky tests, regressions, or anything not working as expected....",
+    "summary_zh": "系统性根因调试与验证。适用于错误、堆栈跟踪、失败测试、间歇性测试、回归或任何异常情况。",
+    "tags": {
+      "latest": "4.1.1"
+    },
+    "updatedAt": 1782317209497,
+    "upstream_owner_login": "iliaal",
+    "upstream_url": "https://clawhub.ai/iliaal/compound-eng-debugging",
+    "verified": false
+  }
+}

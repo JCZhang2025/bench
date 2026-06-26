@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774623648321,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "steipete",
+    "handle": "steipete",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=e4d736615328c0fb8f57bf3e4d4b8eb6",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/466139_3795a8052496e9b512729da02aec521c.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782240123%3B1813776123&q-key-time=1782240123%3B1813776123&q-header-list=host&q-url-param-list=&q-signature=be2f7ece795a427cc81664f0d8695ea0b12846a9",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "knowledge-management",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772740024983,
+    "displayName": "Markdown Converter",
+    "githubAuthorLogin": "steipete",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/62f73a9b-1aca-4f8e-921d-6102e258c768.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "markdown-converter",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/steipete/markdown-converter",
+    "stats": {
+      "comments": 0,
+      "downloads": 55369,
+      "installs": 8264,
+      "stars": 229,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "knowledge-base-qa",
+        "name": "知识库问答"
+      },
+      {
+        "key": "knowledge-organize",
+        "name": "资料整理"
+      },
+      {
+        "key": "knowledge-doc-qa",
+        "name": "文档问答"
+      }
+    ],
+    "summary": "Convert documents and files to Markdown using markitdown. Use when converting PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls), HTML, CSV, JSON, XML, images (with EXIF/OCR), audio (with transcription), ZIP archives, YouTube URLs, or EPubs to Markdown format for LLM processing or text analysis.",
+    "summary_zh": "{\"answer\":\"使用 markitdown 将文档和文件转换为 Markdown。用于将 PDF、Word (.docx)、PowerPoint (.pptx)、Excel (.xlsx, .xls)、HTML、CSV、JSON、XML、图片（含 EXIF/OCR）、音频（含转录）、ZIP 压缩包、YouTube 链接或 EPub 转换为 Markdown 格式，以进行 LLM 处理或文本分析。\"}",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782318334681,
+    "upstream_owner_login": "steipete",
+    "upstream_url": "https://clawhub.ai/steipete/markdown-converter",
+    "verified": false
+  }
+}

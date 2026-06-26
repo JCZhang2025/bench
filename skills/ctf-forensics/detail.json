@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1775989638248,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "gandli",
+    "handle": "user_257ad2a8",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=bddecfa35f4b1f20a2f49d90b17a8ebf",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/422953_83b0ba1fe574b589df2f881235de19cb.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782270378%3B1813806378&q-key-time=1782270378%3B1813806378&q-header-list=host&q-url-param-list=&q-signature=010457068218a41851d4c45e8b3a07e930b9076c",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "it-ops-security",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1775989638248,
+    "displayName": "ctf forensics",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/2d8152d9-7618-454e-9d87-2487f1b4457f.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "ctf-forensics",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 322,
+      "installs": 21,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "itops-log-analysis",
+        "name": "日志分析"
+      },
+      {
+        "key": "itops-security-scan",
+        "name": "安全扫描"
+      },
+      {
+        "key": "itops-troubleshooting",
+        "name": "故障排查"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "Provides digital forensics and signal analysis techniques for CTF challenges. Use when analyzing disk images, memory dumps, event logs, network captures, cryptocurrency transactions, steganography, PDF analysis, Windows registry, Volatility, PCAP, Docker images, coredumps, side-channel power traces, DTMF audio spectrograms, packet timing analysis, CD audio disc images, or recovering deleted files and credentials.",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317208175,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

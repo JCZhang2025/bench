@@ -1,0 +1,4 @@
+markdown-converter
+chat2duckdb
+sql-master
+generate-report123

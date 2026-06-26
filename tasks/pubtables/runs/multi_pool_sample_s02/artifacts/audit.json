@@ -1,0 +1,14 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 88.6
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2
+    }
+  },
+  "issues": []
+}

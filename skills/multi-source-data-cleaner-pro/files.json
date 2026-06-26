@@ -1,0 +1,66 @@
+{
+  "count": 12,
+  "files": [
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "3ea2ea24407c276441aa674391296a27268885727b321ce2fc85b08e4228e46e",
+      "size": 842
+    },
+    {
+      "path": "README.md",
+      "sha256": "f0ff337bb7dd3d50172978894820c61095294fed278cdd629ba2ce26e94caac8",
+      "size": 1639
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "f6926cd2ea62474c0777884b967e676fc552f4b33beb3d43ff3a77458497d4b9",
+      "size": 9212
+    },
+    {
+      "path": "tests/test_cleaner.py",
+      "sha256": "d049cbda5e1dc835da28664f6f1d6bfb542442114329226b2261345efc1a9814",
+      "size": 1377
+    },
+    {
+      "path": "scripts/dedup.py",
+      "sha256": "8311ed1da3e8cefb707d2673aa6788549706923734d0e67d11d756f6a48975ca",
+      "size": 1208
+    },
+    {
+      "path": "scripts/normalize_types.py",
+      "sha256": "ed7e2c729e3af87de17ef7fc624d76c0e554ee7cff57edc19e12adbcd73f019a",
+      "size": 1925
+    },
+    {
+      "path": "scripts/profile.py",
+      "sha256": "d7610064795bfac4a46b8d22fc4ae2f487bfddb661e1c1caac7d61f3f30a1c89",
+      "size": 1961
+    },
+    {
+      "path": "scripts/run_pipeline.py",
+      "sha256": "6569d740d4307ade15716658baea0011bfdf1ecb7fc2d3f21835119732640af4",
+      "size": 4366
+    },
+    {
+      "path": "knowledge/pii_patterns.md",
+      "sha256": "31746bff99ad8b59e7e390ad6b3e23ec0817b4fab3fa871038f970a3d7436694",
+      "size": 357
+    },
+    {
+      "path": "knowledge/README.md",
+      "sha256": "faa2d6624fb5edef617f32aac28487cc7d3ea5226e1e030bea9389e35711f79a",
+      "size": 588
+    },
+    {
+      "path": "examples/dirty_sample.csv",
+      "sha256": "16e02a62994b4a8dc35a02dbee90786d63a53cd9c992e7520f9ec79785b2e315",
+      "size": 209
+    },
+    {
+      "path": "examples/README.md",
+      "sha256": "f9fdbab992b4084c3c12af7b42761073c04e691ad7df1079aa52f2b7787b1dcb",
+      "size": 460
+    }
+  ],
+  "version": "1.0.0"
+}

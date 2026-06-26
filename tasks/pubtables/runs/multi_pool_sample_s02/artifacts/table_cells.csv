@@ -1,0 +1,32 @@
+row_id,col_id,row_span,col_span,is_header,text
+0,0,2,1,True,Method
+0,1,2,1,True,Dataset
+0,2,1,2,True,Evaluation score (%)
+0,4,2,1,True,Notes
+1,0,1,1,True,Accuracy
+1,1,1,1,True,F1
+2,0,1,1,False,GraphNet
+2,1,1,1,False,PubMed QA
+2,2,1,1,False,91.2
+2,3,1,1,False,88.6
+2,4,1,1,False,best
+3,0,1,1,False,TreeCRF
+3,1,1,1,False,PubMed QA
+3,2,1,1,False,89.5
+3,3,1,1,False,86.9
+3,4,1,1,False,baseline
+4,0,1,1,False,GraphNet
+4,1,1,1,False,ChemTable
+4,2,1,1,False,84.7
+4,3,1,1,False,81.3
+4,4,1,1,False,cross-domain
+5,0,1,1,False,TableFormer
+5,1,1,1,False,ChemTable
+5,2,1,1,False,87.8
+5,3,1,1,False,84.2
+5,4,1,1,False,best
+6,0,1,1,False,Rule Parser
+6,1,1,1,False,ChemTable
+6,2,1,1,False,71.0
+6,3,1,1,False,68.4
+6,4,1,1,False,weak baseline

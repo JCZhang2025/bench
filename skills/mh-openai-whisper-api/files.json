@@ -1,0 +1,21 @@
+{
+  "count": 3,
+  "files": [
+    {
+      "path": "scripts/transcribe.sh",
+      "sha256": "06d255cdd1a44ea3098ca1d9400529c641da76b4e9389007904f190e681d5688",
+      "size": 1479
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "c0ad50049a94a4d75ac182f473f73723ec3a22fc7a53a083c9ef30d5f7eb5123",
+      "size": 1158
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "374850f4cbead8523481f9d0eac3234d985b6ffc8286999dc9866e932d8e4508",
+      "size": 140
+    }
+  ],
+  "version": "1.0.0"
+}

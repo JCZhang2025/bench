@@ -1,0 +1,41 @@
+{
+  "count": 7,
+  "files": [
+    {
+      "path": "README.md",
+      "sha256": "98aa428ac247227b19b23aee4fad9e295b2daa4511fcb4db78e26c07fa411396",
+      "size": 1995
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "07476fe5adc7a5d94b2ba515264e1fd5c7a015a58ddd88a549b81b820e6766c4",
+      "size": 7439
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "49b0b89093b625f602411662b8e411b68c5b8c2130d291096fa22c8668298ddd",
+      "size": 138
+    },
+    {
+      "path": "references/fallbacks.md",
+      "sha256": "388060b64e155de40eca789951b3aec199862132b91e6ec5449874672742b073",
+      "size": 925
+    },
+    {
+      "path": "references/playbooks.md",
+      "sha256": "9d3994e02f4903c882145b2241e932f89424bf7f0f4925b68bf87a6489f7b568",
+      "size": 686
+    },
+    {
+      "path": "references/runbook.md",
+      "sha256": "8a157000c7c2ba0ff4b93cc233f7ada430242e5481ccc045e29231cf4367c375",
+      "size": 1312
+    },
+    {
+      "path": "references/templates.md",
+      "sha256": "4d73cec754449923f5943015f3dc5a82e5a41bd05246e884902485f54e67f606",
+      "size": 1292
+    }
+  ],
+  "version": "1.0.1"
+}

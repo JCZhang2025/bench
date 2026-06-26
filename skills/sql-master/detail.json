@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1775130751853,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "SQLSkills",
+    "handle": "user_64e5b706",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=cdbf4c4c501df61810f5d800a2198f10",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/413693_0572113620fde305e701f123350f168d.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782269489%3B1813805489&q-key-time=1782269489%3B1813805489&q-header-list=host&q-url-param-list=&q-signature=6db157114273e9d84bf99d662e879c2ec56cd466",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1775130751853,
+    "displayName": "SQL Master",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/f7fabcfa-0496-4dc7-9258-df9b7c751850.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "sql-master",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 896,
+      "installs": 135,
+      "stars": 9,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "data-visualization",
+        "name": "数据可视化"
+      },
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "SQL 查询、数据获取智能体。覆盖 SQL 全链路能力：自然语言转生产级 SQL、慢查询诊断与执行计划分析、索引设计与优化、数仓建模、SQL 原理深度科普、查询结果可视化。支持 MySQL / PostgreSQL / Hive / Spark SQL / ClickHouse / BigQuery 多方言。触发场景：(1) 写 SQL / 生成查询，(2) SQL 慢/优化/调优，(3) 执行计划分析 EXPLAIN，(4) 索引设计，(5) 数仓建模 / 分层设计，(6) SQL 原理问题（事务/锁/MVCC/Join算法等），(7) 表结构设计 DDL，(8) SQL 报错诊断，(9) 任何\"帮我写个查询\"、\"这个SQL为什么慢\"、\"怎么建索引\"类请求，(10) 查询结果可视化 / 出图 / 图表 / 数据展示。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317145692,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

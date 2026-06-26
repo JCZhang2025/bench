@@ -1,0 +1,4 @@
+excel-xlsx
+data-analyst-cn
+data-anomaly-detector
+generate-chart

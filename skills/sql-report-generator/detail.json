@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1775131557606,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "SQLSkills",
+    "handle": "user_64e5b706",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=5608bc93725aeccba0120c54567c4d22",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/413691_dd1180c994eaff39da78ff7468a228d7.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782269493%3B1813805493&q-key-time=1782269493%3B1813805493&q-header-list=host&q-url-param-list=&q-signature=0993f25fa010b9bebb744b5871e6e6493e9b39ad",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1775131557606,
+    "displayName": "SQL Report Generator",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/64ea6fd6-ebe7-418c-af4f-2cafff71f2ec.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "sql-report-generator",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 425,
+      "installs": 25,
+      "stars": 3,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "data-visualization",
+        "name": "数据可视化"
+      },
+      {
+        "key": "data-report",
+        "name": "报表生成"
+      },
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "生成生产级SQL查询结果与图表报告，支持表格、矩阵、切片器、多格式导出及统计分析驱动的自动洞察建议。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317126281,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

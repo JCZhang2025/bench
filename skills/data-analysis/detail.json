@@ -1,0 +1,74 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774623714466,
+    "version": "1.0.2"
+  },
+  "owner": {
+    "displayName": "ivangdavila",
+    "handle": "ivangdavila",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=9a22cbc995dc5db19c67fa71a8508c7b",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/390073_8d6e91d5ffc73b1b63600c3927eb8f8e.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782240322%3B1813776322&q-key-time=1782240322%3B1813776322&q-header-list=host&q-url-param-list=&q-signature=b3a80330b358cec6734bd8b0308184cff30fd53a",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772740058539,
+    "displayName": "Data Analysis",
+    "githubAuthorLogin": "ivangdavila",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/c5e5faab-b8e1-489d-a489-8b56ffc52c07.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "data-analysis",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/ivangdavila/data-analysis",
+    "stats": {
+      "comments": 0,
+      "downloads": 69009,
+      "installs": 9814,
+      "stars": 211,
+      "versions": 2
+    },
+    "subCategories": [
+      {
+        "key": "data-visualization",
+        "name": "数据可视化"
+      },
+      {
+        "key": "data-report",
+        "name": "报表生成"
+      },
+      {
+        "key": "data-insight",
+        "name": "数据洞察"
+      }
+    ],
+    "summary": "Data analysis and visualization. Query databases, generate reports, automate spreadsheets, and turn raw data into clear, actionable insights. Use when (1) yo...",
+    "summary_zh": "{\"answer\":\"数据分析与可视化。查询数据库、生成报告、自动化电子表格，将原始数据转化为清晰可行的见解。适用于：(1) 您……\"}",
+    "tags": {
+      "latest": "1.0.2"
+    },
+    "updatedAt": 1782318298704,
+    "upstream_owner_login": "ivangdavila",
+    "upstream_url": "https://clawhub.ai/ivangdavila/data-analysis",
+    "verified": false
+  }
+}

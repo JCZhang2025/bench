@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1775361028977,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "蜀企投管（四川省）企业管理有限公司",
+    "handle": "user_8509461a",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=f672b0428db9c1dee8edcd516194f9d3",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/422334_8b82ee529144c777f34127213fcb01cc.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782269737%3B1813805737&q-key-time=1782269737%3B1813805737&q-header-list=host&q-url-param-list=&q-signature=e13677a18a54bab07bf9654e6aadfcaa3631fd3e",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "it-ops-security",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1775361028977,
+    "displayName": "日志分析器",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/a4e49550-e527-4406-b761-c4f2e607b757.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "log-analyzer-new",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 274,
+      "installs": 9,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "itops-log-analysis",
+        "name": "日志分析"
+      },
+      {
+        "key": "itops-troubleshooting",
+        "name": "故障排查"
+      }
+    ],
+    "summary": "",
+    "summary_zh": "智能日志分析工具。支持 nginx、Apache、应用日志等多种格式，自动提取错误模式、性能指标、访问趋势，生成可视化分析报告。帮助开发者快速定位问题、优化性能。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317209375,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

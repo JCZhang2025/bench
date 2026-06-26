@@ -1,0 +1,31 @@
+{
+  "count": 5,
+  "files": [
+    {
+      "path": "scripts/convert.sh",
+      "sha256": "2da87442701f7090842b652bcd1cedca4352cab92b30c1bfea5a74de9ec63d90",
+      "size": 12471
+    },
+    {
+      "path": "scripts/script.sh",
+      "sha256": "3dfdc7b29fd3654bd53700745c08452ee0f04baeb377a4d55c9ce9a764b7dcfd",
+      "size": 4674
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "ab3926ef31bbf51a389691d3562769b498424037b6eee06082a6303d46db4f47",
+      "size": 1489
+    },
+    {
+      "path": "tips.md",
+      "sha256": "c42cffb8f87218af90cd9a7aec6c25677bf98c1cebf304b47c2f47c01e441495",
+      "size": 698
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "64244b4dd907f415dec42c4695c8f5f854b6a63fa8e88c561970f7c326450de7",
+      "size": 133
+    }
+  ],
+  "version": "2.1.0"
+}

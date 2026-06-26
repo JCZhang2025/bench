@@ -1,0 +1,261 @@
+{
+  "count": 51,
+  "files": [
+    {
+      "path": "DASHBOARD_COMPLETION_REPORT.md",
+      "sha256": "09035f60bd5e79f3a79fea6c351c0b19dd1480594bf542ce221d75033ffa95ed",
+      "size": 6341
+    },
+    {
+      "path": "DASHBOARD_TEMPLATES.md",
+      "sha256": "1c053391c113a55976be891dd6ca9a80fd5bae4c52b1ce2be96133114d01421f",
+      "size": 41664
+    },
+    {
+      "path": "references/chart-guidelines.md",
+      "sha256": "e3ab478468499f42984786b496b9bab0f839744c517d46889f576ff895978759",
+      "size": 8230
+    },
+    {
+      "path": "references/chart-planning.md",
+      "sha256": "6bda91d22a9eb1035afc47de72b02a6623d19be2373945709f4c85145a1bd49b",
+      "size": 4983
+    },
+    {
+      "path": "references/insight-patterns.md",
+      "sha256": "9f8fd75f10796148a15be7cf60d811a366f0f521c25b80ee419058b673bb43e6",
+      "size": 8276
+    },
+    {
+      "path": "references/templates-index.md",
+      "sha256": "e533a5b10f9f00cec3b8b782455c96e81cf7669a0d8eb35f25fb9c3379c2f68f",
+      "size": 6901
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "b478a59bee02e0c939417835c7be7a26f6f97a3e22ac8aa32edfb771a38a3854",
+      "size": 165
+    },
+    {
+      "path": "scripts/ai_insights.py",
+      "sha256": "d61caae5969c1d85ba95e90254f9e8c72cd85dd2e7e1bb4045e54e239e39fe77",
+      "size": 30740
+    },
+    {
+      "path": "scripts/dashboard_templates.py",
+      "sha256": "1655ef3262cd50d120eaf77df770bf0879a614e418455fb6f90db3fb3c312bca",
+      "size": 159633
+    },
+    {
+      "path": "scripts/dashboard_tooltips.py",
+      "sha256": "e2c5670d0145b3e817198d83550151403f7af3357af4c6184faa029c9157859d",
+      "size": 19257
+    },
+    {
+      "path": "scripts/generate_report.py",
+      "sha256": "eee89ef73ddfaa38a2ea15ecf5c82ee863ae4555d95906fb891381f6ccc9d3b7",
+      "size": 13600
+    },
+    {
+      "path": "scripts/generate_templates.py",
+      "sha256": "602fbea6a1f8cb38a51f311f1af7ac7ec67fa0906705965e9b84224cb3066d36",
+      "size": 6014
+    },
+    {
+      "path": "scripts/interactive_components.py",
+      "sha256": "07d5fb003d7dfa9404203ae4c1027a76a896b04394b379d51cdd23c69221fb6d",
+      "size": 18843
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "40dbf1dfc99e9e592ef95fd009a3a8db13656096af19c5f7adcd0269b589be4f",
+      "size": 21045
+    },
+    {
+      "path": "SKILL_BENCHMARK_REPORT.md",
+      "sha256": "7b7094513e72b1bf8e221c68c72ad44e08d9534305382c40d4d770102dd43fe3",
+      "size": 12054
+    },
+    {
+      "path": "templates/ad_roi.md",
+      "sha256": "628e1280647a779f0aefc7a6f83963c32ed7d6e75e622f8e89024bc8a585235e",
+      "size": 3308
+    },
+    {
+      "path": "templates/budget_execution.md",
+      "sha256": "7d86a15eb749fcbd1eabe4ca42262ee77506700d4119dca8086165e4bc99bf4d",
+      "size": 2134
+    },
+    {
+      "path": "templates/category_analysis.md",
+      "sha256": "2c27bd7e0e04a36876be02aa00bbf80c83733488094c7af754d0a2b8a0b63683",
+      "size": 3151
+    },
+    {
+      "path": "templates/city_operations.md",
+      "sha256": "5fb607e22c1236c167be6290c4409e8fb9552116f61655774f11c54b6a588632",
+      "size": 4579
+    },
+    {
+      "path": "templates/content_overview.md",
+      "sha256": "c2ceafca15ac7f20a4cdf4d5e95189115aca2b26ba080e72b11dd3c98b5373b6",
+      "size": 6142
+    },
+    {
+      "path": "templates/content_production.md",
+      "sha256": "080be535ef1c25a7f80cd85cbaeb99beba6ded014daa45d5ea2c245c2730450e",
+      "size": 3540
+    },
+    {
+      "path": "templates/creator_ecosystem.md",
+      "sha256": "dde493564c4b9214cba6b92e9807d94b086ff3685491a59009a34075f4b6d152",
+      "size": 3963
+    },
+    {
+      "path": "templates/dau_mau.md",
+      "sha256": "ffa91ddfe4a95cf86dd9212ebfd04514bc2199c0f02220d62ba739d0cb3c38bc",
+      "size": 4196
+    },
+    {
+      "path": "templates/ecommerce_overview.md",
+      "sha256": "03c17b768c483d7cfe39f3f518b4a993ac4611f6d097ff7f0184941efbd011d1",
+      "size": 5284
+    },
+    {
+      "path": "templates/emergency_command.md",
+      "sha256": "58719b75520164e3b7cdf2e9e11b55f233ab40739b8d3aed5fac5769f0fc004b",
+      "size": 3385
+    },
+    {
+      "path": "templates/energy_consumption.md",
+      "sha256": "031ac7367cb03a1ea1ab17be480cc3352c76bf2f07c884cde3f4a58192ba6ec3",
+      "size": 3131
+    },
+    {
+      "path": "templates/enrollment_funnel.md",
+      "sha256": "b1bc1a827fd5d26984b586313009999d08d62873df31a83a2454742e91cc0b6b",
+      "size": 4451
+    },
+    {
+      "path": "templates/game_monetization.md",
+      "sha256": "5a11e277d64d88e397a2fc0b0c7a3b06ae1de9bc31667cd6d0f2849f38a5e6b1",
+      "size": 3884
+    },
+    {
+      "path": "templates/hospital_operations.md",
+      "sha256": "5493a4c68e9ae4eeea6869bad5bbbf04cb06462b8e5c9548589774de64a0e382",
+      "size": 5422
+    },
+    {
+      "path": "templates/hr_structure.md",
+      "sha256": "fdd8779357aa7d145c79964a12595b9aec6ff74550da938467d705b12c683e60",
+      "size": 3249
+    },
+    {
+      "path": "templates/insurance.md",
+      "sha256": "ea802b31c08059d90710911db39b9d4d0beaaa2a4b29cb2b27cb8ec54fe22630",
+      "size": 4244
+    },
+    {
+      "path": "templates/inventory.md",
+      "sha256": "b6ee9d13b62e1ce22c7fb8aa6a0a6ea21c77b9a59afc920a4b6d030ccaf1ff44",
+      "size": 3266
+    },
+    {
+      "path": "templates/ip_monetization.md",
+      "sha256": "47f5c269c6306f3cbbc952f674a9460eb8ab3091615cf28462c827d853db030a",
+      "size": 4415
+    },
+    {
+      "path": "templates/learning_quality.md",
+      "sha256": "2f2c5d4adafaeee45af50e537d04fbfb41018715db1d6c08141b82f4b8ea8390",
+      "size": 3793
+    },
+    {
+      "path": "templates/marketing_sales.md",
+      "sha256": "934225e0bbc19933a34bbd8ad6bb104a920c3af688ce1c89ad0c17f6ecb62bb5",
+      "size": 4318
+    },
+    {
+      "path": "templates/menu_analysis.md",
+      "sha256": "64dedebd9d185d60576b7a493dc6769e304da415bf7a2e6406de69cff6672137",
+      "size": 3094
+    },
+    {
+      "path": "templates/patient_satisfaction.md",
+      "sha256": "7bbcee655ca7575ed540ef75048686416a4ad8ce5109f82c4390b035e7445214",
+      "size": 3511
+    },
+    {
+      "path": "templates/photovoltaic_monitor.md",
+      "sha256": "dd5b850806c00d28fdebd7615982ba2bc1da77f9c2ff35d1663eacedf32d9626",
+      "size": 4821
+    },
+    {
+      "path": "templates/production_oee.md",
+      "sha256": "d9ba6ce8a00a6db8959e63562b9a8bca4dd7e79793e633d1d0f82466a8cda8c9",
+      "size": 3331
+    },
+    {
+      "path": "templates/profit_overview.md",
+      "sha256": "f5db798db4f6b7a47e91ed4929df7a7e54fd280205c629f70df531ad10b2d4ca",
+      "size": 3981
+    },
+    {
+      "path": "templates/recruitment.md",
+      "sha256": "abed064674719c771b4a14b89f589a6f080fd0c706164afc6dfa676c47a3fef9",
+      "size": 2483
+    },
+    {
+      "path": "templates/restaurant_operations.md",
+      "sha256": "bf388f5a539e3e171a6aad02f3ded390cf7fffaf3186404d96c8aa91c08553b2",
+      "size": 5265
+    },
+    {
+      "path": "templates/retail_aum.md",
+      "sha256": "7699bae80f76070d6b1af3c96964ee3b3008c6e9b655fe5bc3273f0999b69625",
+      "size": 3745
+    },
+    {
+      "path": "templates/risk_control.md",
+      "sha256": "4bed784d74b3173a5f9056a25a20c77a0098eb79ac6f1d284c39d5c187e57103",
+      "size": 2962
+    },
+    {
+      "path": "templates/sales_network.md",
+      "sha256": "939bd5be8d6feaf1846cd095c3041e6b3338f37d3835c09ec4dad0ea028b6705",
+      "size": 4535
+    },
+    {
+      "path": "templates/service_quality.md",
+      "sha256": "0abb5c4d70dc85f3a3796dc2c1983b64619ee9955ea1532e7153906fb5474347",
+      "size": 4643
+    },
+    {
+      "path": "templates/store_performance.md",
+      "sha256": "0773e7ae8972d43b04346dcb2373e5c56e1b31227b30ba8c464157a6d4ce6d3d",
+      "size": 3486
+    },
+    {
+      "path": "templates/supply_chain.md",
+      "sha256": "b8fbd35363096595820f61fd90e9b545c925490c2294e9cc30f97fdab133795f",
+      "size": 3184
+    },
+    {
+      "path": "templates/supply_chain_control.md",
+      "sha256": "c120be267f3b7ae25271665cc5c9bce0e4eab8e251e7cc14c596b0d28f4ceb16",
+      "size": 5149
+    },
+    {
+      "path": "templates/user_growth.md",
+      "sha256": "53dede9905da5af7cae67d3acb17c25bc782c63d6ca145c977ce3c9327a7e99f",
+      "size": 4324
+    },
+    {
+      "path": "templates/user_lifecycle.md",
+      "sha256": "726bdd2b80dd181ff474d71b47b7ba66a90414bcd9dcc34cd508e9da90fc966e",
+      "size": 4045
+    }
+  ],
+  "version": "1.0.0"
+}

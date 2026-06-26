@@ -1,0 +1,26 @@
+{
+  "count": 4,
+  "files": [
+    {
+      "path": "SKILL.md",
+      "sha256": "ee17a852437bfc3f0c19a9df32dc70e0d3e6ae6e86e355032cd67c38e8d4ac41",
+      "size": 12760
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "d23dfffd947324d497e1c272a20aa204d724d9512fa5e47205c0d58d23aa6de0",
+      "size": 130
+    },
+    {
+      "path": "references/data-formats.md",
+      "sha256": "9b0727fcd96167a6c8223b05d9b498deec8be04316c4ec88c45f6869c514529b",
+      "size": 2620
+    },
+    {
+      "path": "scripts/duckdb_analyzer.py",
+      "sha256": "68d497005b7a6ebcbb26a5cfd07b00c6b8796075bf293f9f07a5d6b4cf4134ed",
+      "size": 32875
+    }
+  ],
+  "version": "1.0.0"
+}

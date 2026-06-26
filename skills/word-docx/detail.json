@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774623104337,
+    "version": "1.0.2"
+  },
+  "owner": {
+    "displayName": "ivangdavila",
+    "handle": "ivangdavila",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=a3e0d0133dbea46d6acf6cec504e9e9b",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/390040_62198d4206bb501d0f230619875561e2.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782240241%3B1813776241&q-key-time=1782240241%3B1813776241&q-header-list=host&q-url-param-list=&q-signature=b788bc40b826b496cca1ce4391b975bdf871b8ad",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "office-efficiency",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772740044096,
+    "displayName": "Word / DOCX",
+    "githubAuthorLogin": "ivangdavila",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/e9a58ede-ead5-43fd-9523-d1ba7f1b78cd.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "word-docx",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/ivangdavila/word-docx",
+    "stats": {
+      "comments": 0,
+      "downloads": 153412,
+      "installs": 23940,
+      "stars": 461,
+      "versions": 3
+    },
+    "subCategories": [
+      {
+        "key": "office-doc",
+        "name": "文档处理"
+      }
+    ],
+    "summary": "Create, inspect, and edit Microsoft Word documents and DOCX files with reliable styles, numbering, tracked changes, tables, sections, and compatibility check...",
+    "summary_zh": "创建、检查和编辑 Microsoft Word 文档及 DOCX 文件，支持样式、编号、修订记录、表格、分节符及兼容性检查等功能。",
+    "tags": {
+      "latest": "1.0.2"
+    },
+    "updatedAt": 1782318934739,
+    "upstream_owner_login": "ivangdavila",
+    "upstream_url": "https://clawhub.ai/ivangdavila/word-docx",
+    "verified": false
+  }
+}

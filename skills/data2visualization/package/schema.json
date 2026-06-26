@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "key_points": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "visualization": {
+      "type": "string",
+      "description": "Mermaid 或 HTML 图表"
+    },
+    "conclusion": {
+      "type": "string"
+    }
+  },
+  "required": ["title", "analysis", "visualization"]
+}

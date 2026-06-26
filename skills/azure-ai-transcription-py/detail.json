@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": true,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1774680664122,
+    "version": "0.1.0"
+  },
+  "owner": {
+    "displayName": "thegovind",
+    "handle": "thegovind",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=9b8f546dfd7928912a7d6ac0fd27e14c",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/25/392012_902c26366cc90b2802cc84cfa4b3dfcd.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782242040%3B1813778040&q-key-time=1782242040%3B1813778040&q-header-list=host&q-url-param-list=&q-signature=cb9479f3639127ffbc253b5694d5274361575f4e",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "dev-programming",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1772744853420,
+    "displayName": "Azure Ai Transcription Py",
+    "githubAuthorLogin": "thegovind",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/c0bd7863-2689-46f1-941c-e45be1317e90.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "true"
+    },
+    "last_synced_at": null,
+    "slug": "azure-ai-transcription-py",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/thegovind/azure-ai-transcription-py",
+    "stats": {
+      "comments": 0,
+      "downloads": 2663,
+      "installs": 99,
+      "stars": 1,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "dev-code-gen",
+        "name": "代码生成"
+      },
+      {
+        "key": "dev-script",
+        "name": "脚本工具"
+      }
+    ],
+    "summary": "Azure AI Transcription SDK for Python. Use for real-time and batch speech-to-text transcription with timestamps and diarization.\nTriggers: \"transcription\", \"speech to text\", \"Azure AI Transcription\", \"TranscriptionClient\".",
+    "summary_zh": "Azure AI Transcription SDK for Python，用于实时和批量语音转文字（Speech‑to‑Text），支持时间戳和说话人分离。",
+    "tags": {
+      "latest": "0.1.0"
+    },
+    "updatedAt": 1782317333380,
+    "upstream_owner_login": "thegovind",
+    "upstream_url": "https://clawhub.ai/thegovind/azure-ai-transcription-py",
+    "verified": false
+  }
+}

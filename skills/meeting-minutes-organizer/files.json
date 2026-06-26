@@ -1,0 +1,21 @@
+{
+  "count": 3,
+  "files": [
+    {
+      "path": "_meta.json",
+      "sha256": "fc86540d26fe35ae85724c16fd8f6fc4c456eec9c7ecba58bebd85aa7ba1e683",
+      "size": 144
+    },
+    {
+      "path": "organizer.js",
+      "sha256": "eb58fdd020de49557543b916630f6717524c59006d741e3d13e74bd4ed5ce378",
+      "size": 5016
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "b498d589fbb779a5ec9b6676d0f4295f4639a695bbed3900c67ea48b61be4937",
+      "size": 1955
+    }
+  ],
+  "version": "1.0.0"
+}

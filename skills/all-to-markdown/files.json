@@ -1,0 +1,21 @@
+{
+  "count": 3,
+  "files": [
+    {
+      "path": "config.json",
+      "sha256": "d42f6eb4214fbd06d8ea3817d090fe84e80d5f9ed0f5bf17b65f5d4b6afdf43c",
+      "size": 1671
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "77a39aa736573daee380e6665437b7da45068cec6e8f0692e31ee1ee539d5a5d",
+      "size": 2397
+    },
+    {
+      "path": "scripts/run.sh",
+      "sha256": "349f339d2516c01f7f8df9aad06c7a2a58a067b72a12d1f5948c31d2ef8bbf17",
+      "size": 1433
+    }
+  ],
+  "version": "0.1.0"
+}

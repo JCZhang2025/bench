@@ -1,0 +1,26 @@
+{
+  "count": 4,
+  "files": [
+    {
+      "path": "claw.json",
+      "sha256": "eae3497f18be37b7666b69676a6993d444bb4443ab4d3ddc5d7d8d0271d6ea8d",
+      "size": 580
+    },
+    {
+      "path": "instructions.md",
+      "sha256": "48ad78ca0e24f6fc049cbbfcaf0541ddff3831400869902ee198f67952266785",
+      "size": 1259
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "d3510e41d0af757401043c74255e63b50a8545367298ce34ed778c6efa5e5ba8",
+      "size": 19544
+    },
+    {
+      "path": "_meta.json",
+      "sha256": "5ea32de2239dfbace34cfecbba7454c060a1f4db35b7deba59bd9bc5b3d68d4a",
+      "size": 140
+    }
+  ],
+  "version": "2.1.0"
+}

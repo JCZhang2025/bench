@@ -1,0 +1,70 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Initial release",
+    "createdAt": 1779816939895,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "BOBOY",
+    "handle": "user_e9af5021",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=4e4457e1fcb24f61bec111c3e5aff671",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/27/466562_f96b04a329941ed8d0438b14c50441a1.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782203045%3B1813739045&q-key-time=1782203045%3B1813739045&q-header-list=host&q-url-param-list=&q-signature=41c316202524601c977f4e30ebec9e7d9b3f1d49",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "data-analysis",
+    "claim_state": "unclaimed",
+    "claimable": false,
+    "claimed_user_handle": null,
+    "createdAt": 1779816939895,
+    "displayName": "multi-source-data-cleaner-pro",
+    "githubAuthorLogin": null,
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/f7fabcfa-0496-4dc7-9258-df9b7c751850.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "multi-source-data-cleaner-pro",
+    "source": "community",
+    "sourceUrl": null,
+    "stats": {
+      "comments": 0,
+      "downloads": 146,
+      "installs": 0,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "data-cleaning",
+        "name": "数据清洗"
+      },
+      {
+        "key": "data-user-analysis",
+        "name": "用户分析"
+      }
+    ],
+    "summary": "PII handling policy, one of `keep|mask|drop`. Defaults to `mask`.",
+    "summary_zh": "PII handling policy, one of `keep|mask|drop`. Defaults to `mask`.",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317335137,
+    "upstream_owner_login": null,
+    "upstream_url": null,
+    "verified": false
+  }
+}

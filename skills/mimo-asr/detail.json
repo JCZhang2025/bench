@@ -1,0 +1,66 @@
+{
+  "contentZhAvailable": false,
+  "latestVersion": {
+    "changelog": "Synced by skillhub pipeline",
+    "createdAt": 1779551227045,
+    "version": "1.0.0"
+  },
+  "owner": {
+    "displayName": "xcchenx345",
+    "handle": "xcchenx345",
+    "image": null
+  },
+  "securityReports": {
+    "keen": {
+      "reportUrl": "https://tix.qq.com/search/skill?keyword=517b03ae1f23bd7f6de76e30676233f4",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    },
+    "sanbu": {
+      "reportUrl": "https://static.cloudsec.tencent.com/html-report-v2/2026/05/26/464562_4b625479bf219ee1afa16478459a22bd.html?q-sign-algorithm=sha1&q-ak=AKID8JMG1bzBC1dz96qNhssfFftujT1NCoFi&q-sign-time=1782202047%3B1813738047&q-key-time=1782202047%3B1813738047&q-header-list=host&q-url-param-list=&q-signature=526adffca295b42c5f1ab5327346ac43b67d98c9",
+      "status": "benign",
+      "statusText": "安全，无风险"
+    }
+  },
+  "skill": {
+    "authorVerifiedHandle": null,
+    "category": "design-media",
+    "claim_state": "unclaimed",
+    "claimable": true,
+    "claimed_user_handle": null,
+    "createdAt": 1779551227045,
+    "displayName": "mimo-asr",
+    "githubAuthorLogin": "xcchenx345",
+    "iconUrl": "https://cloudcache.tencent-cloud.com/qcloud/ui/static/other_external_resource/64ea6fd6-ebe7-418c-af4f-2cafff71f2ec.png",
+    "isAuthorVerified": false,
+    "labels": {
+      "requires_api_key": "false"
+    },
+    "last_synced_at": null,
+    "slug": "mimo-asr",
+    "source": "clawhub",
+    "sourceUrl": "https://clawhub.ai/xcchenx345/mimo-asr",
+    "stats": {
+      "comments": 0,
+      "downloads": 303,
+      "installs": 11,
+      "stars": 0,
+      "versions": 1
+    },
+    "subCategories": [
+      {
+        "key": "design-audio",
+        "name": "音频处理"
+      }
+    ],
+    "summary": "小米 MiMo-V2.5-ASR 语音识别技能。通过 Gradio API 调用，将音频转录为文字，支持中英文自动检测和显式指定。无需本地模型，无需 API Key。当用户请求语音转文字、音频转录、提取对话内容时使用。",
+    "summary_zh": "小米 MiMo-V2.5-ASR 语音识别技能，调用 Gradio API 将音频转写为文字，支持中英文自动检测及手动指定，无需本地模型和 API Key，适用于语音转文字、音频转录、提取对话内容。",
+    "tags": {
+      "latest": "1.0.0"
+    },
+    "updatedAt": 1782317412948,
+    "upstream_owner_login": "xcchenx345",
+    "upstream_url": "https://clawhub.ai/xcchenx345/mimo-asr",
+    "verified": false
+  }
+}

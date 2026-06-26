@@ -1,0 +1,46 @@
+{
+  "count": 8,
+  "files": [
+    {
+      "path": "assets/report_template.html",
+      "sha256": "617702237a8f72aa566dee9d412096599065d7f8d4dce106739bbe0afbc209cb",
+      "size": 55301
+    },
+    {
+      "path": "references/data_dict.md",
+      "sha256": "3e1633775e9bf33e9f92c939f87a002c9f5d3bff18e59b64ad67fb0ed4facf92",
+      "size": 2073
+    },
+    {
+      "path": "references/indicator_defs.md",
+      "sha256": "e09482f2cb40ed722cfabf237883ad0e57b0817cebb16c22c12647d1b1a827ce",
+      "size": 1095
+    },
+    {
+      "path": "scripts/aggregate_data.py",
+      "sha256": "8fc9cef6f073cf2e32b7dfc286a18ec59b4f86ad079411632d0c955fd1e198f9",
+      "size": 16833
+    },
+    {
+      "path": "scripts/load_and_clean.py",
+      "sha256": "dcef7a8f596cb684ecbd43ad382ace84845a4e9b41d1b1813926a9f2c6c9245b",
+      "size": 6133
+    },
+    {
+      "path": "scripts/run_pipeline.py",
+      "sha256": "924078f1fff4b354ddc5543a2d983f071182c9faf77d298d2c1c18eb5f21a5d3",
+      "size": 4537
+    },
+    {
+      "path": "scripts/sync_to_html.py",
+      "sha256": "a82ea3481868f34793f0f8765facf12dec9e485240b8cfb1e7ab422e1320cf6c",
+      "size": 2159
+    },
+    {
+      "path": "SKILL.md",
+      "sha256": "98a526d68f2afa5c7b5f39bf002842b6c52aec9c44f1bdcca1f2e861799009e0",
+      "size": 6678
+    }
+  ],
+  "version": "1.0.1"
+}
