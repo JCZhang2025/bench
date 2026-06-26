@@ -14,11 +14,11 @@
     "pool_samples": {},
     "skill_pools": {
       "table_extraction": [
-        "all-to-markdown",
-        "markdown-converter",
         "file-converter",
-        "chat2duckdb",
-        "excel-xlsx"
+        "markdown-converter",
+        "all-to-markdown",
+        "data-analysis",
+        "chat2duckdb"
       ],
       "data_cleaning": [
         "multi-source-data-cleaner-pro",
@@ -43,14 +43,14 @@
       ]
     },
     "skills": [
-      "all-to-markdown",
-      "markdown-converter",
       "file-converter",
-      "chat2duckdb",
-      "excel-xlsx",
-      "multi-source-data-cleaner-pro",
+      "markdown-converter",
+      "all-to-markdown",
       "data-analysis",
+      "chat2duckdb",
+      "multi-source-data-cleaner-pro",
       "data-analyst-cn",
+      "excel-xlsx",
       "code-executor",
       "data-reconciliation-exceptions",
       "data-anomaly-detector",
@@ -98,14 +98,14 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 2,
     "pool_samples": {
-      "table_extraction": "all-to-markdown",
+      "table_extraction": "file-converter",
       "data_cleaning": "multi-source-data-cleaner-pro",
       "validation_audit": "code-executor",
       "summary_reporting": "data2visualization"
     },
     "skill_pools": {
       "table_extraction": [
-        "all-to-markdown"
+        "file-converter"
       ],
       "data_cleaning": [
         "multi-source-data-cleaner-pro"
@@ -118,7 +118,7 @@
       ]
     },
     "skills": [
-      "all-to-markdown",
+      "file-converter",
       "multi-source-data-cleaner-pro",
       "code-executor",
       "data2visualization"
@@ -191,14 +191,14 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 5,
     "pool_samples": {
-      "table_extraction": "excel-xlsx",
+      "table_extraction": "chat2duckdb",
       "data_cleaning": "data-analyst-cn",
       "validation_audit": "data-anomaly-detector",
       "summary_reporting": "generate-chart"
     },
     "skill_pools": {
       "table_extraction": [
-        "excel-xlsx"
+        "chat2duckdb"
       ],
       "data_cleaning": [
         "data-analyst-cn"
@@ -211,7 +211,7 @@
       ]
     },
     "skills": [
-      "excel-xlsx",
+      "chat2duckdb",
       "data-analyst-cn",
       "data-anomaly-detector",
       "generate-chart"
@@ -222,14 +222,14 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 6,
     "pool_samples": {
-      "table_extraction": "excel-xlsx",
+      "table_extraction": "chat2duckdb",
       "data_cleaning": "multi-source-data-cleaner-pro",
       "validation_audit": "data-analysis",
       "summary_reporting": "data2visualization"
     },
     "skill_pools": {
       "table_extraction": [
-        "excel-xlsx"
+        "chat2duckdb"
       ],
       "data_cleaning": [
         "multi-source-data-cleaner-pro"
@@ -242,7 +242,7 @@
       ]
     },
     "skills": [
-      "excel-xlsx",
+      "chat2duckdb",
       "multi-source-data-cleaner-pro",
       "data-analysis",
       "data2visualization"
@@ -253,14 +253,14 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 7,
     "pool_samples": {
-      "table_extraction": "file-converter",
+      "table_extraction": "all-to-markdown",
       "data_cleaning": "data-analysis",
       "validation_audit": "data-analysis",
       "summary_reporting": "typora-visual-architect"
     },
     "skill_pools": {
       "table_extraction": [
-        "file-converter"
+        "all-to-markdown"
       ],
       "data_cleaning": [
         "data-analysis"
@@ -273,7 +273,7 @@
       ]
     },
     "skills": [
-      "file-converter",
+      "all-to-markdown",
       "data-analysis",
       "typora-visual-architect"
     ]
@@ -314,14 +314,14 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 9,
     "pool_samples": {
-      "table_extraction": "chat2duckdb",
+      "table_extraction": "data-analysis",
       "data_cleaning": "chat2duckdb",
       "validation_audit": "data-anomaly-detector",
       "summary_reporting": "data2visualization"
     },
     "skill_pools": {
       "table_extraction": [
-        "chat2duckdb"
+        "data-analysis"
       ],
       "data_cleaning": [
         "chat2duckdb"
@@ -334,6 +334,7 @@
       ]
     },
     "skills": [
+      "data-analysis",
       "chat2duckdb",
       "data-anomaly-detector",
       "data2visualization"
@@ -344,14 +345,14 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 10,
     "pool_samples": {
-      "table_extraction": "excel-xlsx",
+      "table_extraction": "chat2duckdb",
       "data_cleaning": "multi-source-data-cleaner-pro",
       "validation_audit": "data-analysis",
       "summary_reporting": "sql-report-generator"
     },
     "skill_pools": {
       "table_extraction": [
-        "excel-xlsx"
+        "chat2duckdb"
       ],
       "data_cleaning": [
         "multi-source-data-cleaner-pro"
@@ -364,7 +365,7 @@
       ]
     },
     "skills": [
-      "excel-xlsx",
+      "chat2duckdb",
       "multi-source-data-cleaner-pro",
       "data-analysis",
       "sql-report-generator"

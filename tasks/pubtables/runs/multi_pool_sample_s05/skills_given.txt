@@ -1,4 +1,4 @@
-excel-xlsx
+chat2duckdb
 data-analyst-cn
 data-anomaly-detector
 generate-chart

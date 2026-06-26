@@ -10,11 +10,11 @@ All candidates from every skill pool
 ## Skill Pools
 
 ### table_extraction
-- all-to-markdown
-- markdown-converter
 - file-converter
+- markdown-converter
+- all-to-markdown
+- data-analysis
 - chat2duckdb
-- excel-xlsx
 
 ### data_cleaning
 - multi-source-data-cleaner-pro
@@ -43,9 +43,9 @@ All candidates from every skill pool
 
 ## Task
 
-Given a local PubTables-style scientific table in HTML, extract the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.
+Given a local PubTables-style OCR word JSON file, reconstruct the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.
 
-The input table has multi-row headers and span attributes. Treat header cells, row spans, and column spans as part of the table structure. Exclude caption text and footnotes from the normalized metric rows.
+The input JSON follows the PubTables-style word-box setup: it contains a table bounding box and page words with text plus bounding boxes. Some caption and footnote words are present outside the table bounding box. Use word positions to reconstruct rows, columns, header cells, row spans, and column spans. Exclude caption and footnote words from the normalized metric rows.
 
 Required normalized metric fields:
 - method
@@ -58,14 +58,14 @@ For the audit, report the number of normalized metric rows, the best method by F
 
 ## Available Skills
 
-- all-to-markdown
-- markdown-converter
 - file-converter
-- chat2duckdb
-- excel-xlsx
-- multi-source-data-cleaner-pro
+- markdown-converter
+- all-to-markdown
 - data-analysis
+- chat2duckdb
+- multi-source-data-cleaner-pro
 - data-analyst-cn
+- excel-xlsx
 - code-executor
 - data-reconciliation-exceptions
 - data-anomaly-detector
@@ -79,6 +79,178 @@ For the audit, report the number of normalized metric rows, the best method by F
 ## Available Skill Documents
 
 ## Pool: table_extraction
+
+### file-converter
+
+```markdown
+---
+version: "2.1.0"
+name: file-converter
+description: "File format converter. Detect formats, convert between JSON/YAML/XML/CSV/Markdown, minify and prettify code. Commands: detect, json2yaml, yaml2json, csv2md."
+author: BytesAgain
+homepage: https://bytesagain.com
+source: https://github.com/bytesagain/ai-skills
+---
+
+# file-converter
+
+File format utility — pretty-print or minify JSON, encode/decode URLs, hex dump files, detect file types, and show file statistics.
+
+## Commands
+
+### `pretty-json`
+
+```bash
+scripts/script.sh pretty-json
+```
+
+### `minify-json`
+
+```bash
+scripts/script.sh minify-json
+```
+
+### `url-encode`
+
+```bash
+scripts/script.sh url-encode
+```
+
+### `url-decode`
+
+```bash
+scripts/script.sh url-decode
+```
+
+### `hex`
+
+```bash
+scripts/script.sh hex
+```
+
+### `detect`
+
+```bash
+scripts/script.sh detect
+```
+
+### `stats`
+
+```bash
+scripts/script.sh stats
+```
+
+### `help`
+
+```bash
+scripts/script.sh help
+```
+
+### `version`
+
+```bash
+scripts/script.sh version
+```
+
+## Examples
+
+```bash
+scripts/script.sh pretty-json
+scripts/script.sh minify-json
+scripts/script.sh help
+```
+
+## Configuration
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `FILE_CONVERTER_DIR` | No | Data directory (default: `~/.file-converter/`) |
+
+## Data Storage
+
+All data saved in `~/.file-converter/`. Runs entirely on your machine.
+
+## Requirements
+
+- bash 4.0+
+- Standard Unix tools (grep, sed, awk)
+
+---
+
+*Powered by BytesAgain | bytesagain.com | hello@bytesagain.com*
+```
+
+### markdown-converter
+
+```markdown
+---
+name: markdown-converter
+description: Convert documents and files to Markdown using markitdown. Use when converting PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls), HTML, CSV, JSON, XML, images (with EXIF/OCR), audio (with transcription), ZIP archives, YouTube URLs, or EPubs to Markdown format for LLM processing or text analysis.
+---
+
+# Markdown Converter
+
+Convert files to Markdown using `uvx markitdown` — no installation required.
+
+## Basic Usage
+
+```bash
+# Convert to stdout
+uvx markitdown input.pdf
+
+# Save to file
+uvx markitdown input.pdf -o output.md
+uvx markitdown input.docx > output.md
+
+# From stdin
+cat input.pdf | uvx markitdown
+```
+
+## Supported Formats
+
+- **Documents**: PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls)
+- **Web/Data**: HTML, CSV, JSON, XML
+- **Media**: Images (EXIF + OCR), Audio (EXIF + transcription)
+- **Other**: ZIP (iterates contents), YouTube URLs, EPub
+
+## Options
+
+```bash
+-o OUTPUT      # Output file
+-x EXTENSION   # Hint file extension (for stdin)
+-m MIME_TYPE   # Hint MIME type
+-c CHARSET     # Hint charset (e.g., UTF-8)
+-d             # Use Azure Document Intelligence
+-e ENDPOINT    # Document Intelligence endpoint
+--use-plugins  # Enable 3rd-party plugins
+--list-plugins # Show installed plugins
+```
+
+## Examples
+
+```bash
+# Convert Word document
+uvx markitdown report.docx -o report.md
+
+# Convert Excel spreadsheet
+uvx markitdown data.xlsx > data.md
+
+# Convert PowerPoint presentation
+uvx markitdown slides.pptx -o slides.md
+
+# Convert with file type hint (for stdin)
+cat document | uvx markitdown -x .pdf > output.md
+
+# Use Azure Document Intelligence for better PDF extraction
+uvx markitdown scan.pdf -d -e "https://your-resource.cognitiveservices.azure.com/"
+```
+
+## Notes
+
+- Output preserves document structure: headings, tables, lists, links
+- First run caches dependencies; subsequent runs are faster
+- For complex PDFs with poor extraction, use `-d` with Azure Document Intelligence
+```
 
 ### all-to-markdown
 
@@ -185,176 +357,174 @@ OPENAI_API_KEY=sk-xxx scripts/run.sh image.jpg
 - 启用 LLM 功能时，图片内容会发送到 OpenAI API
 ```
 
-### markdown-converter
+### data-analysis
 
 ```markdown
 ---
-name: markdown-converter
-description: Convert documents and files to Markdown using markitdown. Use when converting PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls), HTML, CSV, JSON, XML, images (with EXIF/OCR), audio (with transcription), ZIP archives, YouTube URLs, or EPubs to Markdown format for LLM processing or text analysis.
+name: Data Analysis
+slug: data-analysis
+version: 1.0.2
+homepage: https://clawic.com/skills/data-analysis
+description: "Data analysis and visualization. Query databases, generate reports, automate spreadsheets, and turn raw data into clear, actionable insights. Use when (1) you need to analyze, visualize, or explain data; (2) the user wants reports, dashboards, or metrics turned into a decision; (3) the work involves SQL, Python, spreadsheets, BI tools, or notebooks; (4) you need to compare segments, cohorts, funnels, experiments, or time periods; (5) the user explicitly installs or references the skill for the current task."
+changelog: Added metric contracts, chart guidance, and decision brief templates for more reliable analysis.
+metadata: {"clawdbot":{"emoji":"D","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
 ---
 
-# Markdown Converter
+## When to Use
 
-Convert files to Markdown using `uvx markitdown` — no installation required.
+Use this skill when the user needs to analyze, explain, or visualize data from SQL, spreadsheets, notebooks, dashboards, exports, or ad hoc tables.
 
-## Basic Usage
+Use it for KPI debugging, experiment readouts, funnel or cohort analysis, anomaly reviews, executive reporting, and quality checks on metrics or query logic.
 
-```bash
-# Convert to stdout
-uvx markitdown input.pdf
+Prefer this skill over generic coding or spreadsheet help when the hard part is analytical judgment: metric definition, comparison design, interpretation, or recommendation.
 
-# Save to file
-uvx markitdown input.pdf -o output.md
-uvx markitdown input.docx > output.md
+User asks about: analyzing data, finding patterns, understanding metrics, testing hypotheses, cohort analysis, A/B testing, churn analysis, or statistical significance.
 
-# From stdin
-cat input.pdf | uvx markitdown
-```
+## Core Principle
 
-## Supported Formats
+Analysis without a decision is just arithmetic. Always clarify: **What would change if this analysis shows X vs Y?**
 
-- **Documents**: PDF, Word (.docx), PowerPoint (.pptx), Excel (.xlsx, .xls)
-- **Web/Data**: HTML, CSV, JSON, XML
-- **Media**: Images (EXIF + OCR), Audio (EXIF + transcription)
-- **Other**: ZIP (iterates contents), YouTube URLs, EPub
+## Methodology First
 
-## Options
+Before touching data:
+1. **What decision** is this analysis supporting?
+2. **What would change your mind?** (the real question)
+3. **What data do you actually have** vs what you wish you had?
+4. **What timeframe** is relevant?
 
-```bash
--o OUTPUT      # Output file
--x EXTENSION   # Hint file extension (for stdin)
--m MIME_TYPE   # Hint MIME type
--c CHARSET     # Hint charset (e.g., UTF-8)
--d             # Use Azure Document Intelligence
--e ENDPOINT    # Document Intelligence endpoint
---use-plugins  # Enable 3rd-party plugins
---list-plugins # Show installed plugins
-```
+## Statistical Rigor Checklist
 
-## Examples
+- [ ] Sample size sufficient? (small N = wide confidence intervals)
+- [ ] Comparison groups fair? (same time period, similar conditions)
+- [ ] Multiple comparisons? (20 tests = 1 "significant" by chance)
+- [ ] Effect size meaningful? (statistically significant != practically important)
+- [ ] Uncertainty quantified? ("12-18% lift" not just "15% lift")
 
-```bash
-# Convert Word document
-uvx markitdown report.docx -o report.md
+## Architecture
 
-# Convert Excel spreadsheet
-uvx markitdown data.xlsx > data.md
+This skill does not require local folders, persistent memory, or setup state.
 
-# Convert PowerPoint presentation
-uvx markitdown slides.pptx -o slides.md
+Use the included reference files as lightweight guides:
+- `metric-contracts.md` for KPI definitions and caveats
+- `chart-selection.md` for visual choice and chart anti-patterns
+- `decision-briefs.md` for stakeholder-facing outputs
+- `pitfalls.md` and `techniques.md` for analytical rigor and method choice
 
-# Convert with file type hint (for stdin)
-cat document | uvx markitdown -x .pdf > output.md
+## Quick Reference
 
-# Use Azure Document Intelligence for better PDF extraction
-uvx markitdown scan.pdf -d -e "https://your-resource.cognitiveservices.azure.com/"
-```
+Load only the smallest relevant file to keep context focused.
 
-## Notes
+| Topic | File |
+|-------|------|
+| Metric definition contracts | `metric-contracts.md` |
+| Visual selection and chart anti-patterns | `chart-selection.md` |
+| Decision-ready output formats | `decision-briefs.md` |
+| Failure modes to catch early | `pitfalls.md` |
+| Method selection by question type | `techniques.md` |
 
-- Output preserves document structure: headings, tables, lists, links
-- First run caches dependencies; subsequent runs are faster
-- For complex PDFs with poor extraction, use `-d` with Azure Document Intelligence
-```
+## Core Rules
 
-### file-converter
+### 1. Start from the decision, not the dataset
+- Identify the decision owner, the question that could change a decision, and the deadline before doing analysis.
+- If no decision would change, reframe the request before computing anything.
 
-```markdown
----
-version: "2.1.0"
-name: file-converter
-description: "File format converter. Detect formats, convert between JSON/YAML/XML/CSV/Markdown, minify and prettify code. Commands: detect, json2yaml, yaml2json, csv2md."
-author: BytesAgain
-homepage: https://bytesagain.com
-source: https://github.com/bytesagain/ai-skills
----
+### 2. Lock the metric contract before calculating
+- Define entity, grain, numerator, denominator, time window, timezone, filters, exclusions, and source of truth.
+- If any of those are ambiguous, state the ambiguity explicitly before presenting results.
 
-# file-converter
+### 3. Separate extraction, transformation, and interpretation
+- Keep query logic, cleanup assumptions, and analytical conclusions distinguishable.
+- Never hide business assumptions inside SQL, formulas, or notebook code without naming them in the write-up.
 
-File format utility — pretty-print or minify JSON, encode/decode URLs, hex dump files, detect file types, and show file statistics.
+### 4. Choose visuals to answer a question
+- Select charts based on the analytical question: trend, comparison, distribution, relationship, composition, funnel, or cohort retention.
+- Do not add charts that make the deck look fuller but do not change the decision.
 
-## Commands
+### 5. Brief every result in decision format
+- Every output should include the answer, evidence, confidence, caveats, and recommended next action.
+- If the output is going to a stakeholder, translate the method into business implications instead of leading with technical detail.
 
-### `pretty-json`
+### 6. Stress-test claims before recommending action
+- Segment by obvious confounders, compare the right baseline, quantify uncertainty, and check sensitivity to exclusions or time windows.
+- Strong-looking numbers without robustness checks are not decision-ready.
 
-```bash
-scripts/script.sh pretty-json
-```
+### 7. Escalate when the data cannot support the claim
+- Block or downgrade conclusions when sample size is weak, the source is unreliable, definitions drifted, or confounding is unresolved.
+- It is better to say "unknown yet" than to produce false confidence.
 
-### `minify-json`
+## Common Traps
 
-```bash
-scripts/script.sh minify-json
-```
+- Reusing a KPI name after changing numerator, denominator, or exclusions -> trend comparisons become invalid.
+- Comparing daily, weekly, and monthly grains in one chart -> movement looks real but is mostly aggregation noise.
+- Showing percentages without underlying counts -> leadership overreacts to tiny denominators.
+- Using a pretty chart instead of the right chart -> the output looks polished but hides the actual decision signal.
+- Hunting for interesting cuts after seeing the result -> narrative follows chance instead of evidence.
+- Shipping automated reports without metric owners or caveats -> bad numbers spread faster than they can be corrected.
+- Treating observational patterns as causal proof -> action plans get built on correlation alone.
 
-### `url-encode`
+## Approach Selection
 
-```bash
-scripts/script.sh url-encode
-```
+| Question type | Approach | Key output |
+|---------------|----------|------------|
+| "Is X different from Y?" | Hypothesis test | p-value + effect size + CI |
+| "What predicts Z?" | Regression/correlation | Coefficients + R² + residual check |
+| "How do users behave over time?" | Cohort analysis | Retention curves by cohort |
+| "Are these groups different?" | Segmentation | Profiles + statistical comparison |
+| "What's unusual?" | Anomaly detection | Flagged points + context |
 
-### `url-decode`
+For technique details and when to use each, see `techniques.md`.
 
-```bash
-scripts/script.sh url-decode
-```
+## Output Standards
 
-### `hex`
+1. **Lead with the insight**, not the methodology
+2. **Quantify uncertainty** - ranges, not point estimates
+3. **State limitations** - what this analysis can't tell you
+4. **Recommend next steps** - what would strengthen the conclusion
 
-```bash
-scripts/script.sh hex
-```
+## Red Flags to Escalate
 
-### `detect`
+- User wants to "prove" a predetermined conclusion
+- Sample size too small for reliable inference
+- Data quality issues that invalidate analysis
+- Confounders that can't be controlled for
 
-```bash
-scripts/script.sh detect
-```
+## External Endpoints
 
-### `stats`
+This skill makes no external network requests.
 
-```bash
-scripts/script.sh stats
-```
+| Endpoint | Data Sent | Purpose |
+|----------|-----------|---------|
+| None | None | N/A |
 
-### `help`
+No data is sent externally.
 
-```bash
-scripts/script.sh help
-```
+## Security & Privacy
 
-### `version`
+Data that leaves your machine:
+- Nothing by default.
 
-```bash
-scripts/script.sh version
-```
+Data that stays local:
+- Nothing by default.
 
-## Examples
+This skill does NOT:
+- Access undeclared external endpoints.
+- Store credentials or raw exports in hidden local memory files.
+- Create or depend on local folder systems for persistence.
+- Create automations or background jobs without explicit user confirmation.
+- Rewrite its own instruction source files.
 
-```bash
-scripts/script.sh pretty-json
-scripts/script.sh minify-json
-scripts/script.sh help
-```
+## Related Skills
+Install with `clawhub install <slug>` if user confirms:
+- `sql` - query design and review for reliable data extraction.
+- `csv` - cleanup and normalization for tabular inputs before analysis.
+- `dashboard` - implementation patterns for KPI visualization layers.
+- `report` - structured stakeholder-facing deliverables after analysis.
+- `business-intelligence` - KPI systems and operating cadence beyond one-off analysis.
 
-## Configuration
+## Feedback
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `FILE_CONVERTER_DIR` | No | Data directory (default: `~/.file-converter/`) |
-
-## Data Storage
-
-All data saved in `~/.file-converter/`. Runs entirely on your machine.
-
-## Requirements
-
-- bash 4.0+
-- Standard Unix tools (grep, sed, awk)
-
----
-
-*Powered by BytesAgain | bytesagain.com | hello@bytesagain.com*
+- If useful: `clawhub star data-analysis`
+- Stay updated: `clawhub sync`
 ```
 
 ### chat2duckdb
@@ -732,114 +902,6 @@ SELECT 销售渠道, SUM(售后退款-仅退货金额) AS total_return
 FROM data
 GROUP BY 销售渠道
 ```
-```
-
-### excel-xlsx
-
-```markdown
----
-name: Excel / XLSX
-slug: excel-xlsx
-version: 1.0.2
-homepage: https://clawic.com/skills/excel-xlsx
-description: "Create, inspect, and edit Microsoft Excel workbooks and XLSX files with reliable formulas, dates, types, formatting, recalculation, and template preservation. Use when (1) the task is about Excel, `.xlsx`, `.xlsm`, `.xls`, `.csv`, or `.tsv`; (2) formulas, formatting, workbook structure, or compatibility matter; (3) the file must stay reliable after edits."
-changelog: Tightened formula anchoring, recalculation, and model traceability after a stricter external spreadsheet audit.
-metadata: {"clawdbot":{"emoji":"📗","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
----
-
-## When to Use
-
-Use when the main artifact is a Microsoft Excel workbook or spreadsheet file, especially when formulas, dates, formatting, merged cells, workbook structure, or cross-platform behavior matter.
-
-## Core Rules
-
-### 1. Choose the workflow by job, not by habit
-
-- Use `pandas` for analysis, reshaping, and CSV-like tasks.
-- Use `openpyxl` when formulas, styles, sheets, comments, merged cells, or workbook preservation matter.
-- Treat CSV as plain data exchange, not as an Excel feature-complete format.
-- Reading values, preserving a live workbook, and building a model from scratch are different spreadsheet jobs.
-
-### 2. Dates are serial numbers with legacy quirks
-
-- Excel stores dates as serial numbers, not real date objects.
-- The 1900 date system includes the false leap-day bug, and some workbooks use the 1904 system.
-- Time is fractional day data, so formatting and conversion both matter.
-- Date correctness is not enough if the number format still displays the wrong thing to the user.
-
-### 3. Keep calculations in Excel when the workbook should stay live
-
-- Write formulas into cells instead of hardcoding derived results from Python.
-- Use references to assumption cells instead of magic numbers inside formulas.
-- Cached formula values can be stale, so do not trust them blindly after edits.
-- Check copied formulas for wrong ranges, wrong sheets, and silent off-by-one drift before delivery.
-- Absolute and relative references are part of the logic, so copied formulas can be wrong even when they still "work".
-- Test new formulas on a few representative cells before filling them across a whole block.
-- Verify denominators, named ranges, and precedent cells before shipping formulas that depend on them.
-- A workbook should ship with zero formula errors, not with known `#REF!`, `#DIV/0!`, `#VALUE!`, `#NAME?`, or circular-reference fallout left for the user to fix.
-- For model-style work, document non-obvious hardcodes, assumptions, or source inputs in comments or nearby notes.
-
-### 4. Protect data types before Excel mangles them
-
-- Long identifiers, phone numbers, ZIP codes, and leading-zero values should usually be stored as text.
-- Excel silently truncates numeric precision past 15 digits.
-- Mixed text-number columns need explicit handling on read and on write.
-- Scientific notation, auto-parsed dates, and stripped leading zeros are common corruption, not cosmetic issues.
-
-### 5. Preserve workbook structure before changing content
-
-- Existing templates override generic styling advice.
-- Only the top-left cell of a merged range stores the value.
-- Hidden rows, hidden columns, named ranges, and external references can still affect formulas and outputs.
-- Shared strings, defined names, and sheet-level conventions can matter even when the visible cells look simple.
-- Match styles for newly filled cells instead of quietly introducing a new visual system.
-- If the workbook is a template, preserve sheet order, widths, freezes, filters, print settings, validations, and visual conventions unless the task explicitly changes them.
-- Conditional formatting, filters, print areas, and data validation often carry business meaning even when users only mention the numbers.
-- If there is no existing style guide and the file is a model, keep editable inputs visually distinguishable from formulas, but never override an established template to force a generic house style.
-
-### 6. Recalculate and review before delivery
-
-- Formula strings alone are not enough if the recipient needs current values.
-- `openpyxl` preserves formulas but does not calculate them.
-- Verify no `#REF!`, `#DIV/0!`, `#VALUE!`, `#NAME?`, or circular-reference fallout remains.
-- If layout matters, render or visually review the workbook before calling it finished.
-- Be careful with read modes: opening a workbook for values only and then saving can flatten formulas into static values.
-- If assumptions or hardcoded overrides must stay, make them obvious enough that the next editor can audit the workbook.
-
-### 7. Scale the workflow to the file size
-
-- Large workbooks can fail for boring reasons: memory spikes, padded empty rows, and slow full-sheet reads.
-- Use streaming or chunked reads when the file is big enough that loading everything at once becomes fragile.
-- Large-file workflows also need narrower reads, explicit dtypes, and sheet targeting to avoid accidental damage.
-
-## Common Traps
-
-- Type inference on read can leave numbers as text or convert IDs into damaged numeric values.
-- Column indexing varies across tools, so off-by-one mistakes are common in generated formulas.
-- Newlines in cells need wrapping to display correctly.
-- External references break easily when source files move.
-- Password protection in old Excel workflows is not serious security.
-- `.xlsm` can contain macros, and `.xls` remains a tighter legacy format.
-- Large files may need streaming reads or more careful memory handling.
-- Google Sheets and LibreOffice can reinterpret dates, formulas, or styling differently from Excel.
-- Dynamic array or newer Excel functions like `FILTER`, `XLOOKUP`, `SORT`, or `SEQUENCE` may fail or degrade in older viewers.
-- A workbook can look fine while still carrying stale cached values from a prior recalculation.
-- Saving the wrong workbook view can replace formulas with cached values and quietly destroy a live model.
-- Copying formulas without checking relative references can push one bad range across an entire block.
-- Hidden sheets, named ranges, validations, and merged areas often keep business logic that is invisible in a quick skim.
-- A workbook can appear numerically correct while still failing because filters, conditional formats, print settings, or data validation were stripped.
-- A workbook can be numerically correct and still fail visually because wrapped text, clipped labels, or narrow columns were never reviewed.
-
-## Related Skills
-Install with `clawhub install <slug>` if user confirms:
-- `csv` — Plain-text tabular import and export workflows.
-- `data` — General data handling patterns before spreadsheet output.
-- `data-analysis` — Higher-level analysis that can feed workbook deliverables.
-
-## Feedback
-
-- If useful: `clawhub star excel-xlsx`
-- Stay updated: `clawhub sync`
 ```
 
 ## Pool: data_cleaning
@@ -4617,7 +4679,7 @@ Provide every candidate skill from every pool and let the model choose and combi
 
 Save these artifacts:
 
-- `OUTPUT_CELLS_CSV` -> `artifacts/table_cells.csv`: CSV columns row_id,col_id,row_span,col_span,is_header,text for every non-empty table cell.
+- `OUTPUT_CELLS_CSV` -> `artifacts/table_cells.csv`: CSV columns row_id,col_id,row_span,col_span,is_header,text for every reconstructed non-empty table cell.
 - `OUTPUT_METRICS_CSV` -> `artifacts/metrics.csv`: CSV columns method,dataset,accuracy,f1,notes with one row per metric observation.
 - `OUTPUT_AUDIT_JSON` -> `artifacts/audit.json`: JSON with row_count, best_by_dataset, and issues.
 - `SUMMARY_MD` -> `artifacts/summary.md`: Short Markdown summary grounded in the extracted metrics and audit.

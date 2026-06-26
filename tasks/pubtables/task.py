@@ -6,7 +6,6 @@ import json
 import re
 import sys
 from datetime import datetime
-from html.parser import HTMLParser
 from pathlib import Path
 from typing import Any
 
@@ -16,11 +15,11 @@ from framework.conditions import build_conditions, write_condition_prompts
 TASK_NAME = "pubtables"
 ROOT = Path(__file__).resolve().parent
 
-HTML_NAME = "pubtables_sample.html"
+WORDS_JSON_NAME = "table_words.json"
 
-TASK_PROMPT = """Given a local PubTables-style scientific table in HTML, extract the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.
+TASK_PROMPT = """Given a local PubTables-style OCR word JSON file, reconstruct the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.
 
-The input table has multi-row headers and span attributes. Treat header cells, row spans, and column spans as part of the table structure. Exclude caption text and footnotes from the normalized metric rows.
+The input JSON follows the PubTables-style word-box setup: it contains a table bounding box and page words with text plus bounding boxes. Some caption and footnote words are present outside the table bounding box. Use word positions to reconstruct rows, columns, header cells, row spans, and column spans. Exclude caption and footnote words from the normalized metric rows.
 
 Required normalized metric fields:
 - method
@@ -32,7 +31,8 @@ Required normalized metric fields:
 For the audit, report the number of normalized metric rows, the best method by F1 score for each dataset, and any extraction or validation issues you find."""
 
 AGENT_CONTRACT = """For this PubTables task:
-- parse ORIGINAL_HTML as the only input table source;
+- parse ORIGINAL_WORDS_JSON as the only input source;
+- reconstruct table cells from OCR word text and bounding boxes;
 - write a structural cell inventory to OUTPUT_CELLS_CSV;
 - write normalized numeric metric rows to OUTPUT_METRICS_CSV;
 - write audit metadata JSON to OUTPUT_AUDIT_JSON;
@@ -43,7 +43,7 @@ EXPECTED_ARTIFACTS = [
     {
         "env": "OUTPUT_CELLS_CSV",
         "filename": "table_cells.csv",
-        "description": "CSV columns row_id,col_id,row_span,col_span,is_header,text for every non-empty table cell.",
+        "description": "CSV columns row_id,col_id,row_span,col_span,is_header,text for every reconstructed non-empty table cell.",
     },
     {
         "env": "OUTPUT_METRICS_CSV",
@@ -66,11 +66,11 @@ OUTPUT_PATH_KEYS = ("cells_csv", "metrics_csv", "audit_json", "summary_md")
 
 SKILL_POOLS: dict[str, list[str]] = {
     "table_extraction": [
-        "all-to-markdown",
-        "markdown-converter",
         "file-converter",
+        "markdown-converter",
+        "all-to-markdown",
+        "data-analysis",
         "chat2duckdb",
-        "excel-xlsx",
     ],
     "data_cleaning": [
         "multi-source-data-cleaner-pro",
@@ -113,38 +113,89 @@ RESULT_FIELDNAMES = [
     "issues",
 ]
 
-HTML_FIXTURE = """<!doctype html>
-<html>
-<head><meta charset="utf-8"><title>PubTables local fixture</title></head>
-<body>
-<table id="pubtables-fixture">
-  <caption>Table 2. Model performance on two biomedical table benchmarks.</caption>
-  <thead>
-    <tr>
-      <th rowspan="2">Method</th>
-      <th rowspan="2">Dataset</th>
-      <th colspan="2">Evaluation score (%)</th>
-      <th rowspan="2">Notes</th>
-    </tr>
-    <tr>
-      <th>Accuracy</th>
-      <th>F1</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td>GraphNet</td><td>PubMed QA</td><td>91.2</td><td>88.6</td><td>best</td></tr>
-    <tr><td>TreeCRF</td><td>PubMed QA</td><td>89.5</td><td>86.9</td><td>baseline</td></tr>
-    <tr><td>GraphNet</td><td>ChemTable</td><td>84.7</td><td>81.3</td><td>cross-domain</td></tr>
-    <tr><td>TableFormer</td><td>ChemTable</td><td>87.8</td><td>84.2</td><td>best</td></tr>
-    <tr><td>Rule Parser</td><td>ChemTable</td><td>71.0</td><td>68.4</td><td>weak baseline</td></tr>
-  </tbody>
-  <tfoot>
-    <tr><td colspan="5">Footnote: scores are micro-averaged over table cells.</td></tr>
-  </tfoot>
-</table>
-</body>
-</html>
-"""
+def make_word(word_id: int, text: str, x0: int, y0: int, x1: int, y1: int) -> dict[str, Any]:
+    return {
+        "id": word_id,
+        "text": text,
+        "bbox": [x0, y0, x1, y1],
+        "confidence": 0.99,
+    }
+
+
+def build_words_fixture() -> dict[str, Any]:
+    raw_words = [
+        ("Table", 10, 0, 45, 14),
+        ("2.", 50, 0, 65, 14),
+        ("Model", 72, 0, 115, 14),
+        ("performance", 120, 0, 205, 14),
+        ("on", 210, 0, 228, 14),
+        ("two", 232, 0, 258, 14),
+        ("biomedical", 262, 0, 340, 14),
+        ("benchmarks.", 345, 0, 430, 14),
+        ("Method", 20, 24, 75, 40),
+        ("Dataset", 130, 24, 188, 40),
+        ("Evaluation", 250, 24, 328, 40),
+        ("score", 335, 24, 380, 40),
+        ("(%)", 388, 24, 415, 40),
+        ("Notes", 470, 24, 520, 40),
+        ("Accuracy", 255, 58, 325, 74),
+        ("F1", 365, 58, 385, 74),
+        ("GraphNet", 20, 92, 92, 108),
+        ("PubMed", 130, 92, 190, 108),
+        ("QA", 198, 92, 220, 108),
+        ("91.2", 270, 92, 310, 108),
+        ("88.6", 365, 92, 405, 108),
+        ("best", 470, 92, 505, 108),
+        ("TreeCRF", 20, 124, 82, 140),
+        ("PubMed", 130, 124, 190, 140),
+        ("QA", 198, 124, 220, 140),
+        ("89.5", 270, 124, 310, 140),
+        ("86.9", 365, 124, 405, 140),
+        ("baseline", 470, 124, 535, 140),
+        ("GraphNet", 20, 156, 92, 172),
+        ("ChemTable", 130, 156, 210, 172),
+        ("84.7", 270, 156, 310, 172),
+        ("81.3", 365, 156, 405, 172),
+        ("cross-domain", 470, 156, 565, 172),
+        ("TableFormer", 20, 188, 105, 204),
+        ("ChemTable", 130, 188, 210, 204),
+        ("87.8", 270, 188, 310, 204),
+        ("84.2", 365, 188, 405, 204),
+        ("best", 470, 188, 505, 204),
+        ("Rule", 20, 220, 55, 236),
+        ("Parser", 60, 220, 110, 236),
+        ("ChemTable", 130, 220, 210, 236),
+        ("71.0", 270, 220, 310, 236),
+        ("68.4", 365, 220, 405, 236),
+        ("weak", 470, 220, 510, 236),
+        ("baseline", 515, 220, 580, 236),
+        ("Footnote:", 10, 258, 80, 274),
+        ("scores", 86, 258, 132, 274),
+        ("are", 138, 258, 160, 274),
+        ("micro-averaged", 166, 258, 275, 274),
+        ("over", 282, 258, 315, 274),
+        ("table", 322, 258, 360, 274),
+        ("cells.", 365, 258, 405, 274),
+    ]
+    words = [
+        make_word(index + 1, text, x0, y0, x1, y1)
+        for index, (text, x0, y0, x1, y1) in enumerate(raw_words)
+    ]
+    return {
+        "dataset": "PubTables-1M-style local fixture",
+        "source_format": "OCR word boxes JSON",
+        "table_id": "PMC_LOCAL_TABLE_2",
+        "image_size": {"width": 600, "height": 290},
+        "table_bbox": [10, 20, 585, 242],
+        "columns_hint": [
+            {"name": "method", "x_range": [10, 120]},
+            {"name": "dataset", "x_range": [120, 240]},
+            {"name": "accuracy", "x_range": [240, 345]},
+            {"name": "f1", "x_range": [345, 455]},
+            {"name": "notes", "x_range": [455, 585]},
+        ],
+        "words": words,
+    }
 
 EXPECTED_METRICS = [
     {"method": "GraphNet", "dataset": "PubMed QA", "accuracy": 91.2, "f1": 88.6, "notes": "best"},
@@ -176,8 +227,8 @@ def results_csv() -> Path:
     return results_dir() / "results.csv"
 
 
-def original_html() -> Path:
-    return data_dir() / HTML_NAME
+def original_words_json() -> Path:
+    return data_dir() / WORDS_JSON_NAME
 
 
 def ensure_dirs() -> None:
@@ -190,8 +241,11 @@ def ensure_dirs() -> None:
 
 def ensure_input_files(force: bool = False) -> None:
     ensure_dirs()
-    if force or not original_html().exists():
-        original_html().write_text(HTML_FIXTURE, encoding="utf-8")
+    if force or not original_words_json().exists():
+        original_words_json().write_text(
+            json.dumps(build_words_fixture(), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
 
 
 def init_results_csv(force: bool = False) -> None:
@@ -218,7 +272,7 @@ def runtime_paths(condition: str) -> dict[str, Path]:
         "run_dir": run_dir,
         "artifacts": artifacts,
         "agent_dir": agent_dir,
-        "original_html": original_html(),
+        "original_words_json": original_words_json(),
         "cells_csv": artifacts / "table_cells.csv",
         "metrics_csv": artifacts / "metrics.csv",
         "audit_json": artifacts / "audit.json",
@@ -233,7 +287,7 @@ def runtime_paths(condition: str) -> dict[str, Path]:
 
 def runtime_env(condition: str, paths: dict[str, Path]) -> dict[str, str]:
     return {
-        "ORIGINAL_HTML": str(paths["original_html"]),
+        "ORIGINAL_WORDS_JSON": str(paths["original_words_json"]),
         "OUTPUT_CELLS_CSV": str(paths["cells_csv"]),
         "OUTPUT_METRICS_CSV": str(paths["metrics_csv"]),
         "OUTPUT_AUDIT_JSON": str(paths["audit_json"]),
@@ -241,71 +295,39 @@ def runtime_env(condition: str, paths: dict[str, Path]) -> dict[str, str]:
     }
 
 
-class CellParser(HTMLParser):
-    def __init__(self) -> None:
-        super().__init__()
-        self.in_table = False
-        self.in_row = False
-        self.in_cell = False
-        self.in_tfoot = False
-        self.current_row = -1
-        self.current_col = 0
-        self.current_cell: dict[str, Any] | None = None
-        self.current_text: list[str] = []
-        self.cells: list[dict[str, Any]] = []
-
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        attrs_dict = {name: value or "" for name, value in attrs}
-        if tag == "table":
-            self.in_table = True
-        elif tag == "tfoot" and self.in_table:
-            self.in_tfoot = True
-        elif tag == "tr" and self.in_table:
-            self.in_row = True
-            self.current_row += 1
-            self.current_col = 0
-        elif tag in {"td", "th"} and self.in_table and self.in_row:
-            self.in_cell = True
-            self.current_text = []
-            self.current_cell = {
-                "row_id": self.current_row,
-                "col_id": self.current_col,
-                "row_span": int(attrs_dict.get("rowspan", "1") or "1"),
-                "col_span": int(attrs_dict.get("colspan", "1") or "1"),
-                "is_header": tag == "th",
-                "in_tfoot": self.in_tfoot,
-            }
-
-    def handle_data(self, data: str) -> None:
-        if self.in_cell:
-            self.current_text.append(data)
-
-    def handle_endtag(self, tag: str) -> None:
-        if tag in {"td", "th"} and self.current_cell is not None:
-            text = " ".join(" ".join(self.current_text).split())
-            if text:
-                cell = dict(self.current_cell)
-                cell["text"] = text
-                self.cells.append(cell)
-            self.current_col += self.current_cell["col_span"]
-            self.current_cell = None
-            self.in_cell = False
-        elif tag == "tr":
-            self.in_row = False
-        elif tag == "tfoot":
-            self.in_tfoot = False
-        elif tag == "table":
-            self.in_table = False
-
-
-def expected_cells() -> list[dict[str, Any]]:
-    parser = CellParser()
-    parser.feed(HTML_FIXTURE)
-    return [
-        {key: cell[key] for key in ("row_id", "col_id", "row_span", "col_span", "is_header", "text")}
-        for cell in parser.cells
-        if not cell["in_tfoot"]
-    ]
+EXPECTED_CELLS = [
+    {"row_id": 0, "col_id": 0, "row_span": 2, "col_span": 1, "is_header": True, "text": "Method"},
+    {"row_id": 0, "col_id": 1, "row_span": 2, "col_span": 1, "is_header": True, "text": "Dataset"},
+    {"row_id": 0, "col_id": 2, "row_span": 1, "col_span": 2, "is_header": True, "text": "Evaluation score (%)"},
+    {"row_id": 0, "col_id": 4, "row_span": 2, "col_span": 1, "is_header": True, "text": "Notes"},
+    {"row_id": 1, "col_id": 2, "row_span": 1, "col_span": 1, "is_header": True, "text": "Accuracy"},
+    {"row_id": 1, "col_id": 3, "row_span": 1, "col_span": 1, "is_header": True, "text": "F1"},
+    {"row_id": 2, "col_id": 0, "row_span": 1, "col_span": 1, "is_header": False, "text": "GraphNet"},
+    {"row_id": 2, "col_id": 1, "row_span": 1, "col_span": 1, "is_header": False, "text": "PubMed QA"},
+    {"row_id": 2, "col_id": 2, "row_span": 1, "col_span": 1, "is_header": False, "text": "91.2"},
+    {"row_id": 2, "col_id": 3, "row_span": 1, "col_span": 1, "is_header": False, "text": "88.6"},
+    {"row_id": 2, "col_id": 4, "row_span": 1, "col_span": 1, "is_header": False, "text": "best"},
+    {"row_id": 3, "col_id": 0, "row_span": 1, "col_span": 1, "is_header": False, "text": "TreeCRF"},
+    {"row_id": 3, "col_id": 1, "row_span": 1, "col_span": 1, "is_header": False, "text": "PubMed QA"},
+    {"row_id": 3, "col_id": 2, "row_span": 1, "col_span": 1, "is_header": False, "text": "89.5"},
+    {"row_id": 3, "col_id": 3, "row_span": 1, "col_span": 1, "is_header": False, "text": "86.9"},
+    {"row_id": 3, "col_id": 4, "row_span": 1, "col_span": 1, "is_header": False, "text": "baseline"},
+    {"row_id": 4, "col_id": 0, "row_span": 1, "col_span": 1, "is_header": False, "text": "GraphNet"},
+    {"row_id": 4, "col_id": 1, "row_span": 1, "col_span": 1, "is_header": False, "text": "ChemTable"},
+    {"row_id": 4, "col_id": 2, "row_span": 1, "col_span": 1, "is_header": False, "text": "84.7"},
+    {"row_id": 4, "col_id": 3, "row_span": 1, "col_span": 1, "is_header": False, "text": "81.3"},
+    {"row_id": 4, "col_id": 4, "row_span": 1, "col_span": 1, "is_header": False, "text": "cross-domain"},
+    {"row_id": 5, "col_id": 0, "row_span": 1, "col_span": 1, "is_header": False, "text": "TableFormer"},
+    {"row_id": 5, "col_id": 1, "row_span": 1, "col_span": 1, "is_header": False, "text": "ChemTable"},
+    {"row_id": 5, "col_id": 2, "row_span": 1, "col_span": 1, "is_header": False, "text": "87.8"},
+    {"row_id": 5, "col_id": 3, "row_span": 1, "col_span": 1, "is_header": False, "text": "84.2"},
+    {"row_id": 5, "col_id": 4, "row_span": 1, "col_span": 1, "is_header": False, "text": "best"},
+    {"row_id": 6, "col_id": 0, "row_span": 1, "col_span": 1, "is_header": False, "text": "Rule Parser"},
+    {"row_id": 6, "col_id": 1, "row_span": 1, "col_span": 1, "is_header": False, "text": "ChemTable"},
+    {"row_id": 6, "col_id": 2, "row_span": 1, "col_span": 1, "is_header": False, "text": "71.0"},
+    {"row_id": 6, "col_id": 3, "row_span": 1, "col_span": 1, "is_header": False, "text": "68.4"},
+    {"row_id": 6, "col_id": 4, "row_span": 1, "col_span": 1, "is_header": False, "text": "weak baseline"},
+]
 
 
 def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, Any]]) -> None:
@@ -319,8 +341,7 @@ def write_csv(path: Path, fieldnames: list[str], rows: list[dict[str, Any]]) -> 
 def run_oracle(condition: str) -> None:
     prepare(force=False)
     paths = runtime_paths(condition)
-    cell_rows = expected_cells()
-    write_csv(paths["cells_csv"], ["row_id", "col_id", "row_span", "col_span", "is_header", "text"], cell_rows)
+    write_csv(paths["cells_csv"], ["row_id", "col_id", "row_span", "col_span", "is_header", "text"], EXPECTED_CELLS)
     write_csv(paths["metrics_csv"], ["method", "dataset", "accuracy", "f1", "notes"], EXPECTED_METRICS)
     paths["audit_json"].write_text(
         json.dumps(
@@ -336,7 +357,7 @@ def run_oracle(condition: str) -> None:
     )
     paths["summary_md"].write_text(
         "# PubTables Extraction Summary\n\n"
-        "- Extracted 5 normalized metric rows from the PubTables-style HTML table.\n"
+        "- Extracted 5 normalized metric rows from PubTables-style OCR word boxes.\n"
         "- Best PubMed QA method by F1: GraphNet (88.6).\n"
         "- Best ChemTable method by F1: TableFormer (84.2).\n"
         "- No extraction or validation issues were found.\n",
@@ -573,7 +594,7 @@ def main() -> None:
     if args.command == "prepare":
         prepare(force=args.force)
         print(f"Prepared PubTables task at {ROOT}")
-        print(f"Input HTML: {original_html()}")
+        print(f"Input OCR word JSON: {original_words_json()}")
         print(f"Conditions: {', '.join(CONDITIONS)}")
     elif args.command == "oracle":
         run_oracle(args.condition)

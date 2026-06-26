@@ -1,4 +1,4 @@
-excel-xlsx
+chat2duckdb
 multi-source-data-cleaner-pro
 data-analysis
 sql-report-generator

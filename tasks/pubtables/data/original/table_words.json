@@ -1,0 +1,626 @@
+{
+  "dataset": "PubTables-1M-style local fixture",
+  "source_format": "OCR word boxes JSON",
+  "table_id": "PMC_LOCAL_TABLE_2",
+  "image_size": {
+    "width": 600,
+    "height": 290
+  },
+  "table_bbox": [
+    10,
+    20,
+    585,
+    242
+  ],
+  "columns_hint": [
+    {
+      "name": "method",
+      "x_range": [
+        10,
+        120
+      ]
+    },
+    {
+      "name": "dataset",
+      "x_range": [
+        120,
+        240
+      ]
+    },
+    {
+      "name": "accuracy",
+      "x_range": [
+        240,
+        345
+      ]
+    },
+    {
+      "name": "f1",
+      "x_range": [
+        345,
+        455
+      ]
+    },
+    {
+      "name": "notes",
+      "x_range": [
+        455,
+        585
+      ]
+    }
+  ],
+  "words": [
+    {
+      "id": 1,
+      "text": "Table",
+      "bbox": [
+        10,
+        0,
+        45,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 2,
+      "text": "2.",
+      "bbox": [
+        50,
+        0,
+        65,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 3,
+      "text": "Model",
+      "bbox": [
+        72,
+        0,
+        115,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 4,
+      "text": "performance",
+      "bbox": [
+        120,
+        0,
+        205,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 5,
+      "text": "on",
+      "bbox": [
+        210,
+        0,
+        228,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 6,
+      "text": "two",
+      "bbox": [
+        232,
+        0,
+        258,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 7,
+      "text": "biomedical",
+      "bbox": [
+        262,
+        0,
+        340,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 8,
+      "text": "benchmarks.",
+      "bbox": [
+        345,
+        0,
+        430,
+        14
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 9,
+      "text": "Method",
+      "bbox": [
+        20,
+        24,
+        75,
+        40
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 10,
+      "text": "Dataset",
+      "bbox": [
+        130,
+        24,
+        188,
+        40
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 11,
+      "text": "Evaluation",
+      "bbox": [
+        250,
+        24,
+        328,
+        40
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 12,
+      "text": "score",
+      "bbox": [
+        335,
+        24,
+        380,
+        40
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 13,
+      "text": "(%)",
+      "bbox": [
+        388,
+        24,
+        415,
+        40
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 14,
+      "text": "Notes",
+      "bbox": [
+        470,
+        24,
+        520,
+        40
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 15,
+      "text": "Accuracy",
+      "bbox": [
+        255,
+        58,
+        325,
+        74
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 16,
+      "text": "F1",
+      "bbox": [
+        365,
+        58,
+        385,
+        74
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 17,
+      "text": "GraphNet",
+      "bbox": [
+        20,
+        92,
+        92,
+        108
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 18,
+      "text": "PubMed",
+      "bbox": [
+        130,
+        92,
+        190,
+        108
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 19,
+      "text": "QA",
+      "bbox": [
+        198,
+        92,
+        220,
+        108
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 20,
+      "text": "91.2",
+      "bbox": [
+        270,
+        92,
+        310,
+        108
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 21,
+      "text": "88.6",
+      "bbox": [
+        365,
+        92,
+        405,
+        108
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 22,
+      "text": "best",
+      "bbox": [
+        470,
+        92,
+        505,
+        108
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 23,
+      "text": "TreeCRF",
+      "bbox": [
+        20,
+        124,
+        82,
+        140
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 24,
+      "text": "PubMed",
+      "bbox": [
+        130,
+        124,
+        190,
+        140
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 25,
+      "text": "QA",
+      "bbox": [
+        198,
+        124,
+        220,
+        140
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 26,
+      "text": "89.5",
+      "bbox": [
+        270,
+        124,
+        310,
+        140
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 27,
+      "text": "86.9",
+      "bbox": [
+        365,
+        124,
+        405,
+        140
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 28,
+      "text": "baseline",
+      "bbox": [
+        470,
+        124,
+        535,
+        140
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 29,
+      "text": "GraphNet",
+      "bbox": [
+        20,
+        156,
+        92,
+        172
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 30,
+      "text": "ChemTable",
+      "bbox": [
+        130,
+        156,
+        210,
+        172
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 31,
+      "text": "84.7",
+      "bbox": [
+        270,
+        156,
+        310,
+        172
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 32,
+      "text": "81.3",
+      "bbox": [
+        365,
+        156,
+        405,
+        172
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 33,
+      "text": "cross-domain",
+      "bbox": [
+        470,
+        156,
+        565,
+        172
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 34,
+      "text": "TableFormer",
+      "bbox": [
+        20,
+        188,
+        105,
+        204
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 35,
+      "text": "ChemTable",
+      "bbox": [
+        130,
+        188,
+        210,
+        204
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 36,
+      "text": "87.8",
+      "bbox": [
+        270,
+        188,
+        310,
+        204
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 37,
+      "text": "84.2",
+      "bbox": [
+        365,
+        188,
+        405,
+        204
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 38,
+      "text": "best",
+      "bbox": [
+        470,
+        188,
+        505,
+        204
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 39,
+      "text": "Rule",
+      "bbox": [
+        20,
+        220,
+        55,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 40,
+      "text": "Parser",
+      "bbox": [
+        60,
+        220,
+        110,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 41,
+      "text": "ChemTable",
+      "bbox": [
+        130,
+        220,
+        210,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 42,
+      "text": "71.0",
+      "bbox": [
+        270,
+        220,
+        310,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 43,
+      "text": "68.4",
+      "bbox": [
+        365,
+        220,
+        405,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 44,
+      "text": "weak",
+      "bbox": [
+        470,
+        220,
+        510,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 45,
+      "text": "baseline",
+      "bbox": [
+        515,
+        220,
+        580,
+        236
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 46,
+      "text": "Footnote:",
+      "bbox": [
+        10,
+        258,
+        80,
+        274
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 47,
+      "text": "scores",
+      "bbox": [
+        86,
+        258,
+        132,
+        274
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 48,
+      "text": "are",
+      "bbox": [
+        138,
+        258,
+        160,
+        274
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 49,
+      "text": "micro-averaged",
+      "bbox": [
+        166,
+        258,
+        275,
+        274
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 50,
+      "text": "over",
+      "bbox": [
+        282,
+        258,
+        315,
+        274
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 51,
+      "text": "table",
+      "bbox": [
+        322,
+        258,
+        360,
+        274
+      ],
+      "confidence": 0.99
+    },
+    {
+      "id": 52,
+      "text": "cells.",
+      "bbox": [
+        365,
+        258,
+        405,
+        274
+      ],
+      "confidence": 0.99
+    }
+  ]
+}

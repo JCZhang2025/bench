@@ -10,7 +10,7 @@ One sampled skill from each pool, seed 7
 ## Skill Pools
 
 ### table_extraction
-- file-converter
+- all-to-markdown
 
 ### data_cleaning
 - data-analysis
@@ -23,16 +23,16 @@ One sampled skill from each pool, seed 7
 
 ## Pool Samples
 
-- table_extraction: file-converter
+- table_extraction: all-to-markdown
 - data_cleaning: data-analysis
 - validation_audit: data-analysis
 - summary_reporting: typora-visual-architect
 
 ## Task
 
-Given a local PubTables-style scientific table in HTML, extract the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.
+Given a local PubTables-style OCR word JSON file, reconstruct the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.
 
-The input table has multi-row headers and span attributes. Treat header cells, row spans, and column spans as part of the table structure. Exclude caption text and footnotes from the normalized metric rows.
+The input JSON follows the PubTables-style word-box setup: it contains a table bounding box and page words with text plus bounding boxes. Some caption and footnote words are present outside the table bounding box. Use word positions to reconstruct rows, columns, header cells, row spans, and column spans. Exclude caption and footnote words from the normalized metric rows.
 
 Required normalized metric fields:
 - method
@@ -45,7 +45,7 @@ For the audit, report the number of normalized metric rows, the best method by F
 
 ## Available Skills
 
-- file-converter
+- all-to-markdown
 - data-analysis
 - typora-visual-architect
 
@@ -53,104 +53,109 @@ For the audit, report the number of normalized metric rows, the best method by F
 
 ## Pool: table_extraction
 
-### file-converter
+### all-to-markdown
 
 ```markdown
 ---
-version: "2.1.0"
-name: file-converter
-description: "File format converter. Detect formats, convert between JSON/YAML/XML/CSV/Markdown, minify and prettify code. Commands: detect, json2yaml, yaml2json, csv2md."
-author: BytesAgain
-homepage: https://bytesagain.com
-source: https://github.com/bytesagain/ai-skills
+name: all-to-markdown
+version: 0.1.0
+description: 将任意文件（PDF、Word、Excel、PPT、图片、音频、网页等）转换为 Markdown
+author: Ping Si <sipingme@gmail.com>
+tags: [markdown, convert, pdf, docx, pptx, xlsx, html, ocr, youtube]
+requiredEnvVars: []
 ---
 
-# file-converter
+# All to Markdown
 
-File format utility — pretty-print or minify JSON, encode/decode URLs, hex dump files, detect file types, and show file statistics.
+基于 [Microsoft MarkItDown](https://github.com/microsoft/markitdown)，将任意格式的文件或 URL 转换为 Markdown，便于 LLM 分析和处理。
 
-## Commands
+## 支持格式
 
-### `pretty-json`
+| 类型 | 格式 |
+|------|------|
+| 文档 | PDF、DOCX、PPTX、XLSX、XLS、EPUB、MSG |
+| 数据 | CSV、JSON、XML |
+| 图片 | JPG、PNG 等（含 EXIF 元数据，可选 OCR）|
+| 音频 | WAV、MP3（含语音转录，需 OpenAI Key）|
+| 网页 | HTML、YouTube URL（含字幕提取）|
+| 压缩 | ZIP（逐文件转换）|
 
-```bash
-scripts/script.sh pretty-json
-```
+## 前置要求
 
-### `minify-json`
-
-```bash
-scripts/script.sh minify-json
-```
-
-### `url-encode`
-
-```bash
-scripts/script.sh url-encode
-```
-
-### `url-decode`
+安装 markitdown：
 
 ```bash
-scripts/script.sh url-decode
+pip install 'markitdown[all]'
 ```
 
-### `hex`
+## 给 AI 的使用说明
+
+当用户需要将文件或 URL 转换为 Markdown 时，使用以下命令：
 
 ```bash
-scripts/script.sh hex
+scripts/run.sh <文件路径或URL>
 ```
 
-### `detect`
+可选标志：
+- `-o <输出文件>` — 保存到文件
+- `--use-plugins` — 启用插件（如 markitdown-ocr）
+
+**重要原则**：
+- 转换结果直接输出到 stdout，可供 AI 直接读取分析
+- 文件路径使用用户提供的实际路径，不要假设
+- 转换大型文件时提前告知用户可能需要较长时间
+
+## 使用示例
+
+### 示例 1：转换 PDF
+
+> 用户：帮我把这个 PDF 转成 Markdown，以便我分析内容
+
+AI 执行：
+```bash
+scripts/run.sh /path/to/document.pdf
+```
+
+### 示例 2：转换并保存
+
+> 用户：把这个 Excel 转成 Markdown 文件保存
+
+AI 执行：
+```bash
+scripts/run.sh /path/to/data.xlsx -o output.md
+```
+
+### 示例 3：转换网页
+
+> 用户：把这篇文章转成 Markdown
+
+AI 执行：
+```bash
+scripts/run.sh https://example.com/article.html
+```
+
+### 示例 4：提取 YouTube 字幕
+
+> 用户：把这个 YouTube 视频的内容提取出来
+
+AI 执行：
+```bash
+scripts/run.sh https://www.youtube.com/watch?v=xxx
+```
+
+## 可选 AI 增强功能
+
+设置 `OPENAI_API_KEY` 后，markitdown 可对图片生成 AI 描述：
 
 ```bash
-scripts/script.sh detect
+OPENAI_API_KEY=sk-xxx scripts/run.sh image.jpg
 ```
 
-### `stats`
+## 安全说明
 
-```bash
-scripts/script.sh stats
-```
-
-### `help`
-
-```bash
-scripts/script.sh help
-```
-
-### `version`
-
-```bash
-scripts/script.sh version
-```
-
-## Examples
-
-```bash
-scripts/script.sh pretty-json
-scripts/script.sh minify-json
-scripts/script.sh help
-```
-
-## Configuration
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `FILE_CONVERTER_DIR` | No | Data directory (default: `~/.file-converter/`) |
-
-## Data Storage
-
-All data saved in `~/.file-converter/`. Runs entirely on your machine.
-
-## Requirements
-
-- bash 4.0+
-- Standard Unix tools (grep, sed, awk)
-
----
-
-*Powered by BytesAgain | bytesagain.com | hello@bytesagain.com*
+- 仅在本地执行文件转换，不发送文件内容到远程服务
+- 转换 URL 时会访问对应网络地址
+- 启用 LLM 功能时，图片内容会发送到 OpenAI API
 ```
 
 ## Pool: data_cleaning
@@ -645,7 +650,7 @@ Provide exactly one deterministic random skill from each pool. Compare repeated 
 
 Save these artifacts:
 
-- `OUTPUT_CELLS_CSV` -> `artifacts/table_cells.csv`: CSV columns row_id,col_id,row_span,col_span,is_header,text for every non-empty table cell.
+- `OUTPUT_CELLS_CSV` -> `artifacts/table_cells.csv`: CSV columns row_id,col_id,row_span,col_span,is_header,text for every reconstructed non-empty table cell.
 - `OUTPUT_METRICS_CSV` -> `artifacts/metrics.csv`: CSV columns method,dataset,accuracy,f1,notes with one row per metric observation.
 - `OUTPUT_AUDIT_JSON` -> `artifacts/audit.json`: JSON with row_count, best_by_dataset, and issues.
 - `SUMMARY_MD` -> `artifacts/summary.md`: Short Markdown summary grounded in the extracted metrics and audit.

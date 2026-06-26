@@ -1,11 +1,11 @@
-all-to-markdown
-markdown-converter
 file-converter
-chat2duckdb
-excel-xlsx
-multi-source-data-cleaner-pro
+markdown-converter
+all-to-markdown
 data-analysis
+chat2duckdb
+multi-source-data-cleaner-pro
 data-analyst-cn
+excel-xlsx
 code-executor
 data-reconciliation-exceptions
 data-anomaly-detector

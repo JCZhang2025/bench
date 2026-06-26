@@ -1,3 +1,4 @@
+data-analysis
 chat2duckdb
 data-anomaly-detector
 data2visualization

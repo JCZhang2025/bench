@@ -1,2 +1,2 @@
 timestamp,condition,success,cells_exists,metrics_exists,audit_exists,summary_exists,metrics_correct,structure_correct,audit_correct,summary_grounded,issues
-2026-06-26T23:15:02,multi_pool_sample_s02,True,True,True,True,True,True,True,True,True,
+2026-06-26T23:50:04,multi_pool_sample_s02,True,True,True,True,True,True,True,True,True,
