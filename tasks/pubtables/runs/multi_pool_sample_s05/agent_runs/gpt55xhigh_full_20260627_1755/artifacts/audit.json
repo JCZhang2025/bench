@@ -1,0 +1,22 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed": {
+      "method": "GraphNet",
+      "f1": 88.6,
+      "accuracy": 91.2,
+      "notes": "QA"
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2,
+      "accuracy": 87.8,
+      "notes": ""
+    }
+  },
+  "issues": [
+    "Row 8 has missing or non-numeric accuracy: 'over table'.",
+    "Row 8 has missing or non-numeric F1: 'cells.'.",
+    "Dropped row without numeric metrics: method='Footnote:', dataset='are'."
+  ]
+}

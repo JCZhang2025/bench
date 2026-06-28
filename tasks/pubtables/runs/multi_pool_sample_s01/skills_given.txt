@@ -1,4 +1,3 @@
-markdown-converter
-chat2duckdb
-code-executor
-data2visualization
+bbox-row-column-parser
+sql-master
+grounded-metric-summary

@@ -1,0 +1,66 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {},
+  "issues": [
+    {
+      "type": "non_numeric_metric",
+      "row": 0,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 0,
+      "field": "f1",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 1,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 1,
+      "field": "f1",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 2,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 2,
+      "field": "f1",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 3,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 3,
+      "field": "f1",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 4,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "type": "non_numeric_metric",
+      "row": 4,
+      "field": "f1",
+      "value": ""
+    }
+  ]
+}

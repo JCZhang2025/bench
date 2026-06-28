@@ -1,0 +1,28 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {
+    "UNKNOWN": {
+      "method": "",
+      "f1": "1",
+      "accuracy": "Accuracy"
+    },
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": "88.6",
+      "accuracy": "91.2"
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": "84.2",
+      "accuracy": "87.8"
+    }
+  },
+  "issues": [
+    "Excluded 15 word(s) outside the table bounding box as caption or footnote text.",
+    "Missing inferred column for accuracy; used positional fallback where possible.",
+    "Missing inferred column for f1; used positional fallback where possible.",
+    "Row 1: missing dataset.",
+    "Row 1: missing method.",
+    "Row 1: missing or non-numeric accuracy value."
+  ]
+}

@@ -1,0 +1,14 @@
+row_id,col_id,row_span,col_span,is_header,text
+0,0,1,1,True,Rule
+1,0,1,1,True,Method
+1,1,1,1,True,TreeCRF
+2,0,1,1,False,GraphNet
+2,1,1,1,False,GraphNet
+3,0,1,1,False,TableFormer
+4,0,1,1,False,Parser
+5,0,1,1,False,Dataset
+5,1,1,1,False,PubMed
+5,2,1,1,False,PubMed
+6,0,1,1,False,ChemTable
+6,1,1,1,False,ChemTable
+6,2,1,1,False,ChemTable

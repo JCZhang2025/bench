@@ -1,0 +1,4 @@
+header-span-detector
+chat2duckdb
+code-executor
+typora-visual-architect

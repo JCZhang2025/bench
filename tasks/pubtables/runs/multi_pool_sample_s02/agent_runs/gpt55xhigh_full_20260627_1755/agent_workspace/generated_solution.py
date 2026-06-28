@@ -1,0 +1,769 @@
+#!/usr/bin/env python3
+"""
+Reconstruct a PubTables-style OCR word-box table, normalize metric rows,
+audit extracted values, and write required artifacts.
+
+Inputs/outputs are read from environment variables:
+  ORIGINAL_WORDS_JSON
+  OUTPUT_CELLS_CSV
+  OUTPUT_METRICS_CSV
+  OUTPUT_AUDIT_JSON
+  SUMMARY_MD
+"""
+
+from __future__ import annotations
+
+import csv
+import json
+import math
+import os
+import re
+import statistics
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
+
+
+REQUIRED_METRIC_FIELDS = ["method", "dataset", "accuracy", "f1", "notes"]
+
+
+@dataclass
+class Word:
+    text: str
+    x0: float
+    y0: float
+    x1: float
+    y1: float
+
+    @property
+    def cx(self) -> float:
+        return (self.x0 + self.x1) / 2.0
+
+    @property
+    def cy(self) -> float:
+        return (self.y0 + self.y1) / 2.0
+
+    @property
+    def w(self) -> float:
+        return max(0.0, self.x1 - self.x0)
+
+    @property
+    def h(self) -> float:
+        return max(0.0, self.y1 - self.y0)
+
+
+@dataclass
+class Cell:
+    row_id: int
+    col_id: int
+    row_span: int
+    col_span: int
+    is_header: bool
+    text: str
+
+
+def as_float_list(value: Any) -> Optional[List[float]]:
+    if not isinstance(value, (list, tuple)) or len(value) < 4:
+        return None
+    try:
+        return [float(value[0]), float(value[1]), float(value[2]), float(value[3])]
+    except (TypeError, ValueError):
+        return None
+
+
+def normalize_bbox(raw: Sequence[float]) -> Tuple[float, float, float, float]:
+    vals = [float(v) for v in raw[:4]]
+    x0, y0, x1, y1 = vals
+    if x1 < x0:
+        x0, x1 = x1, x0
+    if y1 < y0:
+        y0, y1 = y1, y0
+    return x0, y0, x1, y1
+
+
+def find_bbox(obj: Any) -> Optional[Tuple[float, float, float, float]]:
+    if isinstance(obj, dict):
+        for key in ("bbox", "box", "bounds", "bounding_box", "table_bbox", "table_bounds"):
+            vals = as_float_list(obj.get(key))
+            if vals:
+                return normalize_bbox(vals)
+
+        coordinate_keys = [
+            ("x0", "y0", "x1", "y1"),
+            ("left", "top", "right", "bottom"),
+            ("xmin", "ymin", "xmax", "ymax"),
+        ]
+        for keys in coordinate_keys:
+            if all(k in obj for k in keys):
+                try:
+                    return normalize_bbox([obj[k] for k in keys])
+                except (TypeError, ValueError):
+                    pass
+
+        if all(k in obj for k in ("x", "y", "width", "height")):
+            try:
+                x = float(obj["x"])
+                y = float(obj["y"])
+                return normalize_bbox([x, y, x + float(obj["width"]), y + float(obj["height"])])
+            except (TypeError, ValueError):
+                pass
+
+    return None
+
+
+def extract_words_from_obj(obj: Any, out: List[Word]) -> None:
+    if isinstance(obj, dict):
+        text = obj.get("text")
+        bbox = find_bbox(obj)
+        if isinstance(text, (str, int, float)) and bbox:
+            s = str(text).strip()
+            if s:
+                out.append(Word(s, *bbox))
+
+        for value in obj.values():
+            if isinstance(value, (dict, list)):
+                extract_words_from_obj(value, out)
+
+    elif isinstance(obj, list):
+        for item in obj:
+            extract_words_from_obj(item, out)
+
+
+def collect_candidate_table_bboxes(obj: Any) -> List[Tuple[float, float, float, float]]:
+    candidates: List[Tuple[float, float, float, float]] = []
+
+    def walk(value: Any, key_hint: str = "") -> None:
+        if isinstance(value, dict):
+            bbox = find_bbox(value)
+            lower_keys = " ".join(str(k).lower() for k in value.keys())
+            hint = key_hint.lower() + " " + lower_keys
+            has_word_text = isinstance(value.get("text"), (str, int, float))
+            looks_table = (
+                "table" in hint
+                or "tables" in hint
+                or value.get("category") == "table"
+                or value.get("type") == "table"
+                or value.get("label") == "table"
+            )
+            if bbox and looks_table and not has_word_text:
+                candidates.append(bbox)
+
+            for k, v in value.items():
+                walk(v, str(k))
+
+        elif isinstance(value, list):
+            for item in value:
+                walk(item, key_hint)
+
+    walk(obj)
+    return candidates
+
+
+def choose_table_bbox(data: Any, words: List[Word]) -> Tuple[Tuple[float, float, float, float], List[str]]:
+    issues: List[str] = []
+    candidates = collect_candidate_table_bboxes(data)
+
+    if candidates:
+        def area(box: Tuple[float, float, float, float]) -> float:
+            return max(0.0, box[2] - box[0]) * max(0.0, box[3] - box[1])
+
+        selected = max(candidates, key=area)
+        return selected, issues
+
+    if not words:
+        raise ValueError("No OCR words with bounding boxes found in input JSON.")
+
+    xs0 = [w.x0 for w in words]
+    ys0 = [w.y0 for w in words]
+    xs1 = [w.x1 for w in words]
+    ys1 = [w.y1 for w in words]
+    inferred = (min(xs0), min(ys0), max(xs1), max(ys1))
+    issues.append("ambiguous_structure: no explicit table bounding box found; used all OCR words extent")
+    return inferred, issues
+
+
+def inside_bbox(word: Word, bbox: Tuple[float, float, float, float], margin: float = 0.5) -> bool:
+    x0, y0, x1, y1 = bbox
+    return (x0 - margin) <= word.cx <= (x1 + margin) and (y0 - margin) <= word.cy <= (y1 + margin)
+
+
+def median(values: Sequence[float], default: float) -> float:
+    vals = [v for v in values if v > 0]
+    return statistics.median(vals) if vals else default
+
+
+def group_words_into_rows(words: List[Word]) -> List[List[Word]]:
+    if not words:
+        return []
+
+    h_med = median([w.h for w in words], 10.0)
+    tolerance = max(3.0, h_med * 0.65)
+
+    sorted_words = sorted(words, key=lambda w: (w.cy, w.x0))
+    row_centers: List[float] = []
+    rows: List[List[Word]] = []
+
+    for word in sorted_words:
+        best_idx = None
+        best_dist = float("inf")
+        for idx, center in enumerate(row_centers):
+            dist = abs(word.cy - center)
+            if dist < best_dist:
+                best_idx = idx
+                best_dist = dist
+
+        if best_idx is not None and best_dist <= tolerance:
+            rows[best_idx].append(word)
+            row_centers[best_idx] = statistics.mean(w.cy for w in rows[best_idx])
+        else:
+            rows.append([word])
+            row_centers.append(word.cy)
+
+    paired = sorted(zip(row_centers, rows), key=lambda pair: pair[0])
+    return [sorted(row, key=lambda w: w.x0) for _, row in paired]
+
+
+def infer_column_edges(words: List[Word], table_bbox: Tuple[float, float, float, float]) -> List[float]:
+    if not words:
+        return [table_bbox[0], table_bbox[2]]
+
+    rows = group_words_into_rows(words)
+    h_med = median([w.h for w in words], 10.0)
+    same_cell_gap = max(4.0, h_med * 0.9)
+
+    gaps: List[float] = []
+    for row in rows:
+        if len(row) < 2:
+            continue
+        row = sorted(row, key=lambda w: w.x0)
+        for left, right in zip(row, row[1:]):
+            gap = right.x0 - left.x1
+            if gap > same_cell_gap:
+                gaps.append(gap)
+
+    if gaps:
+        gap_threshold = max(same_cell_gap, statistics.median(gaps) * 0.55)
+    else:
+        widths = [w.w for w in words if w.w > 0]
+        gap_threshold = max(same_cell_gap, median(widths, 20.0) * 1.25)
+
+    separators: List[float] = []
+    for row in rows:
+        if len(row) < 2:
+            continue
+        row = sorted(row, key=lambda w: w.x0)
+        for left, right in zip(row, row[1:]):
+            gap = right.x0 - left.x1
+            if gap >= gap_threshold:
+                separators.append((left.x1 + right.x0) / 2.0)
+
+    if not separators:
+        return [table_bbox[0], table_bbox[2]]
+
+    separators.sort()
+    merge_tol = max(5.0, h_med)
+    clusters: List[List[float]] = []
+    for sep in separators:
+        if not clusters or abs(sep - statistics.mean(clusters[-1])) > merge_tol:
+            clusters.append([sep])
+        else:
+            clusters[-1].append(sep)
+
+    merged_seps = [statistics.mean(cluster) for cluster in clusters]
+    x0, _, x1, _ = table_bbox
+    edges = [x0] + [s for s in merged_seps if x0 < s < x1] + [x1]
+
+    cleaned = [edges[0]]
+    min_width = max(8.0, h_med)
+    for edge in edges[1:]:
+        if edge - cleaned[-1] >= min_width:
+            cleaned.append(edge)
+    if cleaned[-1] != x1:
+        cleaned[-1] = x1
+
+    return cleaned if len(cleaned) >= 2 else [x0, x1]
+
+
+def assign_col(word: Word, edges: Sequence[float]) -> int:
+    for idx in range(len(edges) - 1):
+        if edges[idx] <= word.cx <= edges[idx + 1]:
+            return idx
+    if word.cx < edges[0]:
+        return 0
+    return max(0, len(edges) - 2)
+
+
+def join_tokens(words: List[Word]) -> str:
+    if not words:
+        return ""
+
+    words = sorted(words, key=lambda w: w.x0)
+    pieces: List[str] = []
+    prev: Optional[Word] = None
+
+    no_space_before = set(".,;:%)]}")
+    no_space_after = set("([{/")
+
+    for word in words:
+        token = word.text.strip()
+        if not token:
+            continue
+        if not pieces:
+            pieces.append(token)
+        else:
+            gap = word.x0 - (prev.x1 if prev else word.x0)
+            if token in no_space_before or pieces[-1][-1:] in no_space_after:
+                pieces.append(token)
+            elif gap <= max(1.5, median([w.h for w in words], 10.0) * 0.12):
+                pieces.append(token)
+            else:
+                pieces.append(" " + token)
+        prev = word
+
+    return "".join(pieces).strip()
+
+
+def merge_row_cells(rows: List[List[Word]], edges: Sequence[float]) -> List[List[str]]:
+    grid: List[List[str]] = []
+    n_cols = max(1, len(edges) - 1)
+
+    for row in rows:
+        by_col: List[List[Word]] = [[] for _ in range(n_cols)]
+        for word in row:
+            by_col[assign_col(word, edges)].append(word)
+
+        grid.append([join_tokens(col_words) for col_words in by_col])
+
+    return grid
+
+
+def detect_header_row_count(grid: List[List[str]]) -> int:
+    if not grid:
+        return 0
+
+    metric_terms = {"accuracy", "acc", "f1", "f1-score", "score", "dataset", "method", "model", "notes", "note"}
+    first_numeric_row = None
+
+    for idx, row in enumerate(grid):
+        non_empty = [c for c in row if c.strip()]
+        numeric_count = sum(1 for c in non_empty if parse_metric_number(c) is not None)
+        lower_tokens = set()
+        for cell in non_empty:
+            lower_tokens.update(re.findall(r"[a-zA-Z0-9\-]+", cell.lower()))
+
+        has_header_terms = bool(metric_terms & lower_tokens)
+        if numeric_count >= 1 and idx > 0:
+            first_numeric_row = idx
+            break
+        if idx == 0 and has_header_terms:
+            continue
+
+    if first_numeric_row is not None:
+        return max(1, first_numeric_row)
+
+    first = " ".join(grid[0]).lower()
+    if any(term in first for term in metric_terms):
+        return 1
+
+    return 1
+
+
+def normalize_header_text(text: str) -> str:
+    cleaned = re.sub(r"[^a-zA-Z0-9]+", " ", text).strip().lower()
+    aliases = {
+        "method": "method",
+        "model": "method",
+        "approach": "method",
+        "system": "method",
+        "dataset": "dataset",
+        "data set": "dataset",
+        "benchmark": "dataset",
+        "accuracy": "accuracy",
+        "acc": "accuracy",
+        "f1": "f1",
+        "f1 score": "f1",
+        "f1score": "f1",
+        "notes": "notes",
+        "note": "notes",
+        "remark": "notes",
+        "remarks": "notes",
+    }
+    return aliases.get(cleaned, cleaned)
+
+
+def header_to_columns(header_rows: List[List[str]], n_cols: int) -> List[str]:
+    labels: List[str] = []
+    for col in range(n_cols):
+        parts = []
+        for row in header_rows:
+            if col < len(row) and row[col].strip():
+                parts.append(row[col].strip())
+        labels.append(normalize_header_text(" ".join(parts)))
+
+    used = set(labels)
+    defaults = ["method", "dataset", "accuracy", "f1", "notes"]
+    for idx, label in enumerate(labels):
+        if label in REQUIRED_METRIC_FIELDS:
+            continue
+        if idx < len(defaults) and defaults[idx] not in used:
+            labels[idx] = defaults[idx]
+            used.add(defaults[idx])
+
+    return labels
+
+
+def parse_metric_number(value: Any) -> Optional[float]:
+    if value is None:
+        return None
+
+    text = str(value).strip()
+    if not text:
+        return None
+
+    text = text.replace(",", "")
+    match = re.search(r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)", text)
+    if not match:
+        return None
+
+    try:
+        return float(match.group(0))
+    except ValueError:
+        return None
+
+
+def clean_text(value: Any) -> str:
+    text = "" if value is None else str(value)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
+
+
+def normalize_metric_value(value: str) -> str:
+    num = parse_metric_number(value)
+    if num is None:
+        return clean_text(value)
+    return f"{num:g}"
+
+
+def normalize_metrics(grid: List[List[str]], header_count: int) -> Tuple[List[Dict[str, str]], List[str]]:
+    issues: List[str] = []
+    if not grid:
+        return [], ["ambiguous_structure: no table rows reconstructed"]
+
+    n_cols = max(len(row) for row in grid)
+    padded = [row + [""] * (n_cols - len(row)) for row in grid]
+
+    header_rows = padded[:header_count]
+    labels = header_to_columns(header_rows, n_cols)
+    label_to_idx = {label: idx for idx, label in enumerate(labels) if label in REQUIRED_METRIC_FIELDS}
+
+    for fallback_idx, field in enumerate(REQUIRED_METRIC_FIELDS):
+        if field not in label_to_idx and fallback_idx < n_cols:
+            label_to_idx[field] = fallback_idx
+            issues.append(f"ambiguous_structure: mapped column {fallback_idx} to {field} by position")
+
+    missing = [field for field in REQUIRED_METRIC_FIELDS if field not in label_to_idx]
+    for field in missing:
+        issues.append(f"missing_required_column: {field}")
+
+    metric_rows: List[Dict[str, str]] = []
+    last_seen: Dict[str, str] = {}
+
+    for source_row in padded[header_count:]:
+        if not any(cell.strip() for cell in source_row):
+            continue
+
+        row: Dict[str, str] = {field: "" for field in REQUIRED_METRIC_FIELDS}
+        for field in REQUIRED_METRIC_FIELDS:
+            idx = label_to_idx.get(field)
+            if idx is not None and idx < len(source_row):
+                row[field] = clean_text(source_row[idx])
+
+        for field in ("method", "dataset"):
+            if not row[field] and last_seen.get(field):
+                row[field] = last_seen[field]
+
+        for field in ("method", "dataset"):
+            if row[field]:
+                last_seen[field] = row[field]
+
+        row["accuracy"] = normalize_metric_value(row["accuracy"])
+        row["f1"] = normalize_metric_value(row["f1"])
+        row["notes"] = clean_text(row["notes"])
+
+        if row["method"] or row["dataset"] or row["accuracy"] or row["f1"]:
+            metric_rows.append(row)
+
+    return metric_rows, issues
+
+
+def detect_spans_for_cells(grid: List[List[str]], header_count: int) -> List[Cell]:
+    cells: List[Cell] = []
+    if not grid:
+        return cells
+
+    n_rows = len(grid)
+    n_cols = max(len(row) for row in grid)
+    padded = [row + [""] * (n_cols - len(row)) for row in grid]
+
+    for r, row in enumerate(padded):
+        c = 0
+        while c < n_cols:
+            text = clean_text(row[c])
+            if not text:
+                c += 1
+                continue
+
+            col_span = 1
+            k = c + 1
+            while k < n_cols and not clean_text(row[k]):
+                # Treat only header-like leading rows as likely horizontal spans.
+                if r < header_count:
+                    col_span += 1
+                    k += 1
+                else:
+                    break
+
+            row_span = 1
+            rr = r + 1
+            while rr < n_rows and not clean_text(padded[rr][c]):
+                row_has_other_content = any(clean_text(padded[rr][cc]) for cc in range(n_cols) if cc != c)
+                if row_has_other_content:
+                    row_span += 1
+                    rr += 1
+                else:
+                    break
+
+            cells.append(
+                Cell(
+                    row_id=r,
+                    col_id=c,
+                    row_span=row_span,
+                    col_span=col_span,
+                    is_header=r < header_count,
+                    text=text,
+                )
+            )
+            c += max(1, col_span)
+
+    return cells
+
+
+def audit_metrics(metrics: List[Dict[str, str]], extraction_issues: List[str]) -> Dict[str, Any]:
+    issues: List[Dict[str, Any]] = []
+
+    for issue in extraction_issues:
+        category = issue.split(":", 1)[0]
+        issues.append({"category": category, "message": issue})
+
+    for field in REQUIRED_METRIC_FIELDS:
+        if any(field not in row for row in metrics):
+            issues.append({"category": "missing_required_column", "field": field})
+
+    seen = {}
+    duplicates = []
+    for idx, row in enumerate(metrics):
+        for field in ("method", "dataset"):
+            if not clean_text(row.get(field, "")):
+                issues.append({"category": "empty_required_text", "row": idx, "field": field})
+
+        for field in ("accuracy", "f1"):
+            if parse_metric_number(row.get(field, "")) is None:
+                issues.append(
+                    {
+                        "category": "non_numeric_metric",
+                        "row": idx,
+                        "field": field,
+                        "value": row.get(field, ""),
+                    }
+                )
+
+        key = (
+            clean_text(row.get("method", "")).lower(),
+            clean_text(row.get("dataset", "")).lower(),
+        )
+        if key in seen:
+            duplicates.append((seen[key], idx, key))
+        else:
+            seen[key] = idx
+
+    for first, second, key in duplicates:
+        issues.append(
+            {
+                "category": "duplicate_record",
+                "rows": [first, second],
+                "grain": "method,dataset",
+                "key": list(key),
+            }
+        )
+
+    best_by_dataset: Dict[str, Dict[str, Any]] = {}
+    grouped: Dict[str, List[Tuple[int, Dict[str, str], float]]] = {}
+
+    for idx, row in enumerate(metrics):
+        dataset = clean_text(row.get("dataset", ""))
+        f1 = parse_metric_number(row.get("f1", ""))
+        if dataset and f1 is not None:
+            grouped.setdefault(dataset, []).append((idx, row, f1))
+
+    for dataset, rows in grouped.items():
+        best_score = max(score for _, _, score in rows)
+        winners = [(idx, row, score) for idx, row, score in rows if score == best_score]
+        winner_idx, winner_row, winner_score = winners[0]
+        best_by_dataset[dataset] = {
+            "method": winner_row.get("method", ""),
+            "f1": winner_score,
+            "row_index": winner_idx,
+        }
+        if len(winners) > 1:
+            issues.append(
+                {
+                    "category": "inconsistent_group_best",
+                    "dataset": dataset,
+                    "message": "tie for best F1",
+                    "rows": [idx for idx, _, _ in winners],
+                }
+            )
+
+    return {
+        "row_count": len(metrics),
+        "best_by_dataset": best_by_dataset,
+        "issues": issues,
+    }
+
+
+def write_cells_csv(path: Path, cells: List[Cell]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=["row_id", "col_id", "row_span", "col_span", "is_header", "text"],
+        )
+        writer.writeheader()
+        for cell in cells:
+            writer.writerow(
+                {
+                    "row_id": cell.row_id,
+                    "col_id": cell.col_id,
+                    "row_span": cell.row_span,
+                    "col_span": cell.col_span,
+                    "is_header": str(bool(cell.is_header)).lower(),
+                    "text": cell.text,
+                }
+            )
+
+
+def write_metrics_csv(path: Path, metrics: List[Dict[str, str]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=REQUIRED_METRIC_FIELDS)
+        writer.writeheader()
+        for row in metrics:
+            writer.writerow({field: row.get(field, "") for field in REQUIRED_METRIC_FIELDS})
+
+
+def write_audit_json(path: Path, audit: Dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as f:
+        json.dump(audit, f, indent=2, ensure_ascii=False)
+
+
+def markdown_escape(text: Any) -> str:
+    return str(text).replace("|", "\\|").replace("\n", " ")
+
+
+def write_summary_md(path: Path, metrics: List[Dict[str, str]], audit: Dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+
+    best = audit.get("best_by_dataset", {})
+    issues = audit.get("issues", [])
+
+    lines = [
+        "# OCR Table Extraction Summary",
+        "",
+        f"Normalized metric rows: **{audit.get('row_count', len(metrics))}**.",
+        "",
+        "## Best F1 by Dataset",
+        "",
+    ]
+
+    if best:
+        lines.extend(["| Dataset | Best method | F1 |", "|---|---:|---:|"])
+        for dataset in sorted(best):
+            item = best[dataset]
+            lines.append(
+                f"| {markdown_escape(dataset)} | {markdown_escape(item.get('method', ''))} | "
+                f"{markdown_escape(item.get('f1', ''))} |"
+            )
+    else:
+        lines.append("No dataset-level F1 winner could be computed from the normalized rows.")
+
+    lines.extend(["", "## Normalized Metrics", ""])
+    if metrics:
+        lines.extend(["| Method | Dataset | Accuracy | F1 | Notes |", "|---|---|---:|---:|---|"])
+        for row in metrics:
+            lines.append(
+                f"| {markdown_escape(row.get('method', ''))} "
+                f"| {markdown_escape(row.get('dataset', ''))} "
+                f"| {markdown_escape(row.get('accuracy', ''))} "
+                f"| {markdown_escape(row.get('f1', ''))} "
+                f"| {markdown_escape(row.get('notes', ''))} |"
+            )
+    else:
+        lines.append("No metric observations were extracted.")
+
+    lines.extend(["", "## Audit Issues", ""])
+    if issues:
+        for issue in issues:
+            category = issue.get("category", "issue")
+            message = issue.get("message") or json.dumps(issue, ensure_ascii=False)
+            lines.append(f"- **{markdown_escape(category)}**: {markdown_escape(message)}")
+    else:
+        lines.append("No extraction or validation issues were detected.")
+
+    path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+
+
+def main() -> None:
+    input_path = Path(os.environ["ORIGINAL_WORDS_JSON"])
+    output_cells = Path(os.environ["OUTPUT_CELLS_CSV"])
+    output_metrics = Path(os.environ["OUTPUT_METRICS_CSV"])
+    output_audit = Path(os.environ["OUTPUT_AUDIT_JSON"])
+    output_summary = Path(os.environ["SUMMARY_MD"])
+
+    with input_path.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    all_words: List[Word] = []
+    extract_words_from_obj(data, all_words)
+
+    table_bbox, bbox_issues = choose_table_bbox(data, all_words)
+    table_words = [w for w in all_words if inside_bbox(w, table_bbox)]
+
+    extraction_issues = list(bbox_issues)
+    excluded_count = len(all_words) - len(table_words)
+    if excluded_count > 0:
+        extraction_issues.append(
+            f"excluded_non_table_text: excluded {excluded_count} OCR words outside the table bounding box"
+        )
+
+    if not table_words:
+        extraction_issues.append("ambiguous_structure: no OCR words found inside table bounding box")
+
+    visual_rows = group_words_into_rows(table_words)
+    col_edges = infer_column_edges(table_words, table_bbox)
+    grid = merge_row_cells(visual_rows, col_edges)
+
+    header_count = detect_header_row_count(grid)
+    cells = detect_spans_for_cells(grid, header_count)
+    metrics, normalization_issues = normalize_metrics(grid, header_count)
+
+    audit = audit_metrics(metrics, extraction_issues + normalization_issues)
+
+    write_cells_csv(output_cells, cells)
+    write_metrics_csv(output_metrics, metrics)
+    write_audit_json(output_audit, audit)
+    write_summary_md(output_summary, metrics, audit)
+
+
+if __name__ == "__main__":
+    main()

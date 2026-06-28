@@ -1,0 +1,43 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2,
+      "accuracy": 87.8,
+      "notes": "best"
+    },
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 88.6,
+      "accuracy": 91.2,
+      "notes": "best"
+    }
+  },
+  "issues": [
+    {
+      "category": "empty_required_text",
+      "row_index": 0,
+      "field": "method",
+      "detail": "Empty required text field method"
+    },
+    {
+      "category": "empty_required_text",
+      "row_index": 0,
+      "field": "dataset",
+      "detail": "Empty required text field dataset"
+    },
+    {
+      "category": "non_numeric_metric",
+      "row_index": 0,
+      "field": "accuracy",
+      "value": "Accuracy",
+      "detail": "Metric field accuracy is not numeric"
+    },
+    {
+      "category": "excluded_non_table_text",
+      "count": 15,
+      "detail": "Words outside the table bounding box were excluded from normalized metric rows."
+    }
+  ]
+}

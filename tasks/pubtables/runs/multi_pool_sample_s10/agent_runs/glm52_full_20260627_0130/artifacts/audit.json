@@ -1,0 +1,42 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {},
+  "issues": [
+    {
+      "type": "MISSING_METHOD",
+      "detail": "Row has no method name"
+    },
+    {
+      "type": "MISSING_DATASET",
+      "detail": "Row has no dataset name"
+    },
+    {
+      "type": "MISSING_ACCURACY",
+      "detail": "Accuracy missing for unknown/unknown"
+    },
+    {
+      "type": "MISSING_F1",
+      "detail": "F1 missing for unknown/unknown"
+    },
+    {
+      "type": "MISSING_F1",
+      "detail": "F1 missing for GraphNet/PubMed"
+    },
+    {
+      "type": "MISSING_F1",
+      "detail": "F1 missing for TreeCRF/PubMed"
+    },
+    {
+      "type": "MISSING_F1",
+      "detail": "F1 missing for GraphNet/ChemTable"
+    },
+    {
+      "type": "MISSING_F1",
+      "detail": "F1 missing for TableFormer/ChemTable"
+    },
+    {
+      "type": "MISSING_F1",
+      "detail": "F1 missing for Rule Parser/ChemTable"
+    }
+  ]
+}

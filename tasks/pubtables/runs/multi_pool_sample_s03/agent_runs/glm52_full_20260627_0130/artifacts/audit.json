@@ -1,0 +1,16 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed": {
+      "method": "GraphNet",
+      "f1": null
+    },
+    "ChemTable": {
+      "method": "GraphNet",
+      "f1": null
+    }
+  },
+  "issues": [
+    "Excluded 15 caption/footnote words outside table bounding box"
+  ]
+}

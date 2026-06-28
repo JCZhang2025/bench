@@ -1,0 +1,22 @@
+# Extraction Audit Summary
+
+- Source: PubTables-style OCR word JSON with table reconstruction from word bounding boxes.
+- Normalized metric rows: 5.
+- Best F1 by dataset: no dataset-level best record could be computed.
+- Audit status: issues were found during extraction or validation.
+- Limitations:
+  - Accuracy column was assigned by numeric-column fallback.
+  - Could not assign required columns: dataset, f1.
+  - Could not infer multiple table columns from OCR positions.
+  - Excluded 15 OCR words outside the detected table bounding box as caption or footnote noise.
+  - Metric row 2 has no dataset value.
+  - Metric row 3 has no dataset value.
+  - Metric row 4 has no dataset value.
+  - Metric row 5 has no dataset value.
+  - Metric row 6 has no dataset value.
+  - Metric row for method 'GraphNet ChemTable 84.7 81.3 cross-domain' has empty dataset.
+  - Metric row for method 'GraphNet PubMed QA 91.2 88.6 best' has empty dataset.
+  - Metric row for method 'Rule Parser ChemTable 71.0 68.4 weak baseline' has empty dataset.
+  - Metric row for method 'TableFormer ChemTable 87.8 84.2 best' has empty dataset.
+  - Metric row for method 'TreeCRF PubMed QA 89.5 86.9 baseline' has empty dataset.
+  - Notes column was assigned to the rightmost column by fallback.

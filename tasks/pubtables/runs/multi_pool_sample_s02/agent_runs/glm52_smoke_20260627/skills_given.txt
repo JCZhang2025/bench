@@ -1,0 +1,4 @@
+table-ocr-structure-reconstructor
+multi-source-data-cleaner-pro
+metric-consistency-auditor
+typora-visual-architect

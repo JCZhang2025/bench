@@ -1,0 +1,23 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 88.6,
+      "row_index": 0
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2,
+      "row_index": 3
+    }
+  },
+  "issues": [
+    {
+      "category": "excluded_non_table_text",
+      "count": 15,
+      "sample": "Table 2. Model performance on two biomedical benchmarks. Footnote: scores are micro-averaged over table cells.",
+      "message": "Words outside the table bounding box were excluded from normalized metrics."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+method,dataset,accuracy,f1,notes
+unknown,unknown,,,
+GraphNet,PubMed,91.2000,,best
+TreeCRF,PubMed,89.5000,,baseline
+GraphNet,ChemTable,84.7000,,cross-domain
+TableFormer,ChemTable,87.8000,,best
+Rule Parser,ChemTable,71.0000,,weak

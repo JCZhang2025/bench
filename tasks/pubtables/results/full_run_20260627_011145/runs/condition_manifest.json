@@ -1,0 +1,378 @@
+{
+  "no_skill": {
+    "label": "No-skill baseline",
+    "condition_type": "baseline",
+    "sample_seed": "",
+    "pool_samples": {},
+    "skill_pools": {},
+    "skills": []
+  },
+  "multi_pool_all": {
+    "label": "All candidates from every skill pool",
+    "condition_type": "multi_pool_all",
+    "sample_seed": "",
+    "pool_samples": {},
+    "skill_pools": {
+      "table_extraction": [
+        "table-ocr-structure-reconstructor",
+        "bbox-row-column-parser",
+        "table-boundary-noise-filter",
+        "header-span-detector",
+        "file-converter"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro",
+        "data-analysis",
+        "data-analyst-cn",
+        "excel-xlsx",
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "metric-consistency-auditor",
+        "artifact-contract-checker",
+        "code-executor",
+        "data-reconciliation-exceptions",
+        "sql-master"
+      ],
+      "summary_reporting": [
+        "grounded-metric-summary",
+        "extraction-audit-summary",
+        "typora-visual-architect",
+        "generate-report123",
+        "data2visualization"
+      ]
+    },
+    "skills": [
+      "table-ocr-structure-reconstructor",
+      "bbox-row-column-parser",
+      "table-boundary-noise-filter",
+      "header-span-detector",
+      "file-converter",
+      "multi-source-data-cleaner-pro",
+      "data-analysis",
+      "data-analyst-cn",
+      "excel-xlsx",
+      "chat2duckdb",
+      "metric-consistency-auditor",
+      "artifact-contract-checker",
+      "code-executor",
+      "data-reconciliation-exceptions",
+      "sql-master",
+      "grounded-metric-summary",
+      "extraction-audit-summary",
+      "typora-visual-architect",
+      "generate-report123",
+      "data2visualization"
+    ]
+  },
+  "multi_pool_sample_s01": {
+    "label": "One sampled skill from each pool, seed 1",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 1,
+    "pool_samples": {
+      "table_extraction": "bbox-row-column-parser",
+      "data_cleaning": "chat2duckdb",
+      "validation_audit": "metric-consistency-auditor",
+      "summary_reporting": "typora-visual-architect"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "bbox-row-column-parser"
+      ],
+      "data_cleaning": [
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "metric-consistency-auditor"
+      ],
+      "summary_reporting": [
+        "typora-visual-architect"
+      ]
+    },
+    "skills": [
+      "bbox-row-column-parser",
+      "chat2duckdb",
+      "metric-consistency-auditor",
+      "typora-visual-architect"
+    ]
+  },
+  "multi_pool_sample_s02": {
+    "label": "One sampled skill from each pool, seed 2",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 2,
+    "pool_samples": {
+      "table_extraction": "table-ocr-structure-reconstructor",
+      "data_cleaning": "multi-source-data-cleaner-pro",
+      "validation_audit": "metric-consistency-auditor",
+      "summary_reporting": "typora-visual-architect"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "table-ocr-structure-reconstructor"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro"
+      ],
+      "validation_audit": [
+        "metric-consistency-auditor"
+      ],
+      "summary_reporting": [
+        "typora-visual-architect"
+      ]
+    },
+    "skills": [
+      "table-ocr-structure-reconstructor",
+      "multi-source-data-cleaner-pro",
+      "metric-consistency-auditor",
+      "typora-visual-architect"
+    ]
+  },
+  "multi_pool_sample_s03": {
+    "label": "One sampled skill from each pool, seed 3",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 3,
+    "pool_samples": {
+      "table_extraction": "bbox-row-column-parser",
+      "data_cleaning": "chat2duckdb",
+      "validation_audit": "sql-master",
+      "summary_reporting": "extraction-audit-summary"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "bbox-row-column-parser"
+      ],
+      "data_cleaning": [
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "sql-master"
+      ],
+      "summary_reporting": [
+        "extraction-audit-summary"
+      ]
+    },
+    "skills": [
+      "bbox-row-column-parser",
+      "chat2duckdb",
+      "sql-master",
+      "extraction-audit-summary"
+    ]
+  },
+  "multi_pool_sample_s04": {
+    "label": "One sampled skill from each pool, seed 4",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 4,
+    "pool_samples": {
+      "table_extraction": "bbox-row-column-parser",
+      "data_cleaning": "data-analyst-cn",
+      "validation_audit": "metric-consistency-auditor",
+      "summary_reporting": "generate-report123"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "bbox-row-column-parser"
+      ],
+      "data_cleaning": [
+        "data-analyst-cn"
+      ],
+      "validation_audit": [
+        "metric-consistency-auditor"
+      ],
+      "summary_reporting": [
+        "generate-report123"
+      ]
+    },
+    "skills": [
+      "bbox-row-column-parser",
+      "data-analyst-cn",
+      "metric-consistency-auditor",
+      "generate-report123"
+    ]
+  },
+  "multi_pool_sample_s05": {
+    "label": "One sampled skill from each pool, seed 5",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 5,
+    "pool_samples": {
+      "table_extraction": "file-converter",
+      "data_cleaning": "data-analyst-cn",
+      "validation_audit": "code-executor",
+      "summary_reporting": "data2visualization"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "file-converter"
+      ],
+      "data_cleaning": [
+        "data-analyst-cn"
+      ],
+      "validation_audit": [
+        "code-executor"
+      ],
+      "summary_reporting": [
+        "data2visualization"
+      ]
+    },
+    "skills": [
+      "file-converter",
+      "data-analyst-cn",
+      "code-executor",
+      "data2visualization"
+    ]
+  },
+  "multi_pool_sample_s06": {
+    "label": "One sampled skill from each pool, seed 6",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 6,
+    "pool_samples": {
+      "table_extraction": "file-converter",
+      "data_cleaning": "multi-source-data-cleaner-pro",
+      "validation_audit": "data-reconciliation-exceptions",
+      "summary_reporting": "typora-visual-architect"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "file-converter"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro"
+      ],
+      "validation_audit": [
+        "data-reconciliation-exceptions"
+      ],
+      "summary_reporting": [
+        "typora-visual-architect"
+      ]
+    },
+    "skills": [
+      "file-converter",
+      "multi-source-data-cleaner-pro",
+      "data-reconciliation-exceptions",
+      "typora-visual-architect"
+    ]
+  },
+  "multi_pool_sample_s07": {
+    "label": "One sampled skill from each pool, seed 7",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 7,
+    "pool_samples": {
+      "table_extraction": "table-boundary-noise-filter",
+      "data_cleaning": "data-analysis",
+      "validation_audit": "data-reconciliation-exceptions",
+      "summary_reporting": "grounded-metric-summary"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "table-boundary-noise-filter"
+      ],
+      "data_cleaning": [
+        "data-analysis"
+      ],
+      "validation_audit": [
+        "data-reconciliation-exceptions"
+      ],
+      "summary_reporting": [
+        "grounded-metric-summary"
+      ]
+    },
+    "skills": [
+      "table-boundary-noise-filter",
+      "data-analysis",
+      "data-reconciliation-exceptions",
+      "grounded-metric-summary"
+    ]
+  },
+  "multi_pool_sample_s08": {
+    "label": "One sampled skill from each pool, seed 8",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 8,
+    "pool_samples": {
+      "table_extraction": "bbox-row-column-parser",
+      "data_cleaning": "data-analyst-cn",
+      "validation_audit": "data-reconciliation-exceptions",
+      "summary_reporting": "extraction-audit-summary"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "bbox-row-column-parser"
+      ],
+      "data_cleaning": [
+        "data-analyst-cn"
+      ],
+      "validation_audit": [
+        "data-reconciliation-exceptions"
+      ],
+      "summary_reporting": [
+        "extraction-audit-summary"
+      ]
+    },
+    "skills": [
+      "bbox-row-column-parser",
+      "data-analyst-cn",
+      "data-reconciliation-exceptions",
+      "extraction-audit-summary"
+    ]
+  },
+  "multi_pool_sample_s09": {
+    "label": "One sampled skill from each pool, seed 9",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 9,
+    "pool_samples": {
+      "table_extraction": "header-span-detector",
+      "data_cleaning": "chat2duckdb",
+      "validation_audit": "code-executor",
+      "summary_reporting": "typora-visual-architect"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "header-span-detector"
+      ],
+      "data_cleaning": [
+        "chat2duckdb"
+      ],
+      "validation_audit": [
+        "code-executor"
+      ],
+      "summary_reporting": [
+        "typora-visual-architect"
+      ]
+    },
+    "skills": [
+      "header-span-detector",
+      "chat2duckdb",
+      "code-executor",
+      "typora-visual-architect"
+    ]
+  },
+  "multi_pool_sample_s10": {
+    "label": "One sampled skill from each pool, seed 10",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 10,
+    "pool_samples": {
+      "table_extraction": "file-converter",
+      "data_cleaning": "multi-source-data-cleaner-pro",
+      "validation_audit": "data-reconciliation-exceptions",
+      "summary_reporting": "generate-report123"
+    },
+    "skill_pools": {
+      "table_extraction": [
+        "file-converter"
+      ],
+      "data_cleaning": [
+        "multi-source-data-cleaner-pro"
+      ],
+      "validation_audit": [
+        "data-reconciliation-exceptions"
+      ],
+      "summary_reporting": [
+        "generate-report123"
+      ]
+    },
+    "skills": [
+      "file-converter",
+      "multi-source-data-cleaner-pro",
+      "data-reconciliation-exceptions",
+      "generate-report123"
+    ]
+  }
+}

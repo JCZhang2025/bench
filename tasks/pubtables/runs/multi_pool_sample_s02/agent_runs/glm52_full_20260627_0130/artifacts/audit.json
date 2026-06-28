@@ -1,0 +1,29 @@
+{
+  "row_count": 0,
+  "best_by_dataset": {},
+  "issues": [
+    {
+      "type": "missing_required_column",
+      "detail": "Column accuracy not found in header mapping"
+    },
+    {
+      "type": "missing_required_column",
+      "detail": "Column f1 not found in header mapping"
+    },
+    {
+      "type": "excluded_non_table_text",
+      "detail": "15 words excluded as caption/footnote (outside table bbox)"
+    }
+  ],
+  "header_mapping": {
+    "1": "method",
+    "7": "dataset",
+    "15": "evaluation",
+    "22": "score",
+    "29": "(%)",
+    "33": "notes"
+  },
+  "excluded_word_count": 15,
+  "table_word_count": 37,
+  "total_word_count": 52
+}

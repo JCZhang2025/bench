@@ -1,0 +1,17 @@
+timestamp,run_id,task,condition,provider,model,reasoning_effort,condition_type,sample_seed,pool_samples,skill_pools,skills_given,skill_imports_enforced,import_policy,skill_import_violations,api_status,script_status,verifier_success,issues,notes,elapsed_seconds,run_dir,artifacts_dir,agent_workspace
+2026-06-27T17:52:21,gpt55xhigh_smoke_20260627,pubtables,no_skill,openai-responses,gpt-5.5,xhigh,baseline,,{},{},none,False,warn,,failed,not_started,False,"OpenAI Responses API HTTP 403: <!DOCTYPE html>
+<!--[if lt IE 7]> <html class=""no-js ie6 oldie"" lang=""en-US""> <![endif]-->
+<!--[if IE 7]>    <html class=""no-js ie7 oldie"" lang=""en-US""> <![endif]-->
+<!--[if IE 8]>    <html class=""no-js ie8 oldie"" lang=""en-US""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class=""no-js"" lang=""en-US""> <!--<![endif]-->
+<head>
+<title>Attention Required! | Cloudflare</title>
+<meta charset=""UTF-8"" />
+<meta http-equiv=""Content-Type"" content=""text/html; charset=UTF-8"" />
+<meta http-equiv=""X-UA-Compatible"" content=""IE=Edge"" />
+<meta name=""robots"" content=""noindex, nofollow"" />
+<meta name=""viewport"" content=""width=device-width,initial-scale=1"" />
+<link rel=""stylesheet"" id=""cf_styles-css"" href=""/cdn-cgi/styles/cf.errors.css"" />
+<!--[if lt IE 9]><link rel=""stylesheet"" id='cf_styles-ie-css' href=""/cdn-cgi",,6.07,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke_20260627,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke_20260627\artifacts,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke_20260627\agent_workspace
+2026-06-27T17:52:48,gpt55xhigh_smoke2_20260627,pubtables,no_skill,openai-responses,gpt-5.5,xhigh,baseline,,{},{},none,False,warn,,failed,not_started,False,"OpenAI Responses API HTTP 401: {""error"":{""message"":""invalid token"",""type"":""unauthorized_error""},""type"":""error""}",,0.94,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke2_20260627,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke2_20260627\artifacts,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke2_20260627\agent_workspace
+2026-06-27T17:53:13,gpt55xhigh_smoke3_20260627,pubtables,no_skill,openai-responses,gpt-5.5,xhigh,baseline,,{},{},none,False,warn,,ok,exit_0,False,"metrics.csv row count mismatch: expected 5, got 6. | table_cells.csv missing required cell text: Evaluation score (%) | audit.json row_count mismatch: expected 5, got 6.",extracted from Python code block,112.41,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke3_20260627,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke3_20260627\artifacts,E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_runs\gpt55xhigh_smoke3_20260627\agent_workspace

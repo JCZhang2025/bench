@@ -1,0 +1,6 @@
+﻿run_id=full_run_20260627_011145
+created_at=2026-06-27T01:18:44+08:00
+model=glm-4.5-air
+conditions=12
+result_csv=agent_runs_multi_pool_warn.csv
+note=Snapshot of mutable runs directory immediately after full pubtables --all execution.

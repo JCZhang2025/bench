@@ -65,33 +65,26 @@ EXPECTED_ARTIFACTS = [
 OUTPUT_PATH_KEYS = ("cells_csv", "metrics_csv", "audit_json", "summary_md")
 
 SKILL_POOLS: dict[str, list[str]] = {
-    "table_extraction": [
-        "file-converter",
-        "markdown-converter",
-        "all-to-markdown",
-        "data-analysis",
-        "chat2duckdb",
-    ],
-    "data_cleaning": [
-        "multi-source-data-cleaner-pro",
-        "data-analysis",
-        "data-analyst-cn",
-        "excel-xlsx",
-        "chat2duckdb",
-    ],
-    "validation_audit": [
+    "table_reconstruction": [
+        "table-ocr-structure-reconstructor",
+        "bbox-row-column-parser",
+        "table-boundary-noise-filter",
+        "header-span-detector",
         "code-executor",
-        "data-reconciliation-exceptions",
-        "data-anomaly-detector",
+    ],
+    "metric_extraction_audit": [
+        "metric-consistency-auditor",
+        "artifact-contract-checker",
         "data-analysis",
+        "chat2duckdb",
         "sql-master",
     ],
     "summary_reporting": [
+        "grounded-metric-summary",
+        "extraction-audit-summary",
         "typora-visual-architect",
         "generate-report123",
         "data2visualization",
-        "sql-report-generator",
-        "generate-chart",
     ],
 }
 

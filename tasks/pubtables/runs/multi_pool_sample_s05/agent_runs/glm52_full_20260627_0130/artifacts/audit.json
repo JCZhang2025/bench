@@ -1,0 +1,25 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed": {
+      "method": "GraphNet",
+      "f1": -1
+    },
+    "ChemTable": {
+      "method": "GraphNet",
+      "f1": -1
+    }
+  },
+  "issues": [
+    "Non-numeric accuracy for method=GraphNet, dataset=PubMed: ''",
+    "Non-numeric f1 for method=GraphNet, dataset=PubMed: ''",
+    "Non-numeric accuracy for method=TreeCRF, dataset=PubMed: ''",
+    "Non-numeric f1 for method=TreeCRF, dataset=PubMed: ''",
+    "Non-numeric accuracy for method=GraphNet, dataset=ChemTable: ''",
+    "Non-numeric f1 for method=GraphNet, dataset=ChemTable: ''",
+    "Non-numeric accuracy for method=TableFormer, dataset=ChemTable: ''",
+    "Non-numeric f1 for method=TableFormer, dataset=ChemTable: ''",
+    "Non-numeric accuracy for method=Rule, dataset=ChemTable: ''",
+    "Non-numeric f1 for method=Rule, dataset=ChemTable: ''"
+  ]
+}

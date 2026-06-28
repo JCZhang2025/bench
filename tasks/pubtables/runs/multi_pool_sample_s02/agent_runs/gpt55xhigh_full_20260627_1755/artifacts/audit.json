@@ -1,0 +1,73 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 91.2,
+      "row_index": 1
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 87.8,
+      "row_index": 4
+    }
+  },
+  "issues": [
+    {
+      "category": "excluded_non_table_text",
+      "message": "excluded_non_table_text: excluded 15 OCR words outside the table bounding box"
+    },
+    {
+      "category": "empty_required_text",
+      "row": 0,
+      "field": "method"
+    },
+    {
+      "category": "empty_required_text",
+      "row": 0,
+      "field": "dataset"
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 0,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 0,
+      "field": "f1",
+      "value": "Accuracy"
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 1,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 2,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 3,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 4,
+      "field": "accuracy",
+      "value": ""
+    },
+    {
+      "category": "non_numeric_metric",
+      "row": 5,
+      "field": "accuracy",
+      "value": ""
+    }
+  ]
+}

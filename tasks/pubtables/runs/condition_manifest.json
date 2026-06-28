@@ -13,53 +13,44 @@
     "sample_seed": "",
     "pool_samples": {},
     "skill_pools": {
-      "table_extraction": [
-        "file-converter",
-        "markdown-converter",
-        "all-to-markdown",
-        "data-analysis",
-        "chat2duckdb"
+      "table_reconstruction": [
+        "table-ocr-structure-reconstructor",
+        "bbox-row-column-parser",
+        "table-boundary-noise-filter",
+        "header-span-detector",
+        "code-executor"
       ],
-      "data_cleaning": [
-        "multi-source-data-cleaner-pro",
+      "metric_extraction_audit": [
+        "metric-consistency-auditor",
+        "artifact-contract-checker",
         "data-analysis",
-        "data-analyst-cn",
-        "excel-xlsx",
-        "chat2duckdb"
-      ],
-      "validation_audit": [
-        "code-executor",
-        "data-reconciliation-exceptions",
-        "data-anomaly-detector",
-        "data-analysis",
+        "chat2duckdb",
         "sql-master"
       ],
       "summary_reporting": [
+        "grounded-metric-summary",
+        "extraction-audit-summary",
         "typora-visual-architect",
         "generate-report123",
-        "data2visualization",
-        "sql-report-generator",
-        "generate-chart"
+        "data2visualization"
       ]
     },
     "skills": [
-      "file-converter",
-      "markdown-converter",
-      "all-to-markdown",
+      "table-ocr-structure-reconstructor",
+      "bbox-row-column-parser",
+      "table-boundary-noise-filter",
+      "header-span-detector",
+      "code-executor",
+      "metric-consistency-auditor",
+      "artifact-contract-checker",
       "data-analysis",
       "chat2duckdb",
-      "multi-source-data-cleaner-pro",
-      "data-analyst-cn",
-      "excel-xlsx",
-      "code-executor",
-      "data-reconciliation-exceptions",
-      "data-anomaly-detector",
       "sql-master",
+      "grounded-metric-summary",
+      "extraction-audit-summary",
       "typora-visual-architect",
       "generate-report123",
-      "data2visualization",
-      "sql-report-generator",
-      "generate-chart"
+      "data2visualization"
     ]
   },
   "multi_pool_sample_s01": {
@@ -67,30 +58,25 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 1,
     "pool_samples": {
-      "table_extraction": "markdown-converter",
-      "data_cleaning": "chat2duckdb",
-      "validation_audit": "code-executor",
-      "summary_reporting": "data2visualization"
+      "table_reconstruction": "bbox-row-column-parser",
+      "metric_extraction_audit": "sql-master",
+      "summary_reporting": "grounded-metric-summary"
     },
     "skill_pools": {
-      "table_extraction": [
-        "markdown-converter"
+      "table_reconstruction": [
+        "bbox-row-column-parser"
       ],
-      "data_cleaning": [
-        "chat2duckdb"
-      ],
-      "validation_audit": [
-        "code-executor"
+      "metric_extraction_audit": [
+        "sql-master"
       ],
       "summary_reporting": [
-        "data2visualization"
+        "grounded-metric-summary"
       ]
     },
     "skills": [
-      "markdown-converter",
-      "chat2duckdb",
-      "code-executor",
-      "data2visualization"
+      "bbox-row-column-parser",
+      "sql-master",
+      "grounded-metric-summary"
     ]
   },
   "multi_pool_sample_s02": {
@@ -98,30 +84,25 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 2,
     "pool_samples": {
-      "table_extraction": "file-converter",
-      "data_cleaning": "multi-source-data-cleaner-pro",
-      "validation_audit": "code-executor",
-      "summary_reporting": "data2visualization"
+      "table_reconstruction": "table-ocr-structure-reconstructor",
+      "metric_extraction_audit": "metric-consistency-auditor",
+      "summary_reporting": "grounded-metric-summary"
     },
     "skill_pools": {
-      "table_extraction": [
-        "file-converter"
+      "table_reconstruction": [
+        "table-ocr-structure-reconstructor"
       ],
-      "data_cleaning": [
-        "multi-source-data-cleaner-pro"
-      ],
-      "validation_audit": [
-        "code-executor"
+      "metric_extraction_audit": [
+        "metric-consistency-auditor"
       ],
       "summary_reporting": [
-        "data2visualization"
+        "grounded-metric-summary"
       ]
     },
     "skills": [
-      "file-converter",
-      "multi-source-data-cleaner-pro",
-      "code-executor",
-      "data2visualization"
+      "table-ocr-structure-reconstructor",
+      "metric-consistency-auditor",
+      "grounded-metric-summary"
     ]
   },
   "multi_pool_sample_s03": {
@@ -129,30 +110,25 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 3,
     "pool_samples": {
-      "table_extraction": "markdown-converter",
-      "data_cleaning": "chat2duckdb",
-      "validation_audit": "sql-master",
-      "summary_reporting": "generate-report123"
+      "table_reconstruction": "bbox-row-column-parser",
+      "metric_extraction_audit": "sql-master",
+      "summary_reporting": "data2visualization"
     },
     "skill_pools": {
-      "table_extraction": [
-        "markdown-converter"
+      "table_reconstruction": [
+        "bbox-row-column-parser"
       ],
-      "data_cleaning": [
-        "chat2duckdb"
-      ],
-      "validation_audit": [
+      "metric_extraction_audit": [
         "sql-master"
       ],
       "summary_reporting": [
-        "generate-report123"
+        "data2visualization"
       ]
     },
     "skills": [
-      "markdown-converter",
-      "chat2duckdb",
+      "bbox-row-column-parser",
       "sql-master",
-      "generate-report123"
+      "data2visualization"
     ]
   },
   "multi_pool_sample_s04": {
@@ -160,30 +136,25 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 4,
     "pool_samples": {
-      "table_extraction": "markdown-converter",
-      "data_cleaning": "data-analyst-cn",
-      "validation_audit": "code-executor",
-      "summary_reporting": "sql-report-generator"
+      "table_reconstruction": "bbox-row-column-parser",
+      "metric_extraction_audit": "data-analysis",
+      "summary_reporting": "grounded-metric-summary"
     },
     "skill_pools": {
-      "table_extraction": [
-        "markdown-converter"
+      "table_reconstruction": [
+        "bbox-row-column-parser"
       ],
-      "data_cleaning": [
-        "data-analyst-cn"
-      ],
-      "validation_audit": [
-        "code-executor"
+      "metric_extraction_audit": [
+        "data-analysis"
       ],
       "summary_reporting": [
-        "sql-report-generator"
+        "grounded-metric-summary"
       ]
     },
     "skills": [
-      "markdown-converter",
-      "data-analyst-cn",
-      "code-executor",
-      "sql-report-generator"
+      "bbox-row-column-parser",
+      "data-analysis",
+      "grounded-metric-summary"
     ]
   },
   "multi_pool_sample_s05": {
@@ -191,81 +162,15 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 5,
     "pool_samples": {
-      "table_extraction": "chat2duckdb",
-      "data_cleaning": "data-analyst-cn",
-      "validation_audit": "data-anomaly-detector",
-      "summary_reporting": "generate-chart"
-    },
-    "skill_pools": {
-      "table_extraction": [
-        "chat2duckdb"
-      ],
-      "data_cleaning": [
-        "data-analyst-cn"
-      ],
-      "validation_audit": [
-        "data-anomaly-detector"
-      ],
-      "summary_reporting": [
-        "generate-chart"
-      ]
-    },
-    "skills": [
-      "chat2duckdb",
-      "data-analyst-cn",
-      "data-anomaly-detector",
-      "generate-chart"
-    ]
-  },
-  "multi_pool_sample_s06": {
-    "label": "One sampled skill from each pool, seed 6",
-    "condition_type": "multi_pool_sample",
-    "sample_seed": 6,
-    "pool_samples": {
-      "table_extraction": "chat2duckdb",
-      "data_cleaning": "multi-source-data-cleaner-pro",
-      "validation_audit": "data-analysis",
-      "summary_reporting": "data2visualization"
-    },
-    "skill_pools": {
-      "table_extraction": [
-        "chat2duckdb"
-      ],
-      "data_cleaning": [
-        "multi-source-data-cleaner-pro"
-      ],
-      "validation_audit": [
-        "data-analysis"
-      ],
-      "summary_reporting": [
-        "data2visualization"
-      ]
-    },
-    "skills": [
-      "chat2duckdb",
-      "multi-source-data-cleaner-pro",
-      "data-analysis",
-      "data2visualization"
-    ]
-  },
-  "multi_pool_sample_s07": {
-    "label": "One sampled skill from each pool, seed 7",
-    "condition_type": "multi_pool_sample",
-    "sample_seed": 7,
-    "pool_samples": {
-      "table_extraction": "all-to-markdown",
-      "data_cleaning": "data-analysis",
-      "validation_audit": "data-analysis",
+      "table_reconstruction": "code-executor",
+      "metric_extraction_audit": "data-analysis",
       "summary_reporting": "typora-visual-architect"
     },
     "skill_pools": {
-      "table_extraction": [
-        "all-to-markdown"
+      "table_reconstruction": [
+        "code-executor"
       ],
-      "data_cleaning": [
-        "data-analysis"
-      ],
-      "validation_audit": [
+      "metric_extraction_audit": [
         "data-analysis"
       ],
       "summary_reporting": [
@@ -273,9 +178,61 @@
       ]
     },
     "skills": [
-      "all-to-markdown",
+      "code-executor",
       "data-analysis",
       "typora-visual-architect"
+    ]
+  },
+  "multi_pool_sample_s06": {
+    "label": "One sampled skill from each pool, seed 6",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 6,
+    "pool_samples": {
+      "table_reconstruction": "code-executor",
+      "metric_extraction_audit": "metric-consistency-auditor",
+      "summary_reporting": "generate-report123"
+    },
+    "skill_pools": {
+      "table_reconstruction": [
+        "code-executor"
+      ],
+      "metric_extraction_audit": [
+        "metric-consistency-auditor"
+      ],
+      "summary_reporting": [
+        "generate-report123"
+      ]
+    },
+    "skills": [
+      "code-executor",
+      "metric-consistency-auditor",
+      "generate-report123"
+    ]
+  },
+  "multi_pool_sample_s07": {
+    "label": "One sampled skill from each pool, seed 7",
+    "condition_type": "multi_pool_sample",
+    "sample_seed": 7,
+    "pool_samples": {
+      "table_reconstruction": "table-boundary-noise-filter",
+      "metric_extraction_audit": "artifact-contract-checker",
+      "summary_reporting": "generate-report123"
+    },
+    "skill_pools": {
+      "table_reconstruction": [
+        "table-boundary-noise-filter"
+      ],
+      "metric_extraction_audit": [
+        "artifact-contract-checker"
+      ],
+      "summary_reporting": [
+        "generate-report123"
+      ]
+    },
+    "skills": [
+      "table-boundary-noise-filter",
+      "artifact-contract-checker",
+      "generate-report123"
     ]
   },
   "multi_pool_sample_s08": {
@@ -283,19 +240,15 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 8,
     "pool_samples": {
-      "table_extraction": "markdown-converter",
-      "data_cleaning": "data-analyst-cn",
-      "validation_audit": "data-analysis",
+      "table_reconstruction": "bbox-row-column-parser",
+      "metric_extraction_audit": "data-analysis",
       "summary_reporting": "generate-report123"
     },
     "skill_pools": {
-      "table_extraction": [
-        "markdown-converter"
+      "table_reconstruction": [
+        "bbox-row-column-parser"
       ],
-      "data_cleaning": [
-        "data-analyst-cn"
-      ],
-      "validation_audit": [
+      "metric_extraction_audit": [
         "data-analysis"
       ],
       "summary_reporting": [
@@ -303,8 +256,7 @@
       ]
     },
     "skills": [
-      "markdown-converter",
-      "data-analyst-cn",
+      "bbox-row-column-parser",
       "data-analysis",
       "generate-report123"
     ]
@@ -314,30 +266,25 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 9,
     "pool_samples": {
-      "table_extraction": "data-analysis",
-      "data_cleaning": "chat2duckdb",
-      "validation_audit": "data-anomaly-detector",
-      "summary_reporting": "data2visualization"
+      "table_reconstruction": "header-span-detector",
+      "metric_extraction_audit": "sql-master",
+      "summary_reporting": "typora-visual-architect"
     },
     "skill_pools": {
-      "table_extraction": [
-        "data-analysis"
+      "table_reconstruction": [
+        "header-span-detector"
       ],
-      "data_cleaning": [
-        "chat2duckdb"
-      ],
-      "validation_audit": [
-        "data-anomaly-detector"
+      "metric_extraction_audit": [
+        "sql-master"
       ],
       "summary_reporting": [
-        "data2visualization"
+        "typora-visual-architect"
       ]
     },
     "skills": [
-      "data-analysis",
-      "chat2duckdb",
-      "data-anomaly-detector",
-      "data2visualization"
+      "header-span-detector",
+      "sql-master",
+      "typora-visual-architect"
     ]
   },
   "multi_pool_sample_s10": {
@@ -345,30 +292,25 @@
     "condition_type": "multi_pool_sample",
     "sample_seed": 10,
     "pool_samples": {
-      "table_extraction": "chat2duckdb",
-      "data_cleaning": "multi-source-data-cleaner-pro",
-      "validation_audit": "data-analysis",
-      "summary_reporting": "sql-report-generator"
+      "table_reconstruction": "code-executor",
+      "metric_extraction_audit": "metric-consistency-auditor",
+      "summary_reporting": "generate-report123"
     },
     "skill_pools": {
-      "table_extraction": [
-        "chat2duckdb"
+      "table_reconstruction": [
+        "code-executor"
       ],
-      "data_cleaning": [
-        "multi-source-data-cleaner-pro"
-      ],
-      "validation_audit": [
-        "data-analysis"
+      "metric_extraction_audit": [
+        "metric-consistency-auditor"
       ],
       "summary_reporting": [
-        "sql-report-generator"
+        "generate-report123"
       ]
     },
     "skills": [
-      "chat2duckdb",
-      "multi-source-data-cleaner-pro",
-      "data-analysis",
-      "sql-report-generator"
+      "code-executor",
+      "metric-consistency-auditor",
+      "generate-report123"
     ]
   }
 }

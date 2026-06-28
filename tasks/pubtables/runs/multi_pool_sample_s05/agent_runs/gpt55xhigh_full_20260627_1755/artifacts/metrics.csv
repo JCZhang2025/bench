@@ -1,0 +1,6 @@
+method,dataset,accuracy,f1,notes
+GraphNet,PubMed,91.2,88.6,QA
+TreeCRF,PubMed,89.5,86.9,QA
+GraphNet,ChemTable,84.7,81.3,
+TableFormer,ChemTable,87.8,84.2,
+TableFormer,ChemTable,71,68.4,Rule | Parser

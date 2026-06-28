@@ -1,0 +1,26 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed": {
+      "method": "GraphNet",
+      "f1": 88.6
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2
+    }
+  },
+  "issues": [
+    "missing_or_unmapped_required_column:accuracy",
+    "missing_or_unmapped_required_column:f1"
+  ],
+  "header_columns": {
+    "0": "method",
+    "2": "dataset",
+    "4": "evaluation",
+    "5": "score (%)",
+    "6": "notes"
+  },
+  "total_cells": 36,
+  "body_rows": 6
+}

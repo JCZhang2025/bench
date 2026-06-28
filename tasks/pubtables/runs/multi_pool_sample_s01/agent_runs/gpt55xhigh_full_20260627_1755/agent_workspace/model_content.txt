@@ -1,0 +1,749 @@
+```python
+#!/usr/bin/env python3
+import csv
+import json
+import math
+import os
+import re
+from collections import defaultdict
+
+
+REQUIRED_ENV = [
+    "ORIGINAL_WORDS_JSON",
+    "OUTPUT_CELLS_CSV",
+    "OUTPUT_METRICS_CSV",
+    "OUTPUT_AUDIT_JSON",
+    "SUMMARY_MD",
+]
+
+
+def getenv_path(name):
+    value = os.environ.get(name)
+    if not value:
+        raise RuntimeError(f"Missing required environment variable: {name}")
+    return value
+
+
+def ensure_parent(path):
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+
+
+def as_bbox(value):
+    if value is None:
+        return None
+    if isinstance(value, dict):
+        keys = value.keys()
+        if {"x0", "y0", "x1", "y1"}.issubset(keys):
+            return [float(value["x0"]), float(value["y0"]), float(value["x1"]), float(value["y1"])]
+        if {"left", "top", "right", "bottom"}.issubset(keys):
+            return [float(value["left"]), float(value["top"]), float(value["right"]), float(value["bottom"])]
+        if {"x", "y", "w", "h"}.issubset(keys):
+            return [float(value["x"]), float(value["y"]), float(value["x"] + value["w"]), float(value["y"] + value["h"])]
+        if {"x", "y", "width", "height"}.issubset(keys):
+            return [float(value["x"]), float(value["y"]), float(value["x"] + value["width"]), float(value["y"] + value["height"])]
+    if isinstance(value, (list, tuple)) and len(value) >= 4:
+        x0, y0, a, b = [float(v) for v in value[:4]]
+        # PubTables/PDF boxes are usually x0,y0,x1,y1. If not, accept x,y,w,h.
+        if a > x0 and b > y0:
+            return [x0, y0, a, b]
+        return [x0, y0, x0 + a, y0 + b]
+    return None
+
+
+def bbox_intersection_area(a, b):
+    x0 = max(a[0], b[0])
+    y0 = max(a[1], b[1])
+    x1 = min(a[2], b[2])
+    y1 = min(a[3], b[3])
+    if x1 <= x0 or y1 <= y0:
+        return 0.0
+    return (x1 - x0) * (y1 - y0)
+
+
+def bbox_area(b):
+    return max(0.0, b[2] - b[0]) * max(0.0, b[3] - b[1])
+
+
+def find_first_bbox(obj, key_hint=None):
+    if isinstance(obj, dict):
+        preferred = []
+        for key, value in obj.items():
+            low = key.lower()
+            if key_hint and key_hint in low and ("bbox" in low or "box" in low):
+                preferred.append(value)
+            elif key_hint and key_hint in low and isinstance(value, dict):
+                found = find_first_bbox(value, key_hint=None)
+                if found:
+                    preferred.append(found)
+        for value in preferred:
+            box = as_bbox(value)
+            if box:
+                return box
+
+        for key in ("table_bbox", "table_bounding_box", "table_box", "bbox", "bounding_box", "box"):
+            if key in obj:
+                box = as_bbox(obj[key])
+                if box:
+                    return box
+
+        for value in obj.values():
+            found = find_first_bbox(value, key_hint=key_hint)
+            if found:
+                return found
+
+    elif isinstance(obj, list):
+        for item in obj:
+            found = find_first_bbox(item, key_hint=key_hint)
+            if found:
+                return found
+
+    return None
+
+
+def extract_text(item):
+    for key in ("text", "token", "word", "value", "content"):
+        value = item.get(key)
+        if isinstance(value, str):
+            return value
+    return ""
+
+
+def extract_words(obj):
+    out = []
+
+    def visit(node):
+        if isinstance(node, dict):
+            box = None
+            for key in ("bbox", "bounding_box", "box", "bounds"):
+                if key in node:
+                    box = as_bbox(node[key])
+                    if box:
+                        break
+            if not box:
+                box = as_bbox(node)
+
+            text = extract_text(node)
+            if box and text:
+                out.append({"text": text, "bbox": box})
+
+            for value in node.values():
+                if isinstance(value, (dict, list)):
+                    visit(value)
+
+        elif isinstance(node, list):
+            for item in node:
+                visit(item)
+
+    visit(obj)
+
+    # Deduplicate recursive discoveries.
+    seen = set()
+    deduped = []
+    for word in out:
+        key = (word["text"], tuple(round(v, 3) for v in word["bbox"]))
+        if key not in seen:
+            seen.add(key)
+            deduped.append(word)
+    return deduped
+
+
+def load_input(path):
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    table_bbox = None
+
+    if isinstance(data, dict):
+        for key in (
+            "table_bbox",
+            "table_bounding_box",
+            "table_box",
+            "tableBounds",
+            "table_bounds",
+        ):
+            if key in data:
+                table_bbox = as_bbox(data[key])
+                if table_bbox:
+                    break
+
+        if not table_bbox:
+            for key in ("table", "tables"):
+                if key in data:
+                    table_bbox = find_first_bbox(data[key], key_hint="table")
+                    if table_bbox:
+                        break
+
+    if not table_bbox:
+        table_bbox = find_first_bbox(data, key_hint="table")
+
+    words = extract_words(data)
+
+    if not table_bbox and words:
+        xs0 = [w["bbox"][0] for w in words]
+        ys0 = [w["bbox"][1] for w in words]
+        xs1 = [w["bbox"][2] for w in words]
+        ys1 = [w["bbox"][3] for w in words]
+        table_bbox = [min(xs0), min(ys0), max(xs1), max(ys1)]
+
+    if not words:
+        raise RuntimeError("No OCR words with text and bounding boxes were found.")
+    if not table_bbox:
+        raise RuntimeError("No table bounding box could be found or inferred.")
+
+    return data, table_bbox, words
+
+
+def token_features(word):
+    x0, y0, x1, y1 = word["bbox"]
+    return {
+        **word,
+        "x_center": (x0 + x1) / 2.0,
+        "y_center": (y0 + y1) / 2.0,
+        "width": max(0.0, x1 - x0),
+        "height": max(0.0, y1 - y0),
+    }
+
+
+def median(values, default=1.0):
+    clean = sorted(v for v in values if v is not None and not math.isnan(v))
+    if not clean:
+        return default
+    n = len(clean)
+    mid = n // 2
+    if n % 2:
+        return clean[mid]
+    return (clean[mid - 1] + clean[mid]) / 2.0
+
+
+def filter_table_words(words, table_bbox):
+    table_words = []
+    outside_words = []
+
+    for word in words:
+        box = word["bbox"]
+        area = bbox_area(box) or 1.0
+        overlap = bbox_intersection_area(box, table_bbox) / area
+        center_inside = (
+            table_bbox[0] <= (box[0] + box[2]) / 2.0 <= table_bbox[2]
+            and table_bbox[1] <= (box[1] + box[3]) / 2.0 <= table_bbox[3]
+        )
+        if center_inside or overlap >= 0.50:
+            table_words.append(token_features(word))
+        else:
+            outside_words.append(token_features(word))
+
+    return table_words, outside_words
+
+
+def group_rows(tokens):
+    if not tokens:
+        return []
+
+    med_h = median([t["height"] for t in tokens], default=10.0)
+    tolerance = max(2.0, med_h * 0.62)
+
+    rows = []
+    for token in sorted(tokens, key=lambda t: (t["y_center"], t["x_center"])):
+        assigned = False
+        for row in rows:
+            if abs(token["y_center"] - row["center"]) <= tolerance:
+                row["tokens"].append(token)
+                row["center"] = sum(t["y_center"] for t in row["tokens"]) / len(row["tokens"])
+                assigned = True
+                break
+        if not assigned:
+            rows.append({"center": token["y_center"], "tokens": [token]})
+
+    rows.sort(key=lambda r: r["center"])
+    for i, row in enumerate(rows):
+        row["row_id"] = i
+        row["tokens"].sort(key=lambda t: t["x_center"])
+        row["y0"] = min(t["bbox"][1] for t in row["tokens"])
+        row["y1"] = max(t["bbox"][3] for t in row["tokens"])
+
+    return rows
+
+
+def infer_columns(rows, table_bbox):
+    row_gaps = []
+    for row in rows:
+        toks = sorted(row["tokens"], key=lambda t: t["x_center"])
+        if len(toks) < 2:
+            continue
+        med_w = median([t["width"] for t in toks], default=10.0)
+        for left, right in zip(toks, toks[1:]):
+            gap = right["bbox"][0] - left["bbox"][2]
+            if gap > max(8.0, med_w * 0.85):
+                row_gaps.append((left["bbox"][2] + right["bbox"][0]) / 2.0)
+
+    if row_gaps:
+        row_gaps.sort()
+        med_w_all = median([t["width"] for r in rows for t in r["tokens"]], default=10.0)
+        merge_tol = max(8.0, med_w_all * 0.85)
+        clusters = []
+        for gap in row_gaps:
+            if not clusters or abs(gap - clusters[-1]["center"]) > merge_tol:
+                clusters.append({"center": gap, "values": [gap]})
+            else:
+                clusters[-1]["values"].append(gap)
+                clusters[-1]["center"] = sum(clusters[-1]["values"]) / len(clusters[-1]["values"])
+
+        min_support = 1 if len(rows) <= 3 else 2
+        boundaries = [c["center"] for c in clusters if len(c["values"]) >= min_support]
+    else:
+        boundaries = []
+
+    boundaries = [b for b in boundaries if table_bbox[0] < b < table_bbox[2]]
+    boundaries = sorted(boundaries)
+
+    # Fallback: cluster x-centers when gap detection yields only one column.
+    if len(boundaries) < 1:
+        centers = sorted(t["x_center"] for r in rows for t in r["tokens"])
+        if centers:
+            diffs = [b - a for a, b in zip(centers, centers[1:])]
+            large = [d for d in diffs if d > median(diffs, default=0) * 2.2 and d > 18]
+            if large:
+                threshold = min(large)
+                boundaries = []
+                for a, b in zip(centers, centers[1:]):
+                    if b - a >= threshold:
+                        boundaries.append((a + b) / 2.0)
+
+    edges = [table_bbox[0]] + boundaries + [table_bbox[2]]
+    columns = []
+    for i in range(len(edges) - 1):
+        columns.append({"col_id": i, "x0": edges[i], "x1": edges[i + 1]})
+
+    return columns
+
+
+def token_column(token, columns):
+    center = token["x_center"]
+    for col in columns:
+        if col["x0"] <= center <= col["x1"]:
+            return col["col_id"]
+
+    best_id = 0
+    best_overlap = -1.0
+    for col in columns:
+        overlap = max(0.0, min(token["bbox"][2], col["x1"]) - max(token["bbox"][0], col["x0"]))
+        if overlap > best_overlap:
+            best_overlap = overlap
+            best_id = col["col_id"]
+    return best_id
+
+
+def join_tokens(tokens):
+    toks = sorted(tokens, key=lambda t: t["bbox"][0])
+    text = ""
+    no_space_before = set(",.;:%)]}")
+    no_space_after = set("([{")
+    for token in toks:
+        piece = token["text"]
+        if not text:
+            text = piece
+        elif piece in no_space_before or text[-1:] in no_space_after or piece.startswith("%"):
+            text += piece
+        elif re.match(r"^[,.;:%)]", piece):
+            text += piece
+        else:
+            text += " " + piece
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def build_cells(rows, columns):
+    raw_cells = []
+    for row in rows:
+        buckets = defaultdict(list)
+        for token in row["tokens"]:
+            buckets[token_column(token, columns)].append(token)
+
+        occupied = sorted(buckets)
+        for col_id in occupied:
+            tokens = buckets[col_id]
+            if not tokens:
+                continue
+
+            x0 = min(t["bbox"][0] for t in tokens)
+            x1 = max(t["bbox"][2] for t in tokens)
+            text = join_tokens(tokens)
+
+            col_span = 1
+            for col in columns:
+                if col["col_id"] <= col_id:
+                    continue
+                if x1 > col["x0"] + (col["x1"] - col["x0"]) * 0.25:
+                    col_span = max(col_span, col["col_id"] - col_id + 1)
+
+            raw_cells.append(
+                {
+                    "row_id": row["row_id"],
+                    "col_id": col_id,
+                    "row_span": 1,
+                    "col_span": col_span,
+                    "is_header": False,
+                    "text": text,
+                    "_x0": x0,
+                    "_x1": x1,
+                    "_y0": row["y0"],
+                    "_y1": row["y1"],
+                }
+            )
+
+    return raw_cells
+
+
+def normalize_label(text):
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def detect_header_rows(cells, rows, columns):
+    header_keywords = {
+        "method",
+        "model",
+        "approach",
+        "dataset",
+        "data",
+        "accuracy",
+        "acc",
+        "f1",
+        "f 1",
+        "score",
+        "notes",
+        "note",
+    }
+
+    header_rows = set()
+    for row in rows:
+        row_cells = [c for c in cells if c["row_id"] == row["row_id"]]
+        labels = [normalize_label(c["text"]) for c in row_cells]
+        hits = 0
+        for label in labels:
+            if any(k == label or k in label.split() or k in label for k in header_keywords):
+                hits += 1
+        non_numeric = sum(1 for c in row_cells if parse_number(c["text"]) is None)
+        if hits >= 2 or (row["row_id"] <= 1 and hits >= 1 and non_numeric >= max(1, len(row_cells) - 1)):
+            header_rows.add(row["row_id"])
+
+    if not header_rows and rows:
+        header_rows.add(0)
+
+    # Treat contiguous top rows before the first body row as headers.
+    max_contiguous = -1
+    for row_id in sorted(header_rows):
+        if row_id == max_contiguous + 1:
+            max_contiguous = row_id
+    return {rid for rid in header_rows if rid <= max_contiguous}
+
+
+def header_map(cells, header_rows, columns):
+    by_col = defaultdict(list)
+    for cell in cells:
+        if cell["row_id"] in header_rows:
+            for offset in range(cell["col_span"]):
+                by_col[cell["col_id"] + offset].append(cell["text"])
+
+    mapped = {}
+    for col in columns:
+        col_id = col["col_id"]
+        label = normalize_label(" ".join(by_col.get(col_id, [])))
+        mapped[col_id] = label
+    return mapped
+
+
+def parse_number(text):
+    if text is None:
+        return None
+    s = str(text).strip()
+    if not s:
+        return None
+
+    s = s.replace(",", "")
+    match = re.search(r"[-+]?\d+(?:\.\d+)?", s)
+    if not match:
+        return None
+
+    try:
+        return float(match.group(0))
+    except ValueError:
+        return None
+
+
+def canonical_column(label):
+    label = normalize_label(label)
+    compact = label.replace(" ", "")
+
+    if "method" in label or "model" in label or "approach" in label or "system" in label:
+        return "method"
+    if "dataset" in label or label in {"data", "set"} or "benchmark" in label:
+        return "dataset"
+    if "accuracy" in label or compact == "acc" or " acc " in f" {label} ":
+        return "accuracy"
+    if compact in {"f1", "f1score"} or "f1" in compact or "f 1" in label:
+        return "f1"
+    if "note" in label or "remark" in label or "comment" in label:
+        return "notes"
+    return None
+
+
+def normalize_metrics(cells, header_rows, columns):
+    col_labels = header_map(cells, header_rows, columns)
+    col_roles = {col_id: canonical_column(label) for col_id, label in col_labels.items()}
+
+    # Position fallback for common five-column metric tables.
+    roles_present = {role for role in col_roles.values() if role}
+    if len(columns) >= 5 and len(roles_present) < 4:
+        fallback = ["method", "dataset", "accuracy", "f1", "notes"]
+        for i, role in enumerate(fallback):
+            if i < len(columns) and not col_roles.get(i):
+                col_roles[i] = role
+
+    by_row_col = {(c["row_id"], c["col_id"]): c for c in cells}
+    metrics = []
+
+    for row_id in sorted({c["row_id"] for c in cells}):
+        if row_id in header_rows:
+            continue
+
+        record = {"method": "", "dataset": "", "accuracy": "", "f1": "", "notes": ""}
+        for col in columns:
+            cell = by_row_col.get((row_id, col["col_id"]))
+            if not cell:
+                continue
+            role = col_roles.get(col["col_id"])
+            if role in record:
+                value = cell["text"].strip()
+                if record[role]:
+                    record[role] = f"{record[role]} {value}".strip()
+                else:
+                    record[role] = value
+
+        has_metric = parse_number(record["accuracy"]) is not None or parse_number(record["f1"]) is not None
+        has_entity = bool(record["method"] or record["dataset"])
+        if has_metric or has_entity:
+            metrics.append(record)
+
+    return metrics, col_labels, col_roles
+
+
+def audit_metrics(metrics, outside_words, cells, header_rows, col_roles):
+    issues = []
+
+    required = ["method", "dataset", "accuracy", "f1", "notes"]
+    for field in required:
+        if any(field not in row for row in metrics):
+            issues.append(
+                {
+                    "category": "missing_required_column",
+                    "field": field,
+                    "message": f"Required field {field} missing from at least one normalized row.",
+                }
+            )
+
+    for idx, row in enumerate(metrics):
+        for field in ("method", "dataset"):
+            if not str(row.get(field, "")).strip():
+                issues.append(
+                    {
+                        "category": "empty_required_text",
+                        "row_index": idx,
+                        "field": field,
+                        "message": f"Metric row {idx} has empty {field}.",
+                    }
+                )
+
+        for field in ("accuracy", "f1"):
+            if parse_number(row.get(field)) is None:
+                issues.append(
+                    {
+                        "category": "non_numeric_metric",
+                        "row_index": idx,
+                        "field": field,
+                        "value": row.get(field, ""),
+                        "message": f"Metric row {idx} has non-numeric {field}.",
+                    }
+                )
+
+    seen = {}
+    for idx, row in enumerate(metrics):
+        key = (
+            normalize_label(row.get("method", "")),
+            normalize_label(row.get("dataset", "")),
+        )
+        if key in seen and key != ("", ""):
+            issues.append(
+                {
+                    "category": "duplicate_record",
+                    "row_index": idx,
+                    "duplicate_of": seen[key],
+                    "message": "Duplicate method/dataset metric record.",
+                }
+            )
+        else:
+            seen[key] = idx
+
+    if outside_words:
+        sample = " ".join(w["text"] for w in sorted(outside_words, key=lambda t: (t["y_center"], t["x_center"]))[:20])
+        issues.append(
+            {
+                "category": "excluded_non_table_text",
+                "count": len(outside_words),
+                "sample": sample,
+                "message": "Words outside the table bounding box were excluded from normalized metrics.",
+            }
+        )
+
+    roles = {role for role in col_roles.values() if role}
+    for field in ("method", "dataset", "accuracy", "f1"):
+        if field not in roles:
+            issues.append(
+                {
+                    "category": "ambiguous_structure",
+                    "field": field,
+                    "message": f"No explicit column header was mapped to {field}; positional fallback may have been used.",
+                }
+            )
+
+    best_by_dataset = {}
+    grouped = defaultdict(list)
+    for idx, row in enumerate(metrics):
+        dataset = row.get("dataset", "").strip()
+        f1 = parse_number(row.get("f1"))
+        if dataset and f1 is not None:
+            grouped[dataset].append((idx, row, f1))
+
+    for dataset, rows in grouped.items():
+        best_idx, best_row, best_f1 = max(rows, key=lambda item: item[2])
+        best_by_dataset[dataset] = {
+            "method": best_row.get("method", ""),
+            "f1": best_f1,
+            "row_index": best_idx,
+        }
+
+    return {
+        "row_count": len(metrics),
+        "best_by_dataset": best_by_dataset,
+        "issues": issues,
+    }
+
+
+def write_cells_csv(path, cells, header_rows):
+    ensure_parent(path)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=["row_id", "col_id", "row_span", "col_span", "is_header", "text"],
+        )
+        writer.writeheader()
+        for cell in sorted(cells, key=lambda c: (c["row_id"], c["col_id"])):
+            writer.writerow(
+                {
+                    "row_id": cell["row_id"],
+                    "col_id": cell["col_id"],
+                    "row_span": cell["row_span"],
+                    "col_span": cell["col_span"],
+                    "is_header": str(cell["row_id"] in header_rows).lower(),
+                    "text": cell["text"],
+                }
+            )
+
+
+def write_metrics_csv(path, metrics):
+    ensure_parent(path)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["method", "dataset", "accuracy", "f1", "notes"])
+        writer.writeheader()
+        for row in metrics:
+            writer.writerow({field: row.get(field, "") for field in writer.fieldnames})
+
+
+def write_audit_json(path, audit):
+    ensure_parent(path)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(audit, f, indent=2, ensure_ascii=False)
+
+
+def write_summary(path, metrics, audit):
+    ensure_parent(path)
+
+    lines = [
+        "# OCR Table Extraction Summary",
+        "",
+        f"- Normalized metric rows: **{audit['row_count']}**",
+        f"- Validation issues: **{len(audit['issues'])}**",
+        "",
+        "## Best F1 By Dataset",
+        "",
+    ]
+
+    if audit["best_by_dataset"]:
+        lines.extend(["| Dataset | Best method | F1 |", "|---|---:|---:|"])
+        for dataset in sorted(audit["best_by_dataset"]):
+            item = audit["best_by_dataset"][dataset]
+            lines.append(f"| {dataset} | {item['method']} | {item['f1']:g} |")
+    else:
+        lines.append("No dataset-level best F1 result could be computed.")
+
+    lines.extend(["", "## Extracted Metrics", ""])
+
+    if metrics:
+        lines.extend(["| Method | Dataset | Accuracy | F1 | Notes |", "|---|---|---:|---:|---|"])
+        for row in metrics:
+            lines.append(
+                "| {method} | {dataset} | {accuracy} | {f1} | {notes} |".format(
+                    method=row.get("method", ""),
+                    dataset=row.get("dataset", ""),
+                    accuracy=row.get("accuracy", ""),
+                    f1=row.get("f1", ""),
+                    notes=row.get("notes", ""),
+                )
+            )
+    else:
+        lines.append("No metric rows were normalized from the reconstructed table.")
+
+    lines.extend(["", "## Audit Notes", ""])
+
+    if audit["issues"]:
+        for issue in audit["issues"]:
+            lines.append(f"- `{issue['category']}`: {issue.get('message', '')}")
+    else:
+        lines.append("- No extraction or validation issues were detected.")
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
+def main():
+    original_json = getenv_path("ORIGINAL_WORDS_JSON")
+    output_cells = getenv_path("OUTPUT_CELLS_CSV")
+    output_metrics = getenv_path("OUTPUT_METRICS_CSV")
+    output_audit = getenv_path("OUTPUT_AUDIT_JSON")
+    summary_md = getenv_path("SUMMARY_MD")
+
+    _, table_bbox, words = load_input(original_json)
+    table_words, outside_words = filter_table_words(words, table_bbox)
+
+    rows = group_rows(table_words)
+    columns = infer_columns(rows, table_bbox)
+    cells = build_cells(rows, columns)
+
+    header_rows = detect_header_rows(cells, rows, columns)
+    for cell in cells:
+        cell["is_header"] = cell["row_id"] in header_rows
+
+    metrics, _, col_roles = normalize_metrics(cells, header_rows, columns)
+    audit = audit_metrics(metrics, outside_words, cells, header_rows, col_roles)
+
+    write_cells_csv(output_cells, cells, header_rows)
+    write_metrics_csv(output_metrics, metrics)
+    write_audit_json(output_audit, audit)
+    write_summary(summary_md, metrics, audit)
+
+
+if __name__ == "__main__":
+    main()
+```

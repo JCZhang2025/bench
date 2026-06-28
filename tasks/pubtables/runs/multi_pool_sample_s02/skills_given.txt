@@ -1,4 +1,3 @@
-file-converter
-multi-source-data-cleaner-pro
-code-executor
-data2visualization
+table-ocr-structure-reconstructor
+metric-consistency-auditor
+grounded-metric-summary

@@ -48,6 +48,14 @@ metric_extraction_audit
 summary_reporting
 ```
 
+The PubTables pool mixes answer-free custom skills with retained public SkillHub skills. The custom skills cover OCR word-box structure reconstruction, bbox row/column parsing, boundary noise filtering, header spans, metric audits, artifact contracts, and grounded summaries. The frozen three-pool rationale is documented in `tasks\pubtables\skill_pool_manifest.json`.
+
+Run the custom-skill leakage audit before benchmark runs:
+
+```powershell
+python tools\audit_pubtables_skills.py
+```
+
 ## Local Smoke Test
 
 From PowerShell:
@@ -74,6 +82,28 @@ Run all conditions:
 ```powershell
 python framework\runner.py --task pubtables --all --import-policy warn --result-csv tasks\pubtables\results\agent_runs_multi_pool_warn.csv
 ```
+
+Every API-backed runner invocation gets a `run_id` automatically, such as `run_20260627_012345`. Agent outputs are stored without overwriting previous runs:
+
+```text
+tasks\pubtables\runs\<condition>\agent_runs\<run_id>\
+  prompt.md
+  skills_given.txt
+  run_metadata.json
+  agent_workspace\
+    glm_response.json
+    model_content.txt
+    generated_solution.py
+    script_stdout.txt
+    script_stderr.txt
+  artifacts\
+    table_cells.csv
+    metrics.csv
+    audit.json
+    summary.md
+```
+
+Pass `--run-id my_run_name` to choose a stable ID. Reusing an existing ID fails unless `--overwrite-run-id` is passed. Agent verifier results are recorded in `agent_runs_*.csv`; `results.csv` is reserved for oracle/manual verifier smoke tests.
 
 Use `--import-policy warn` for the main pilot so every condition still produces artifacts for error analysis. Import violations are recorded but do not stop execution.
 

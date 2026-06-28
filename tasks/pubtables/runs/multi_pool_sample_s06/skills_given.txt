@@ -1,4 +1,3 @@
-chat2duckdb
-multi-source-data-cleaner-pro
-data-analysis
-data2visualization
+code-executor
+metric-consistency-auditor
+generate-report123

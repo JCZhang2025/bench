@@ -1,4 +1,3 @@
-chat2duckdb
-multi-source-data-cleaner-pro
-data-analysis
-sql-report-generator
+code-executor
+metric-consistency-auditor
+generate-report123

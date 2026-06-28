@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s06\agent_workspace\generated_solution.py", line 7, in <module>
+    with os.environ['ORIGINAL_WORDS_JSON'] as f:
+         ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'str' object does not support the context manager protocol (missed __exit__ method)

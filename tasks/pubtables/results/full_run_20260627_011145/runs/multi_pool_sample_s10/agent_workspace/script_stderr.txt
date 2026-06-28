@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s10\agent_workspace\generated_solution.py", line 234, in <module>
+    main()
+    ~~~~^^
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s10\agent_workspace\generated_solution.py", line 213, in main
+    cells = reconstruct_table_cells(words_data, table_bbox)
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s10\agent_workspace\generated_solution.py", line 34, in reconstruct_table_cells
+    table_words = [word for word in words if is_inside_table(word['bbox'], table_bbox)]
+                                             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s10\agent_workspace\generated_solution.py", line 27, in is_inside_table
+    return (x0 >= table_bbox['x0'] and y0 >= table_bbox['y0'] and
+                  ~~~~~~~~~~^^^^^^
+TypeError: list indices must be integers or slices, not str

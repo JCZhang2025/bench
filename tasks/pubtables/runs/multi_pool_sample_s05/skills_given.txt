@@ -1,4 +1,3 @@
-chat2duckdb
-data-analyst-cn
-data-anomaly-detector
-generate-chart
+code-executor
+data-analysis
+typora-visual-architect

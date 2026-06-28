@@ -1,0 +1,10 @@
+row_id,col_id,row_span,col_span,is_header,text
+0,8,1,1,True,Dataset
+2,16,1,1,True,91.2
+2,27,1,1,True,best
+3,16,1,1,False,89.5
+4,16,1,1,False,84.7
+5,16,1,1,False,87.8
+5,27,1,1,False,best
+6,0,1,1,False,Rule
+6,16,1,1,False,71.0

@@ -9,24 +9,20 @@ One sampled skill from each pool, seed 7
 
 ## Skill Pools
 
-### table_extraction
-- all-to-markdown
+### table_reconstruction
+- table-boundary-noise-filter
 
-### data_cleaning
-- data-analysis
-
-### validation_audit
-- data-analysis
+### metric_extraction_audit
+- artifact-contract-checker
 
 ### summary_reporting
-- typora-visual-architect
+- generate-report123
 
 ## Pool Samples
 
-- table_extraction: all-to-markdown
-- data_cleaning: data-analysis
-- validation_audit: data-analysis
-- summary_reporting: typora-visual-architect
+- table_reconstruction: table-boundary-noise-filter
+- metric_extraction_audit: artifact-contract-checker
+- summary_reporting: generate-report123
 
 ## Task
 
@@ -45,601 +41,220 @@ For the audit, report the number of normalized metric rows, the best method by F
 
 ## Available Skills
 
-- all-to-markdown
-- data-analysis
-- typora-visual-architect
+- table-boundary-noise-filter
+- artifact-contract-checker
+- generate-report123
 
 ## Available Skill Documents
 
-## Pool: table_extraction
+## Pool: table_reconstruction
 
-### all-to-markdown
-
-```markdown
----
-name: all-to-markdown
-version: 0.1.0
-description: 将任意文件（PDF、Word、Excel、PPT、图片、音频、网页等）转换为 Markdown
-author: Ping Si <sipingme@gmail.com>
-tags: [markdown, convert, pdf, docx, pptx, xlsx, html, ocr, youtube]
-requiredEnvVars: []
----
-
-# All to Markdown
-
-基于 [Microsoft MarkItDown](https://github.com/microsoft/markitdown)，将任意格式的文件或 URL 转换为 Markdown，便于 LLM 分析和处理。
-
-## 支持格式
-
-| 类型 | 格式 |
-|------|------|
-| 文档 | PDF、DOCX、PPTX、XLSX、XLS、EPUB、MSG |
-| 数据 | CSV、JSON、XML |
-| 图片 | JPG、PNG 等（含 EXIF 元数据，可选 OCR）|
-| 音频 | WAV、MP3（含语音转录，需 OpenAI Key）|
-| 网页 | HTML、YouTube URL（含字幕提取）|
-| 压缩 | ZIP（逐文件转换）|
-
-## 前置要求
-
-安装 markitdown：
-
-```bash
-pip install 'markitdown[all]'
-```
-
-## 给 AI 的使用说明
-
-当用户需要将文件或 URL 转换为 Markdown 时，使用以下命令：
-
-```bash
-scripts/run.sh <文件路径或URL>
-```
-
-可选标志：
-- `-o <输出文件>` — 保存到文件
-- `--use-plugins` — 启用插件（如 markitdown-ocr）
-
-**重要原则**：
-- 转换结果直接输出到 stdout，可供 AI 直接读取分析
-- 文件路径使用用户提供的实际路径，不要假设
-- 转换大型文件时提前告知用户可能需要较长时间
-
-## 使用示例
-
-### 示例 1：转换 PDF
-
-> 用户：帮我把这个 PDF 转成 Markdown，以便我分析内容
-
-AI 执行：
-```bash
-scripts/run.sh /path/to/document.pdf
-```
-
-### 示例 2：转换并保存
-
-> 用户：把这个 Excel 转成 Markdown 文件保存
-
-AI 执行：
-```bash
-scripts/run.sh /path/to/data.xlsx -o output.md
-```
-
-### 示例 3：转换网页
-
-> 用户：把这篇文章转成 Markdown
-
-AI 执行：
-```bash
-scripts/run.sh https://example.com/article.html
-```
-
-### 示例 4：提取 YouTube 字幕
-
-> 用户：把这个 YouTube 视频的内容提取出来
-
-AI 执行：
-```bash
-scripts/run.sh https://www.youtube.com/watch?v=xxx
-```
-
-## 可选 AI 增强功能
-
-设置 `OPENAI_API_KEY` 后，markitdown 可对图片生成 AI 描述：
-
-```bash
-OPENAI_API_KEY=sk-xxx scripts/run.sh image.jpg
-```
-
-## 安全说明
-
-- 仅在本地执行文件转换，不发送文件内容到远程服务
-- 转换 URL 时会访问对应网络地址
-- 启用 LLM 功能时，图片内容会发送到 OpenAI API
-```
-
-## Pool: data_cleaning
-
-### data-analysis
+### table-boundary-noise-filter
 
 ```markdown
 ---
-name: Data Analysis
-slug: data-analysis
-version: 1.0.2
-homepage: https://clawic.com/skills/data-analysis
-description: "Data analysis and visualization. Query databases, generate reports, automate spreadsheets, and turn raw data into clear, actionable insights. Use when (1) you need to analyze, visualize, or explain data; (2) the user wants reports, dashboards, or metrics turned into a decision; (3) the work involves SQL, Python, spreadsheets, BI tools, or notebooks; (4) you need to compare segments, cohorts, funnels, experiments, or time periods; (5) the user explicitly installs or references the skill for the current task."
-changelog: Added metric contracts, chart guidance, and decision brief templates for more reliable analysis.
-metadata: {"clawdbot":{"emoji":"D","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
+name: table-boundary-noise-filter
+description: Use when OCR data contains table words mixed with captions, footnotes, page text, or other non-table noise that must be excluded before extraction.
 ---
 
-## When to Use
+# Table Boundary Noise Filter
 
-Use this skill when the user needs to analyze, explain, or visualize data from SQL, spreadsheets, notebooks, dashboards, exports, or ad hoc tables.
+Use this skill before reconstructing rows and columns when the OCR source includes text outside the table.
 
-Use it for KPI debugging, experiment readouts, funnel or cohort analysis, anomaly reviews, executive reporting, and quality checks on metrics or query logic.
+## Filtering Procedure
 
-Prefer this skill over generic coding or spreadsheet help when the hard part is analytical judgment: metric definition, comparison design, interpretation, or recommendation.
+1. Read the table bounding box when one is provided.
+2. For each word box, compute its center point and overlap with the table box.
+3. Keep words whose center lies inside the table box.
+4. For border cases, keep words with strong overlap and record the assumption in the audit.
+5. Exclude caption, title, note, and footnote text that is outside the table region.
+6. Preserve excluded text separately only if the task asks for provenance; do not mix it into metric rows.
 
-User asks about: analyzing data, finding patterns, understanding metrics, testing hypotheses, cohort analysis, A/B testing, churn analysis, or statistical significance.
+## Quality Checks
 
-## Core Principle
+- The first reconstructed row should come from the table region, not a caption above it.
+- The last reconstructed row should come from the table region, not notes below it.
+- Non-table prose should never become a normalized data record.
+- If many words are excluded, summarize the reason in the audit artifact.
 
-Analysis without a decision is just arithmetic. Always clarify: **What would change if this analysis shows X vs Y?**
+## Guardrails
 
-## Methodology First
-
-Before touching data:
-1. **What decision** is this analysis supporting?
-2. **What would change your mind?** (the real question)
-3. **What data do you actually have** vs what you wish you had?
-4. **What timeframe** is relevant?
-
-## Statistical Rigor Checklist
-
-- [ ] Sample size sufficient? (small N = wide confidence intervals)
-- [ ] Comparison groups fair? (same time period, similar conditions)
-- [ ] Multiple comparisons? (20 tests = 1 "significant" by chance)
-- [ ] Effect size meaningful? (statistically significant != practically important)
-- [ ] Uncertainty quantified? ("12-18% lift" not just "15% lift")
-
-## Architecture
-
-This skill does not require local folders, persistent memory, or setup state.
-
-Use the included reference files as lightweight guides:
-- `metric-contracts.md` for KPI definitions and caveats
-- `chart-selection.md` for visual choice and chart anti-patterns
-- `decision-briefs.md` for stakeholder-facing outputs
-- `pitfalls.md` and `techniques.md` for analytical rigor and method choice
-
-## Quick Reference
-
-Load only the smallest relevant file to keep context focused.
-
-| Topic | File |
-|-------|------|
-| Metric definition contracts | `metric-contracts.md` |
-| Visual selection and chart anti-patterns | `chart-selection.md` |
-| Decision-ready output formats | `decision-briefs.md` |
-| Failure modes to catch early | `pitfalls.md` |
-| Method selection by question type | `techniques.md` |
-
-## Core Rules
-
-### 1. Start from the decision, not the dataset
-- Identify the decision owner, the question that could change a decision, and the deadline before doing analysis.
-- If no decision would change, reframe the request before computing anything.
-
-### 2. Lock the metric contract before calculating
-- Define entity, grain, numerator, denominator, time window, timezone, filters, exclusions, and source of truth.
-- If any of those are ambiguous, state the ambiguity explicitly before presenting results.
-
-### 3. Separate extraction, transformation, and interpretation
-- Keep query logic, cleanup assumptions, and analytical conclusions distinguishable.
-- Never hide business assumptions inside SQL, formulas, or notebook code without naming them in the write-up.
-
-### 4. Choose visuals to answer a question
-- Select charts based on the analytical question: trend, comparison, distribution, relationship, composition, funnel, or cohort retention.
-- Do not add charts that make the deck look fuller but do not change the decision.
-
-### 5. Brief every result in decision format
-- Every output should include the answer, evidence, confidence, caveats, and recommended next action.
-- If the output is going to a stakeholder, translate the method into business implications instead of leading with technical detail.
-
-### 6. Stress-test claims before recommending action
-- Segment by obvious confounders, compare the right baseline, quantify uncertainty, and check sensitivity to exclusions or time windows.
-- Strong-looking numbers without robustness checks are not decision-ready.
-
-### 7. Escalate when the data cannot support the claim
-- Block or downgrade conclusions when sample size is weak, the source is unreliable, definitions drifted, or confounding is unresolved.
-- It is better to say "unknown yet" than to produce false confidence.
-
-## Common Traps
-
-- Reusing a KPI name after changing numerator, denominator, or exclusions -> trend comparisons become invalid.
-- Comparing daily, weekly, and monthly grains in one chart -> movement looks real but is mostly aggregation noise.
-- Showing percentages without underlying counts -> leadership overreacts to tiny denominators.
-- Using a pretty chart instead of the right chart -> the output looks polished but hides the actual decision signal.
-- Hunting for interesting cuts after seeing the result -> narrative follows chance instead of evidence.
-- Shipping automated reports without metric owners or caveats -> bad numbers spread faster than they can be corrected.
-- Treating observational patterns as causal proof -> action plans get built on correlation alone.
-
-## Approach Selection
-
-| Question type | Approach | Key output |
-|---------------|----------|------------|
-| "Is X different from Y?" | Hypothesis test | p-value + effect size + CI |
-| "What predicts Z?" | Regression/correlation | Coefficients + R² + residual check |
-| "How do users behave over time?" | Cohort analysis | Retention curves by cohort |
-| "Are these groups different?" | Segmentation | Profiles + statistical comparison |
-| "What's unusual?" | Anomaly detection | Flagged points + context |
-
-For technique details and when to use each, see `techniques.md`.
-
-## Output Standards
-
-1. **Lead with the insight**, not the methodology
-2. **Quantify uncertainty** - ranges, not point estimates
-3. **State limitations** - what this analysis can't tell you
-4. **Recommend next steps** - what would strengthen the conclusion
-
-## Red Flags to Escalate
-
-- User wants to "prove" a predetermined conclusion
-- Sample size too small for reliable inference
-- Data quality issues that invalidate analysis
-- Confounders that can't be controlled for
-
-## External Endpoints
-
-This skill makes no external network requests.
-
-| Endpoint | Data Sent | Purpose |
-|----------|-----------|---------|
-| None | None | N/A |
-
-No data is sent externally.
-
-## Security & Privacy
-
-Data that leaves your machine:
-- Nothing by default.
-
-Data that stays local:
-- Nothing by default.
-
-This skill does NOT:
-- Access undeclared external endpoints.
-- Store credentials or raw exports in hidden local memory files.
-- Create or depend on local folder systems for persistence.
-- Create automations or background jobs without explicit user confirmation.
-- Rewrite its own instruction source files.
-
-## Related Skills
-Install with `clawhub install <slug>` if user confirms:
-- `sql` - query design and review for reliable data extraction.
-- `csv` - cleanup and normalization for tabular inputs before analysis.
-- `dashboard` - implementation patterns for KPI visualization layers.
-- `report` - structured stakeholder-facing deliverables after analysis.
-- `business-intelligence` - KPI systems and operating cadence beyond one-off analysis.
-
-## Feedback
-
-- If useful: `clawhub star data-analysis`
-- Stay updated: `clawhub sync`
+- Do not identify excluded text by matching fixture-specific phrases.
+- Use geometry and generic text role only.
 ```
 
-## Pool: validation_audit
+## Pool: metric_extraction_audit
 
-### data-analysis
+### artifact-contract-checker
 
 ```markdown
 ---
-name: Data Analysis
-slug: data-analysis
-version: 1.0.2
-homepage: https://clawic.com/skills/data-analysis
-description: "Data analysis and visualization. Query databases, generate reports, automate spreadsheets, and turn raw data into clear, actionable insights. Use when (1) you need to analyze, visualize, or explain data; (2) the user wants reports, dashboards, or metrics turned into a decision; (3) the work involves SQL, Python, spreadsheets, BI tools, or notebooks; (4) you need to compare segments, cohorts, funnels, experiments, or time periods; (5) the user explicitly installs or references the skill for the current task."
-changelog: Added metric contracts, chart guidance, and decision brief templates for more reliable analysis.
-metadata: {"clawdbot":{"emoji":"D","requires":{"bins":[]},"os":["linux","darwin","win32"]}}
+name: artifact-contract-checker
+description: Use when validating that benchmark agent outputs satisfy required file, schema, JSON, CSV, and grounded Markdown artifact contracts.
 ---
 
-## When to Use
+# Artifact Contract Checker
 
-Use this skill when the user needs to analyze, explain, or visualize data from SQL, spreadsheets, notebooks, dashboards, exports, or ad hoc tables.
+Use this skill to make sure the final outputs are complete and parseable before finishing the task.
 
-Use it for KPI debugging, experiment readouts, funnel or cohort analysis, anomaly reviews, executive reporting, and quality checks on metrics or query logic.
+## Contract Checks
 
-Prefer this skill over generic coding or spreadsheet help when the hard part is analytical judgment: metric definition, comparison design, interpretation, or recommendation.
+1. Confirm every required output path is written.
+2. Confirm CSV files have the required headers exactly once.
+3. Confirm CSV rows parse without delimiter drift or accidental multiline corruption.
+4. Confirm numeric fields are stored in a machine-readable form.
+5. Confirm JSON artifacts parse and contain the requested top-level keys.
+6. Confirm Markdown summaries are grounded in produced data and do not introduce unsupported claims.
+7. Record validation issues in the audit artifact instead of silently fixing them without trace.
 
-User asks about: analyzing data, finding patterns, understanding metrics, testing hypotheses, cohort analysis, A/B testing, churn analysis, or statistical significance.
+## Guardrails
 
-## Core Principle
-
-Analysis without a decision is just arithmetic. Always clarify: **What would change if this analysis shows X vs Y?**
-
-## Methodology First
-
-Before touching data:
-1. **What decision** is this analysis supporting?
-2. **What would change your mind?** (the real question)
-3. **What data do you actually have** vs what you wish you had?
-4. **What timeframe** is relevant?
-
-## Statistical Rigor Checklist
-
-- [ ] Sample size sufficient? (small N = wide confidence intervals)
-- [ ] Comparison groups fair? (same time period, similar conditions)
-- [ ] Multiple comparisons? (20 tests = 1 "significant" by chance)
-- [ ] Effect size meaningful? (statistically significant != practically important)
-- [ ] Uncertainty quantified? ("12-18% lift" not just "15% lift")
-
-## Architecture
-
-This skill does not require local folders, persistent memory, or setup state.
-
-Use the included reference files as lightweight guides:
-- `metric-contracts.md` for KPI definitions and caveats
-- `chart-selection.md` for visual choice and chart anti-patterns
-- `decision-briefs.md` for stakeholder-facing outputs
-- `pitfalls.md` and `techniques.md` for analytical rigor and method choice
-
-## Quick Reference
-
-Load only the smallest relevant file to keep context focused.
-
-| Topic | File |
-|-------|------|
-| Metric definition contracts | `metric-contracts.md` |
-| Visual selection and chart anti-patterns | `chart-selection.md` |
-| Decision-ready output formats | `decision-briefs.md` |
-| Failure modes to catch early | `pitfalls.md` |
-| Method selection by question type | `techniques.md` |
-
-## Core Rules
-
-### 1. Start from the decision, not the dataset
-- Identify the decision owner, the question that could change a decision, and the deadline before doing analysis.
-- If no decision would change, reframe the request before computing anything.
-
-### 2. Lock the metric contract before calculating
-- Define entity, grain, numerator, denominator, time window, timezone, filters, exclusions, and source of truth.
-- If any of those are ambiguous, state the ambiguity explicitly before presenting results.
-
-### 3. Separate extraction, transformation, and interpretation
-- Keep query logic, cleanup assumptions, and analytical conclusions distinguishable.
-- Never hide business assumptions inside SQL, formulas, or notebook code without naming them in the write-up.
-
-### 4. Choose visuals to answer a question
-- Select charts based on the analytical question: trend, comparison, distribution, relationship, composition, funnel, or cohort retention.
-- Do not add charts that make the deck look fuller but do not change the decision.
-
-### 5. Brief every result in decision format
-- Every output should include the answer, evidence, confidence, caveats, and recommended next action.
-- If the output is going to a stakeholder, translate the method into business implications instead of leading with technical detail.
-
-### 6. Stress-test claims before recommending action
-- Segment by obvious confounders, compare the right baseline, quantify uncertainty, and check sensitivity to exclusions or time windows.
-- Strong-looking numbers without robustness checks are not decision-ready.
-
-### 7. Escalate when the data cannot support the claim
-- Block or downgrade conclusions when sample size is weak, the source is unreliable, definitions drifted, or confounding is unresolved.
-- It is better to say "unknown yet" than to produce false confidence.
-
-## Common Traps
-
-- Reusing a KPI name after changing numerator, denominator, or exclusions -> trend comparisons become invalid.
-- Comparing daily, weekly, and monthly grains in one chart -> movement looks real but is mostly aggregation noise.
-- Showing percentages without underlying counts -> leadership overreacts to tiny denominators.
-- Using a pretty chart instead of the right chart -> the output looks polished but hides the actual decision signal.
-- Hunting for interesting cuts after seeing the result -> narrative follows chance instead of evidence.
-- Shipping automated reports without metric owners or caveats -> bad numbers spread faster than they can be corrected.
-- Treating observational patterns as causal proof -> action plans get built on correlation alone.
-
-## Approach Selection
-
-| Question type | Approach | Key output |
-|---------------|----------|------------|
-| "Is X different from Y?" | Hypothesis test | p-value + effect size + CI |
-| "What predicts Z?" | Regression/correlation | Coefficients + R² + residual check |
-| "How do users behave over time?" | Cohort analysis | Retention curves by cohort |
-| "Are these groups different?" | Segmentation | Profiles + statistical comparison |
-| "What's unusual?" | Anomaly detection | Flagged points + context |
-
-For technique details and when to use each, see `techniques.md`.
-
-## Output Standards
-
-1. **Lead with the insight**, not the methodology
-2. **Quantify uncertainty** - ranges, not point estimates
-3. **State limitations** - what this analysis can't tell you
-4. **Recommend next steps** - what would strengthen the conclusion
-
-## Red Flags to Escalate
-
-- User wants to "prove" a predetermined conclusion
-- Sample size too small for reliable inference
-- Data quality issues that invalidate analysis
-- Confounders that can't be controlled for
-
-## External Endpoints
-
-This skill makes no external network requests.
-
-| Endpoint | Data Sent | Purpose |
-|----------|-----------|---------|
-| None | None | N/A |
-
-No data is sent externally.
-
-## Security & Privacy
-
-Data that leaves your machine:
-- Nothing by default.
-
-Data that stays local:
-- Nothing by default.
-
-This skill does NOT:
-- Access undeclared external endpoints.
-- Store credentials or raw exports in hidden local memory files.
-- Create or depend on local folder systems for persistence.
-- Create automations or background jobs without explicit user confirmation.
-- Rewrite its own instruction source files.
-
-## Related Skills
-Install with `clawhub install <slug>` if user confirms:
-- `sql` - query design and review for reliable data extraction.
-- `csv` - cleanup and normalization for tabular inputs before analysis.
-- `dashboard` - implementation patterns for KPI visualization layers.
-- `report` - structured stakeholder-facing deliverables after analysis.
-- `business-intelligence` - KPI systems and operating cadence beyond one-off analysis.
-
-## Feedback
-
-- If useful: `clawhub star data-analysis`
-- Stay updated: `clawhub sync`
+- Validate against the task instructions and produced artifacts only.
+- Do not inspect oracle outputs, verifier code, or expected-answer constants.
+- Do not add hidden helper files as substitutes for required artifacts.
 ```
 
 ## Pool: summary_reporting
 
-### typora-visual-architect
+### generate-report123
 
 ```markdown
 ---
-name: data-visualization-skill
-description: 将结构化或半结构化数据转化为高质量 Markdown 可视化报告，适用于 Typora / Markor / PDF 导出
-version: 1.0
-author: 王维
+name: chartjs-reporter
+description: >
+  This skill should be used when the user needs to turn structured data (query results,
+  CSV summaries, JSON records, or Python dicts/lists) into a standalone HTML visualization
+  report powered by Chart.js. It covers generating pie charts, doughnut charts, bar charts
+  (vertical/horizontal), line charts, mixed charts, and KPI summary cards — all embedded
+  in a dark-themed, self-contained HTML file that opens directly in any browser.
+  Trigger when the user says things like "生成可视化报告", "数据出图", "生成HTML图表",
+  "把查询结果可视化", "用 Chart.js 画图", or provides tabular data and asks for a visual output.
 ---
 
-# 📊 Data Visualization Skill
+# chartjs-reporter — Chart.js HTML 可视化报告生成技能
 
-## 🧩 功能说明
-该 Skill 用于：
-- 数据整理
-- 数据分析
-- 数据可视化（Markdown + HTML + Mermaid）
-- 输出高质量报告（适配 Typora / Markor / PDF）
+## 技能目的
 
----
+将结构化数据（SQL 查询结果、CSV 摘要、Python dict/list、手动提供的表格）转换为
+**自包含的 HTML 可视化报告**，内嵌 Chart.js 图表和 KPI 卡片，无需服务器，
+浏览器直接打开即可查看。
 
-## 🚀 使用方式
+## 触发条件
 
-输入：
-- 原始数据（表格 / 文本 / JSON）
-- 分析目标（可选）
-- 和AI的聊天内容
+以下任意一种情况触发本技能：
+- 用户提供了数据并要求"出图"、"可视化"、"生成报告"
+- 用户已有 DuckDB / SQL / pandas 查询结果，需要图表化展示
+- 用户指定了图表类型（饼图、柱状图、折线图等）+ 数据
+- 与 chat2duckdb 技能配合：查询完成后生成可视化报告
 
-输出：
-- 标准化 Markdown 报告
-- 含图表（Mermaid / 表格 / 卡片）
+## 操作步骤
 
----
+### 步骤 1：理解数据结构
 
-## 📌 输出特性
+收到数据后，确认以下信息：
+- 数据形态：数值列 / 分类列 / 时间列
+- 分析目的：占比 / 趋势 / 对比 / 排名
+- 期望图表类型（用户未指定时，按照「图表选型规则」自动选择）
 
-- 从 CSV/JSON 文件加载数据，或使用内置示例数据集
-- 使用 matplotlib 生成专业图表（柱状图、折线图、散点图）
-- 生成带样式的报告，包括：
-  - 蓝色主题配色（`#e3f2fd`、`#bbdefb`、`#2196f3`）
-  - 弹性卡片布局展示关键指标
-  - 带条纹行的样式化 HTML 表格
-  - 用于数据处理流程的 Mermaid 流程图
-  - 渐变总结框
-- 输出内嵌 base64 图片的 Markdown（无需外部文件）
-- 从 CSV/JSON 文件加载数据，或使用内置示例数据集
-- 使用 matplotlib 生成专业图表（柱状图、折线图、散点图）
-- 生成带样式的报告，包括：
-  - 蓝色主题配色（`#e3f2fd`、`#bbdefb`、`#2196f3`）
-  - 弹性卡片布局展示关键指标
-  - 带条纹行的样式化 HTML 表格
-  - 用于数据处理流程的 Mermaid 流程图
-  - 渐变总结框
-- 输出内嵌 base64 图片的 Markdown（无需外部文件）
-- 通过 `config.yaml` 完全自定义
----
+### 步骤 2：选择图表类型
 
-## 🎯 适用场景
+| 分析目的 | 推荐图表 |
+|---------|---------|
+| 占比 / 构成 | doughnut（≤6类）/ pie |
+| 趋势 / 时间序列 | line（fill: true 显示面积） |
+| 分类对比（≤8项） | bar（垂直） |
+| 分类对比（>8项或标签长） | bar（水平，indexAxis: 'y'） |
+| 多指标对比 | 分组 bar |
+| 排名 Top N | 水平 bar + 进度条 |
+| 关键指标摘要 | KPI 卡片（非图表） |
 
-- 市场调研
-- 销售数据分析
-- 食品行业分析（重点适配）
-- 竞品对比
-- 趋势预测
-## 使用方法
-1. 将数据文件（CSV/JSON）放入目录，或在 `config.yaml` 中修改数据源路径。
-2. 在 `config.yaml` 中调整可视化参数（图表类型、列名、标题等）。
-3. 运行技能：
-   ```bash
-   python run.py
-   4.生成的报告将保存为 output.md（可配置）。在 Typora 或 Markor 中打开即可查看带样式的可视化结果。
+### 步骤 3：调用生成脚本
 
-## 输出格式规则（严格遵循）
+使用 `scripts/generate_report.py` 生成 HTML 报告：
 
-本技能生成的报告完全遵循以下格式要求：
-
-- 全文包裹在 `markdown ...`（四个反引号）内，防止外层提前闭合。
-- 所有 CSS 均写在 `style` 属性中。
-- 卡片布局：`display: flex`、`gap`、`border-radius`、`box-shadow`。
-- 表格表头背景色 `#b3e5fc`，行间使用 `border-bottom` 分隔。
-- 渐变总结框：`linear-gradient(145deg, #bbdefb, #b2dfdb)`。
-- 标题和署名居中，并包含日期。
-- 适当位置可包含 Mermaid 图表和任务列表。
-
-## 依赖环境
-
-- Python 3.8+
-- pandas, matplotlib, pyyaml
-- （可选）seaborn 用于高级图表
-
-安装命令：
-
-bash
-
-```
-pip install pandas matplotlib pyyaml
+```bash
+python scripts/generate_report.py \
+  --title "报告标题" \
+  --subtitle "副标题说明" \
+  --data '{"charts": [...], "kpis": [...]}' \
+  --output report.html
 ```
 
-## 配置说明 (`config.yaml`)
+也可以直接在 Python 中调用（适合与 chat2duckdb 配合）：
 
-| 参数              | 类型    | 描述                                    |
-| :---------------- | :------ | :-------------------------------------- |
-| `data_source`     | string  | CSV/JSON 文件路径（留空则使用示例数据） |
-| `chart_type`      | string  | `bar`、`line` 或 `scatter`              |
-| `x_column`        | string  | X 轴列名                                |
-| `y_column`        | string  | Y 轴列名                                |
-| `title`           | string  | 报告标题                                |
-| `output_file`     | string  | 输出 Markdown 文件路径                  |
-| `include_mermaid` | boolean | 是否包含处理流程图                      |
-
-## 文件结构
-
-- `skill.md` – 本说明文档
-- `config.yaml` – 用户设置
-- `run.py` – 主执行脚本
-- `prompt.md` – 含内联 CSS 的 HTML/Markdown 模板
-- `schema.json` – 配置文件 JSON 校验 schema
-
-## 示例
-
-yaml
-
-```
-# config.yaml
-data_source: "sales.csv"
-chart_type: "bar"
-x_column: "Month"
-y_column: "Revenue"
-title: "月度销售报告"
-output_file: "sales_report.md"
-include_mermaid: true
+```python
+from scripts.generate_report import build_report
+html = build_report(title, subtitle, kpis, charts)
+with open("report.html", "w", encoding="utf-8") as f:
+    f.write(html)
 ```
 
+### 步骤 4：数据格式规范
 
+`kpis` 列表（可选，顶部 KPI 卡片）：
+```json
+[
+  {"label": "总营收", "value": "¥1,755,905", "sub": "全年累计", "color": "green"},
+  {"label": "订单数", "value": "200",         "sub": "5 品类",  "color": "blue"}
+]
+```
+`color` 可选值：`blue` | `green` | `yellow` | `purple` | `red`
 
-运行 `python run.py` 即可生成报告。
+`charts` 列表（图表配置）：
+```json
+[
+  {
+    "type": "doughnut",
+    "title": "品类营收占比",
+    "labels": ["Food", "Electronics", "Sports"],
+    "datasets": [{"data": [456833, 351665, 349967]}]
+  },
+  {
+    "type": "line",
+    "title": "月度趋势",
+    "labels": ["1月","2月","3月"],
+    "datasets": [{"label": "营收", "data": [158495, 185560, 98369]}]
+  }
+]
+```
+
+支持的 `type` 值：`bar` | `line` | `doughnut` | `pie` | `horizontalBar`（自动转 bar + indexAxis:y）
+
+### 步骤 5：布局规则
+
+- KPI 卡片行：最多 4 列，超出自动换行
+- 图表区：默认 2 列网格；1 个图表时全宽；3 个图表时 3 列
+- 每张图表高度固定 240px，响应式宽度
+- 表格（Top N 排名）：单独一行，全宽显示
+- 页脚：说明数据来源和生成时间
+
+### 步骤 6：输出与展示
+
+- 输出路径默认为用户提供的路径，或 `./report_<timestamp>.html`
+- 生成后调用 `preview_url` 工具在浏览器中预览
+- 所有依赖（Chart.js）通过 CDN 加载，无需本地安装
+
+## 与 chat2duckdb 配合的标准流程
+
+```
+1. chat2duckdb 执行 SQL 查询 → 得到 DataFrame / 字典结果
+2. chartjs-reporter 将结果转换为图表配置 JSON
+3. 调用 generate_report.py 生成 HTML
+4. 调用 preview_url 展示报告
+```
+
+## 参考资源
+
+- 核心脚本：[scripts/generate_report.py](scripts/generate_report.py)
+- 图表配置参考：[references/chart-config-guide.md](references/chart-config-guide.md)
+- 样式主题参考：[references/theme-tokens.md](references/theme-tokens.md)
+
+## 注意事项
+
+- 报告为**深色主题**（dark mode），背景色 `#0f172a`，适合截图展示
+- 数值超过 1000 时，自动格式化为千分位（¥1,234,567）
+- 颜色序列已内置，无需手动指定每个数据点颜色
+- Chart.js 版本固定为 4.4.0（CDN），确保稳定性
 ```
 
 ## Condition Note

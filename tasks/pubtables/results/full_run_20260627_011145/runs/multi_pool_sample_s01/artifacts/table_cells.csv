@@ -1,0 +1,45 @@
+row_id,col_id,row_span,col_span,is_header,text
+0,0,1,1,True,Table 2. Model
+0,1,1,1,True,performance
+0,3,1,1,True,on two
+0,5,1,1,True,biomedical
+0,6,1,1,True,benchmarks.
+1,0,1,1,False,Method
+1,1,1,1,False,Dataset
+1,4,1,1,False,Evaluation
+1,6,1,1,False,score (%)
+1,7,1,1,False,Notes
+2,4,1,1,False,Accuracy
+2,6,1,1,False,F1
+3,0,1,1,False,GraphNet
+3,1,1,1,False,PubMed
+3,2,1,1,False,QA
+3,4,1,1,False,91.2
+3,6,1,1,False,88.6
+3,7,1,1,False,best
+4,0,1,1,False,TreeCRF
+4,1,1,1,False,PubMed
+4,2,1,1,False,QA
+4,4,1,1,False,89.5
+4,6,1,1,False,86.9
+4,7,1,1,False,baseline
+5,0,1,1,False,GraphNet
+5,1,1,1,False,ChemTable
+5,4,1,1,False,84.7
+5,6,1,1,False,81.3
+5,7,1,1,False,cross-domain
+6,0,1,1,False,TableFormer
+6,1,1,1,False,ChemTable
+6,4,1,1,False,87.8
+6,6,1,1,False,84.2
+6,7,1,1,False,best
+7,0,1,1,False,Rule Parser
+7,1,1,1,False,ChemTable
+7,4,1,1,False,71.0
+7,6,1,1,False,68.4
+7,7,1,1,False,weak baseline
+8,0,1,1,False,Footnote:
+8,1,1,1,False,scores are
+8,3,1,1,False,micro-averaged
+8,5,1,1,False,over table
+8,6,1,1,False,cells.

@@ -1,0 +1,31 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 88.6
+    },
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2
+    }
+  },
+  "issues": [
+    {
+      "category": "non_numeric_metric",
+      "detail": "Row 1 accuracy not numeric: Accuracy"
+    },
+    {
+      "category": "empty_required_text",
+      "detail": "Row 1 method is empty"
+    },
+    {
+      "category": "empty_required_text",
+      "detail": "Row 1 dataset is empty"
+    },
+    {
+      "category": "excluded_non_table_text",
+      "detail": "15 words outside table bbox excluded from metrics"
+    }
+  ]
+}

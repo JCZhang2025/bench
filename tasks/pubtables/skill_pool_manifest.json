@@ -1,0 +1,119 @@
+{
+  "version": 2,
+  "task": "pubtables",
+  "purpose": "Frozen three-pool skill design for the PubTables-style OCR word-box benchmark.",
+  "design_notes": [
+    "The task is modeled as table reconstruction, metric extraction/audit, and grounded summary reporting.",
+    "Custom skills provide answer-free procedural guidance for OCR word-box reconstruction, header/span handling, metric audits, artifact contracts, and grounded summaries.",
+    "Public SkillHub skills are retained where they are useful as general code, data, SQL, or report skills.",
+    "The manifest is documentation only; the benchmark prompt injects SKILL.md files from the configured pools in tasks/pubtables/task.py."
+  ],
+  "leakage_policy": {
+    "rule": "Custom skills must not contain fixture-specific entity names, dataset names, numeric target values, expected row counts, oracle artifacts, verifier identifiers, or target output contents.",
+    "audit_command": "python tools\\audit_pubtables_skills.py",
+    "last_agent_audit_status": "passed"
+  },
+  "pools": {
+    "table_reconstruction": [
+      {
+        "skill_id": "table-ocr-structure-reconstructor",
+        "source": "custom_answer_free",
+        "role": "gold_like",
+        "sha256": "0c31a955d0680955ca3b4076a7b7cb2fcddf3dec07df4b3c19ba58d9eef154c5",
+        "rationale": "General procedure for reconstructing table cells from OCR word boxes and table geometry."
+      },
+      {
+        "skill_id": "bbox-row-column-parser",
+        "source": "custom_answer_free",
+        "role": "gold_like_component",
+        "sha256": "c2cd967ccfb840fefc6b71c5edc0f011e25220345013bdb9457f6a7552ed55e4",
+        "rationale": "Focused coordinate grouping guidance for row and column parsing."
+      },
+      {
+        "skill_id": "table-boundary-noise-filter",
+        "source": "custom_answer_free",
+        "role": "gold_like_component",
+        "sha256": "427fef4d2cf6dcc222b504f2a00199bd07102ba852a6f13e65ce0db336b7ef94",
+        "rationale": "Geometry-based filtering for captions, footnotes, and non-table text."
+      },
+      {
+        "skill_id": "header-span-detector",
+        "source": "custom_answer_free",
+        "role": "gold_like_component",
+        "sha256": "921031840e127a451f1b900d0068150b3a5fc83489a5f43e30bbbef40137e4c5",
+        "rationale": "General guidance for multi-row headers, row spans, and column spans."
+      },
+      {
+        "skill_id": "code-executor",
+        "source": "public_skillhub",
+        "role": "general_code_baseline",
+        "rationale": "General local-code ability without table-specific reconstruction procedure."
+      }
+    ],
+    "metric_extraction_audit": [
+      {
+        "skill_id": "metric-consistency-auditor",
+        "source": "custom_answer_free",
+        "role": "gold_like",
+        "sha256": "39e3810fa53c5d3638fedee3a85cf94da3168b9c9413e2559b5895817ed4e60e",
+        "rationale": "General metric-table consistency checks without target values."
+      },
+      {
+        "skill_id": "artifact-contract-checker",
+        "source": "custom_answer_free",
+        "role": "gold_like",
+        "sha256": "2d8487151ff5e2ca852a804ca2fa417c91818ee6f8a1ad1116d9ba3775863481",
+        "rationale": "General file/schema/grounding checks for benchmark artifacts."
+      },
+      {
+        "skill_id": "data-analysis",
+        "source": "public_skillhub",
+        "role": "near_public",
+        "rationale": "General data-processing and numeric-analysis guidance."
+      },
+      {
+        "skill_id": "chat2duckdb",
+        "source": "public_skillhub",
+        "role": "near_public",
+        "rationale": "SQL-oriented data normalization and validation guidance."
+      },
+      {
+        "skill_id": "sql-master",
+        "source": "public_skillhub",
+        "role": "near_public",
+        "rationale": "SQL-oriented transformation and audit guidance."
+      }
+    ],
+    "summary_reporting": [
+      {
+        "skill_id": "grounded-metric-summary",
+        "source": "custom_answer_free",
+        "role": "gold_like",
+        "sha256": "067815bf4917d7911779ef1066cdfaeea877a834c2a9ad77e8a011ba3c155076",
+        "rationale": "General grounded summary guidance based only on generated metrics and audit."
+      },
+      {
+        "skill_id": "extraction-audit-summary",
+        "source": "custom_answer_free",
+        "role": "gold_like",
+        "sha256": "90907f36e425ea0928ecc5743d22461f6b7845ec4fc473a56bf71438415f69c1",
+        "rationale": "General reporting guidance for extraction results and limitations."
+      },
+      {
+        "skill_id": "typora-visual-architect",
+        "source": "public_skillhub",
+        "role": "near_public"
+      },
+      {
+        "skill_id": "generate-report123",
+        "source": "public_skillhub",
+        "role": "near_public"
+      },
+      {
+        "skill_id": "data2visualization",
+        "source": "public_skillhub",
+        "role": "near_public"
+      }
+    ]
+  }
+}

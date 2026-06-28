@@ -105,7 +105,8 @@ def load_skill_docs(skills: list[str]) -> str:
     for slug in skills:
         skill_md = skills_root() / slug / "SKILL.md"
         if skill_md.exists():
-            content = skill_md.read_text(encoding="utf-8", errors="replace").strip()
+            raw_content = skill_md.read_text(encoding="utf-8", errors="replace")
+            content = "\n".join(line.rstrip() for line in raw_content.splitlines()).strip()
             blocks.append(f"### {slug}\n\n```markdown\n{content}\n```")
         else:
             blocks.append(
@@ -213,4 +214,3 @@ def write_condition_prompts(
         json.dumps(manifest, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-

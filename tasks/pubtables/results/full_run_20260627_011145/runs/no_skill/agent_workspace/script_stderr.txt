@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_workspace\generated_solution.py", line 191, in <module>
+    main()
+    ~~~~^^
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_workspace\generated_solution.py", line 178, in main
+    cells = reconstruct_table_cells(words_data, table_bbox)
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_workspace\generated_solution.py", line 37, in reconstruct_table_cells
+    if is_inside_table(word, table_bbox):
+       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\no_skill\agent_workspace\generated_solution.py", line 28, in is_inside_table
+    x1, y1, x2, y2 = table_bbox.get('x1', 0), table_bbox.get('y1', 0), table_bbox.get('x2', 0), table_bbox.get('y2', 0)
+                     ^^^^^^^^^^^^^^
+AttributeError: 'list' object has no attribute 'get'

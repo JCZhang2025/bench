@@ -1,0 +1,20 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed": {
+      "method": "GraphNet",
+      "f1": ""
+    },
+    "ChemTable": {
+      "method": "GraphNet",
+      "f1": ""
+    }
+  },
+  "issues": [
+    "Row 2: no numeric accuracy or f1 value found",
+    "Row 3: no numeric accuracy or f1 value found",
+    "Row 4: no numeric accuracy or f1 value found",
+    "Row 5: no numeric accuracy or f1 value found",
+    "Row 6: no numeric accuracy or f1 value found"
+  ]
+}

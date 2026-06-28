@@ -1,0 +1,6 @@
+method,dataset,accuracy,f1,notes
+GraphNet,PubMed,,,best
+TreeCRF,PubMed,,,baseline
+GraphNet,ChemTable,,,cross-domain
+TableFormer,ChemTable,,,best
+Rule Parser,ChemTable,,,weak
