@@ -1,0 +1,27 @@
+{
+  "words_json_name": "table_words.json",
+  "task_prompt": "Given a local PubTables-style OCR word JSON file, reconstruct the table structure, normalize the metric rows, audit the extracted values, and write a short grounded Markdown summary.\n\nThe input JSON follows the PubTables-style word-box setup: it contains a table bounding box and page words with text plus bounding boxes. Some caption and footnote words are present outside the table bounding box. Use word positions to reconstruct rows, columns, header cells, row spans, and column spans. Exclude caption and footnote words from the normalized metric rows.\n\nRequired normalized metric fields:\n- method\n- dataset\n- accuracy\n- f1\n- notes\n\nFor the audit, report the number of normalized metric rows, the best method by F1 score for each dataset, and any extraction or validation issues you find.",
+  "agent_contract": "For this PubTables task:\n- parse ORIGINAL_WORDS_JSON as the only input source;\n- reconstruct table cells from OCR word text and bounding boxes;\n- write a structural cell inventory to OUTPUT_CELLS_CSV;\n- write normalized numeric metric rows to OUTPUT_METRICS_CSV;\n- write audit metadata JSON to OUTPUT_AUDIT_JSON;\n- write a Markdown summary to SUMMARY_MD;\n- do not include caption or footnote text as metric rows.",
+  "expected_artifacts": [
+    {
+      "env": "OUTPUT_CELLS_CSV",
+      "filename": "table_cells.csv",
+      "description": "CSV columns row_id,col_id,row_span,col_span,is_header,text for every reconstructed non-empty table cell."
+    },
+    {
+      "env": "OUTPUT_METRICS_CSV",
+      "filename": "metrics.csv",
+      "description": "CSV columns method,dataset,accuracy,f1,notes with one row per metric observation."
+    },
+    {
+      "env": "OUTPUT_AUDIT_JSON",
+      "filename": "audit.json",
+      "description": "JSON with row_count, best_by_dataset, and issues."
+    },
+    {
+      "env": "SUMMARY_MD",
+      "filename": "summary.md",
+      "description": "Short Markdown summary grounded in the extracted metrics and audit."
+    }
+  ]
+}

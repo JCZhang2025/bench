@@ -11,19 +11,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from tasks.pubtables import task  # noqa: E402
+from tasks.pubtables import verifier  # noqa: E402
 
 
-CUSTOM_SKILLS = [
-    "table-ocr-structure-reconstructor",
-    "bbox-row-column-parser",
-    "table-boundary-noise-filter",
-    "header-span-detector",
-    "metric-consistency-auditor",
-    "artifact-contract-checker",
-    "grounded-metric-summary",
-    "extraction-audit-summary",
-]
+TASK_ROOT = PROJECT_ROOT / "tasks" / "pubtables"
 
 GENERIC_ALLOWED_TERMS = {
     "method",
@@ -38,6 +29,12 @@ GENERIC_ALLOWED_TERMS = {
 
 def sha256_text(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def load_custom_skills() -> list[str]:
+    manifest_path = TASK_ROOT / "skill_pool_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    return manifest["custom_answer_free_skills"]
 
 
 def frontmatter_keys(text: str) -> list[str]:
@@ -63,16 +60,17 @@ def forbidden_terms() -> list[str]:
         "PMC_LOCAL",
         "table_words.json",
     }
-    for row in task.EXPECTED_METRICS:
+    for row in verifier.load_expected_metrics():
         for key, value in row.items():
             text = str(value).strip()
             if key in {"method", "dataset"} or re.search(r"\d", text):
                 terms.add(text)
-    for dataset, value in task.EXPECTED_BEST_BY_DATASET.items():
+    expected_audit = verifier.load_expected_audit()
+    for dataset, value in expected_audit.get("best_by_dataset", {}).items():
         terms.add(dataset)
         terms.add(str(value["method"]))
         terms.add(str(value["f1"]))
-    for cell in task.EXPECTED_CELLS:
+    for cell in verifier.load_expected_cells():
         text = str(cell["text"]).strip()
         if text.lower() not in GENERIC_ALLOWED_TERMS and len(text) > 6:
             terms.add(text)
@@ -110,14 +108,15 @@ def audit_skill(slug: str, terms: list[str]) -> dict[str, object]:
 
 def main() -> int:
     terms = forbidden_terms()
-    results = [audit_skill(slug, terms) for slug in CUSTOM_SKILLS]
+    custom_skills = load_custom_skills()
+    results = [audit_skill(slug, terms) for slug in custom_skills]
     passed = all(
         item["exists"] and item["frontmatter_valid"] and not item["leak_hits"]
         for item in results
     )
     payload = {
-        "task": task.TASK_NAME,
-        "custom_skills": CUSTOM_SKILLS,
+        "task": "pubtables",
+        "custom_skills": custom_skills,
         "forbidden_term_count": len(terms),
         "passed": passed,
         "results": results,

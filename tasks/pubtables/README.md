@@ -9,7 +9,7 @@ The agent receives a local PubTables-style OCR word JSON file: page words with t
 - `audit.json`: row count, best method by dataset, and issues
 - `summary.md`: grounded Markdown summary
 
-The active three-pool design is `table_reconstruction`, `metric_extraction_audit`, and `summary_reporting`. It includes answer-free custom skills for OCR word-box structure reconstruction, bbox row/column parsing, table-boundary noise filtering, header span detection, metric auditing, artifact contract checking, and grounded summaries. These skills are procedural and do not include fixture-specific answers. See `skill_pool_manifest.json`.
+The active three-pool design is `table_reconstruction`, `metric_extraction_audit`, and `summary_reporting`. `skill_pools.json` is the only file that controls the pool membership used to generate experiment conditions. `task_spec.json` owns the prompt and required artifact contract, and `data/gold/` owns oracle artifacts plus verifier rules. See `skill_pool_manifest.json` for design notes and leakage policy.
 
 Run locally:
 

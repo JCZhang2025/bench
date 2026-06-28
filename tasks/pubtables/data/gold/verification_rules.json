@@ -1,0 +1,32 @@
+{
+  "required_cell_texts": [
+    "Method",
+    "Dataset",
+    "Evaluation score (%)",
+    "Accuracy",
+    "F1",
+    "Notes",
+    "GraphNet",
+    "PubMed QA",
+    "TableFormer",
+    "ChemTable",
+    "Rule Parser",
+    "weak baseline"
+  ],
+  "grouped_header": {
+    "text": "Evaluation score (%)",
+    "col_span": 2
+  },
+  "minimum_header_cells": 6,
+  "forbidden_cell_text_substrings": [
+    "Footnote:"
+  ],
+  "summary_required_terms": [
+    "GraphNet",
+    "TableFormer",
+    "PubMed QA",
+    "ChemTable",
+    "88.6",
+    "84.2"
+  ]
+}
