@@ -10,9 +10,11 @@ import re
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import urllib.error
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 from types import ModuleType
@@ -85,6 +87,8 @@ AGENT_RESULT_FIELDNAMES = [
     "artifacts_dir",
     "agent_workspace",
 ]
+
+RESULT_CSV_LOCK = threading.Lock()
 
 
 def load_dotenv_file(path: Path) -> None:
@@ -443,18 +447,41 @@ def ensure_result_csv_schema(result_csv: Path, fieldnames: list[str]) -> list[st
 
 
 def append_agent_result(row: dict[str, Any], result_csv: Path) -> None:
-    result_csv.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = ensure_result_csv_schema(result_csv, AGENT_RESULT_FIELDNAMES)
-    write_header = not result_csv.exists()
-    with result_csv.open("a", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        if write_header:
-            writer.writeheader()
-        writer.writerow({key: row.get(key, "") for key in fieldnames})
+    with RESULT_CSV_LOCK:
+        result_csv.parent.mkdir(parents=True, exist_ok=True)
+        fieldnames = ensure_result_csv_schema(result_csv, AGENT_RESULT_FIELDNAMES)
+        write_header = not result_csv.exists()
+        with result_csv.open("a", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            if write_header:
+                writer.writeheader()
+            writer.writerow({key: row.get(key, "") for key in fieldnames})
+
+
+def ensure_agent_run_dirs_available(
+    task: ModuleType,
+    conditions: list[str],
+    run_id: str,
+    overwrite: bool,
+) -> None:
+    if overwrite:
+        return
+    existing = []
+    for condition in conditions:
+        base_paths = task.runtime_paths(condition)
+        run_dir = base_paths["run_dir"] / "agent_runs" / run_id
+        if run_dir.exists():
+            existing.append(run_dir)
+    if existing:
+        paths = "\n".join(f"- {path}" for path in existing)
+        raise FileExistsError(
+            "Agent run directory already exists for this run ID:\n"
+            f"{paths}\n"
+            "Use --run-id with a new value or pass --overwrite-run-id."
+        )
 
 
 def run_condition(args: argparse.Namespace, task: ModuleType, condition: str) -> dict[str, Any]:
-    task.prepare(force=False)
     paths = prepare_agent_run_paths(
         task=task,
         condition=condition,
@@ -541,6 +568,23 @@ def run_condition(args: argparse.Namespace, task: ModuleType, condition: str) ->
     return row
 
 
+def run_conditions(args: argparse.Namespace, task: ModuleType, conditions: list[str]) -> list[dict[str, Any]]:
+    if args.workers == 1 or len(conditions) <= 1:
+        return [run_condition(args, task, condition) for condition in conditions]
+
+    max_workers = min(args.workers, len(conditions))
+    rows_by_condition: dict[str, dict[str, Any]] = {}
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        futures = {
+            executor.submit(run_condition, args, task, condition): condition
+            for condition in conditions
+        }
+        for future in as_completed(futures):
+            condition = futures[future]
+            rows_by_condition[condition] = future.result()
+    return [rows_by_condition[condition] for condition in conditions]
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run an API model on a skill-composition task.")
     parser.add_argument("--task", default="pubtables", help="Task package under tasks/, e.g. pubtables.")
@@ -580,6 +624,12 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--api-timeout", type=int, default=120)
     parser.add_argument("--exec-timeout", type=int, default=60)
+    parser.add_argument(
+        "--workers",
+        type=int,
+        default=int(os.environ.get("RUNNER_WORKERS", "1")),
+        help="Number of conditions to run concurrently. Default: 1.",
+    )
     return parser
 
 
@@ -602,14 +652,21 @@ def main() -> None:
         args.result_csv = task.ROOT / "results" / "agent_runs_multi_pool_warn.csv"
     if not args.api_key:
         raise SystemExit("Missing API key. Set GLM_API_KEY, ZAI_API_KEY, OPENAI_API_KEY, or KRILL_API_KEY.")
+    if args.workers < 1:
+        raise SystemExit("--workers must be at least 1.")
 
     conditions = sorted(task.CONDITIONS) if args.all else (args.condition or ["no_skill"])
     unknown = [condition for condition in conditions if condition not in task.CONDITIONS]
     if unknown:
         raise SystemExit(f"Unknown condition(s) for task {task.TASK_NAME}: {', '.join(unknown)}")
+    duplicates = sorted({condition for condition in conditions if conditions.count(condition) > 1})
+    if duplicates:
+        raise SystemExit(f"Duplicate condition(s) are not supported: {', '.join(duplicates)}")
 
     try:
-        rows = [run_condition(args, task, condition) for condition in conditions]
+        task.prepare(force=False)
+        ensure_agent_run_dirs_available(task, conditions, args.run_id, args.overwrite_run_id)
+        rows = run_conditions(args, task, conditions)
     except FileExistsError as exc:
         raise SystemExit(str(exc)) from exc
     print(json.dumps(rows, ensure_ascii=False, indent=2))

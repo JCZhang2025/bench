@@ -1,0 +1,39 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {
+    "Accuracy F1": {
+      "method": "Accuracy F1",
+      "f1": 1.0,
+      "accuracy": 1.0
+    },
+    "GraphNet ChemTable 84.7 81.3 cross-domain": {
+      "method": "GraphNet ChemTable 84.7 81.3 cross-domain",
+      "f1": 84.7,
+      "accuracy": 84.7
+    },
+    "GraphNet PubMed QA 91.2 88.6 best": {
+      "method": "GraphNet PubMed QA 91.2 88.6 best",
+      "f1": 91.2,
+      "accuracy": 91.2
+    },
+    "Rule Parser ChemTable 71.0 68.4 weak baseline": {
+      "method": "Rule Parser ChemTable 71.0 68.4 weak baseline",
+      "f1": 71.0,
+      "accuracy": 71.0
+    },
+    "TableFormer ChemTable 87.8 84.2 best": {
+      "method": "TableFormer ChemTable 87.8 84.2 best",
+      "f1": 87.8,
+      "accuracy": 87.8
+    },
+    "TreeCRF PubMed QA 89.5 86.9 baseline": {
+      "method": "TreeCRF PubMed QA 89.5 86.9 baseline",
+      "f1": 89.5,
+      "accuracy": 89.5
+    }
+  },
+  "issues": [
+    "Could not identify a complete metric header row; used positional fallback.",
+    "Skipped non-metric row 0: Method Dataset Evaluation score (%) Notes Method Dataset Evaluation score (%) Notes Method Dataset Evaluation score (%) Notes Method Dataset Evaluation score (%) Notes"
+  ]
+}

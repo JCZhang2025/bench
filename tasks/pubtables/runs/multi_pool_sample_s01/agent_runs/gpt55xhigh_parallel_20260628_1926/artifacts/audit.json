@@ -1,0 +1,20 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": "84.2"
+    },
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": "88.6"
+    },
+    "Rule Parser ChemTable": {
+      "method": "",
+      "f1": "68.4"
+    }
+  },
+  "issues": [
+    "Missing method value in data row 6."
+  ]
+}

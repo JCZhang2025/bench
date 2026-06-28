@@ -1,0 +1,21 @@
+{
+  "row_count": 0,
+  "best_by_dataset": {},
+  "issues": [
+    {
+      "category": "excluded_non_table_text",
+      "message": "Words outside the table bounding box were excluded from metric normalization.",
+      "word_count": 15
+    },
+    {
+      "category": "ambiguous_structure",
+      "message": "Could not confidently map the 'accuracy' column; fallback extraction was used where possible.",
+      "field": "accuracy"
+    },
+    {
+      "category": "ambiguous_structure",
+      "message": "Could not confidently map the 'f1' column; fallback extraction was used where possible.",
+      "field": "f1"
+    }
+  ]
+}

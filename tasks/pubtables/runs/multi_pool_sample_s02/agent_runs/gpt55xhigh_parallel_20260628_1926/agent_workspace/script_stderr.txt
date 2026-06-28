@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s02\agent_runs\gpt55xhigh_parallel_20260628_1926\agent_workspace\generated_solution.py", line 953, in <module>
+    main()
+    ~~~~^^
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s02\agent_runs\gpt55xhigh_parallel_20260628_1926\agent_workspace\generated_solution.py", line 922, in main
+    table_words, _ = filter_table_words(words, table_bbox, issues)
+                     ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s02\agent_runs\gpt55xhigh_parallel_20260628_1926\agent_workspace\generated_solution.py", line 342, in filter_table_words
+    add_issue(
+    ~~~~~~~~~^
+        issues,
+        ^^^^^^^
+    ...<4 lines>...
+        sample_text=clean_text(" ".join(w["text"] for w in excluded[:12])),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+TypeError: add_issue() takes 3 positional arguments but 5 were given

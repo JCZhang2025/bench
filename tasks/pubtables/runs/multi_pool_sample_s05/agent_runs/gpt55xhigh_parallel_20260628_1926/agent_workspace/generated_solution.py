@@ -1,0 +1,1080 @@
+#!/usr/bin/env python3
+import csv
+import json
+import math
+import os
+import re
+from collections import defaultdict
+from itertools import combinations
+from pathlib import Path
+from statistics import median
+
+DEFAULTS = {
+    "ORIGINAL_WORDS_JSON": r"E:\research\pilot_experiments\tasks\pubtables\data\original\table_words.json",
+    "OUTPUT_CELLS_CSV": r"E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s05\agent_runs\gpt55xhigh_parallel_20260628_1926\artifacts\table_cells.csv",
+    "OUTPUT_METRICS_CSV": r"E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s05\agent_runs\gpt55xhigh_parallel_20260628_1926\artifacts\metrics.csv",
+    "OUTPUT_AUDIT_JSON": r"E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s05\agent_runs\gpt55xhigh_parallel_20260628_1926\artifacts\audit.json",
+    "SUMMARY_MD": r"E:\research\pilot_experiments\tasks\pubtables\runs\multi_pool_sample_s05\agent_runs\gpt55xhigh_parallel_20260628_1926\artifacts\summary.md",
+}
+
+FIELDS = ["method", "dataset", "accuracy", "f1", "notes"]
+NUMERIC_CELL_RE = re.compile(
+    r"""^\s*
+    (?:<=|>=|<|>|=|~)?\s*
+    [-+]?\d+(?:\.\d+)?
+    \s*%?
+    (?:\s*(?:\+/-|\u00b1)\s*[-+]?\d+(?:\.\d+)?\s*%?)?
+    (?:\s*\(\s*[-+]?\d+(?:\.\d+)?\s*\))?
+    \s*$""",
+    re.VERBOSE,
+)
+
+
+def add_issue(issues, message):
+    if message not in issues:
+        issues.append(message)
+
+
+def get_path(name):
+    return os.environ.get(name) or DEFAULTS[name]
+
+
+def as_number(value):
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, (int, float)):
+        if math.isfinite(float(value)):
+            return float(value)
+        return None
+    if isinstance(value, str):
+        try:
+            return float(value.strip())
+        except ValueError:
+            return None
+    return None
+
+
+def normalize_bbox(x0, y0, x1, y1):
+    vals = [as_number(v) for v in (x0, y0, x1, y1)]
+    if any(v is None for v in vals):
+        return None
+    x0, y0, x1, y1 = vals
+    left, right = sorted((x0, x1))
+    top, bottom = sorted((y0, y1))
+    if right <= left or bottom <= top:
+        return None
+    return (left, top, right, bottom)
+
+
+def parse_bbox(obj):
+    if obj is None:
+        return None
+
+    if isinstance(obj, dict):
+        lower = {str(k).lower(): v for k, v in obj.items()}
+
+        key_sets = [
+            ("x0", "y0", "x1", "y1"),
+            ("x1", "y1", "x2", "y2"),
+            ("left", "top", "right", "bottom"),
+            ("xmin", "ymin", "xmax", "ymax"),
+        ]
+        for keys in key_sets:
+            if all(k in lower for k in keys):
+                return normalize_bbox(*(lower[k] for k in keys))
+
+        if "x" in lower and "y" in lower:
+            width = lower.get("w", lower.get("width"))
+            height = lower.get("h", lower.get("height"))
+            if width is not None and height is not None:
+                x = as_number(lower["x"])
+                y = as_number(lower["y"])
+                w = as_number(width)
+                h = as_number(height)
+                if None not in (x, y, w, h):
+                    return normalize_bbox(x, y, x + w, y + h)
+
+        for key in ("bbox", "bounding_box", "boundingbox", "box", "rect", "bounds", "coordinates"):
+            if key in lower:
+                parsed = parse_bbox(lower[key])
+                if parsed:
+                    return parsed
+
+        points = lower.get("points") or lower.get("vertices")
+        if isinstance(points, (list, tuple)) and points:
+            xs, ys = [], []
+            for point in points:
+                if isinstance(point, dict):
+                    lx = {str(k).lower(): v for k, v in point.items()}
+                    x = as_number(lx.get("x"))
+                    y = as_number(lx.get("y"))
+                    if x is not None and y is not None:
+                        xs.append(x)
+                        ys.append(y)
+            if xs and ys:
+                return normalize_bbox(min(xs), min(ys), max(xs), max(ys))
+
+    if isinstance(obj, (list, tuple)):
+        nums = [as_number(v) for v in obj]
+        if len(nums) >= 4 and all(v is not None for v in nums[:4]):
+            x0, y0, a, b = nums[:4]
+            if a <= x0 and b <= y0 and a > 0 and b > 0:
+                return normalize_bbox(x0, y0, x0 + a, y0 + b)
+            return normalize_bbox(x0, y0, a, b)
+
+        if len(obj) >= 4 and all(isinstance(p, dict) for p in obj):
+            xs, ys = [], []
+            for point in obj:
+                lx = {str(k).lower(): v for k, v in point.items()}
+                x = as_number(lx.get("x"))
+                y = as_number(lx.get("y"))
+                if x is not None and y is not None:
+                    xs.append(x)
+                    ys.append(y)
+            if xs and ys:
+                return normalize_bbox(min(xs), min(ys), max(xs), max(ys))
+
+    return None
+
+
+def find_bbox_in_dict(d):
+    lower = {str(k).lower(): v for k, v in d.items()}
+    for key in ("bbox", "bounding_box", "boundingbox", "box", "rect", "bounds", "coordinates"):
+        if key in lower:
+            parsed = parse_bbox(lower[key])
+            if parsed:
+                return parsed
+    return parse_bbox(d)
+
+
+def extract_text_from_dict(d):
+    lower = {str(k).lower(): v for k, v in d.items()}
+    for key in ("text", "word", "token", "value", "content", "label"):
+        value = lower.get(key)
+        if isinstance(value, (str, int, float)) and str(value).strip():
+            return str(value).strip()
+    return None
+
+
+def collect_words(obj):
+    words = []
+
+    def walk(node):
+        if isinstance(node, dict):
+            text = extract_text_from_dict(node)
+            bbox = find_bbox_in_dict(node)
+            if text and bbox:
+                words.append({"text": text, "bbox": bbox})
+                return
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, (list, tuple)):
+            if len(node) >= 5:
+                first_bbox = parse_bbox(node[:4])
+                if first_bbox and isinstance(node[4], (str, int, float)):
+                    words.append({"text": str(node[4]).strip(), "bbox": first_bbox})
+                    return
+                trailing_bbox = parse_bbox(node[1:5])
+                if trailing_bbox and isinstance(node[0], (str, int, float)):
+                    words.append({"text": str(node[0]).strip(), "bbox": trailing_bbox})
+                    return
+            for value in node:
+                walk(value)
+
+    walk(obj)
+
+    deduped = []
+    seen = set()
+    for word in words:
+        bbox = word["bbox"]
+        key = (word["text"], tuple(round(v, 3) for v in bbox))
+        if key not in seen:
+            seen.add(key)
+            x0, y0, x1, y1 = bbox
+            deduped.append(
+                {
+                    "text": word["text"],
+                    "bbox": bbox,
+                    "x0": x0,
+                    "y0": y0,
+                    "x1": x1,
+                    "y1": y1,
+                    "cx": (x0 + x1) / 2.0,
+                    "cy": (y0 + y1) / 2.0,
+                    "w": x1 - x0,
+                    "h": y1 - y0,
+                }
+            )
+    return deduped
+
+
+def collect_table_bbox_candidates(obj):
+    candidates = []
+
+    def walk(node, path="", in_table_context=False):
+        if isinstance(node, dict):
+            lower = {str(k).lower(): v for k, v in node.items()}
+
+            type_value = " ".join(
+                str(lower.get(k, "")) for k in ("type", "label", "category", "class", "name")
+            ).lower()
+            typed_as_table = "table" in type_value
+
+            if typed_as_table:
+                bbox = find_bbox_in_dict(node)
+                if bbox:
+                    candidates.append((9, path or "typed-table", bbox))
+
+            if in_table_context:
+                bbox = find_bbox_in_dict(node)
+                if bbox:
+                    candidates.append((8, path or "table-context", bbox))
+
+            for key, value in node.items():
+                key_l = str(key).lower()
+                explicit_table_bbox = "table" in key_l and any(
+                    token in key_l for token in ("bbox", "box", "bound", "rect")
+                )
+                if explicit_table_bbox:
+                    bbox = parse_bbox(value)
+                    if bbox:
+                        candidates.append((10, f"{path}.{key}" if path else str(key), bbox))
+
+                child_table_context = in_table_context or key_l in ("table", "tables") or key_l.startswith("table")
+                walk(value, f"{path}.{key}" if path else str(key), child_table_context)
+
+        elif isinstance(node, (list, tuple)):
+            for idx, value in enumerate(node):
+                walk(value, f"{path}[{idx}]", in_table_context)
+
+    walk(obj)
+
+    deduped = []
+    seen = set()
+    for priority, source, bbox in candidates:
+        key = tuple(round(v, 3) for v in bbox)
+        if key not in seen:
+            seen.add(key)
+            deduped.append((priority, source, bbox))
+    return deduped
+
+
+def bbox_area(bbox):
+    return max(0.0, bbox[2] - bbox[0]) * max(0.0, bbox[3] - bbox[1])
+
+
+def point_inside_bbox(x, y, bbox, tol=0.0):
+    return bbox[0] - tol <= x <= bbox[2] + tol and bbox[1] - tol <= y <= bbox[3] + tol
+
+
+def intersection_area(a, b):
+    x0 = max(a[0], b[0])
+    y0 = max(a[1], b[1])
+    x1 = min(a[2], b[2])
+    y1 = min(a[3], b[3])
+    if x1 <= x0 or y1 <= y0:
+        return 0.0
+    return (x1 - x0) * (y1 - y0)
+
+
+def choose_table_bbox(candidates, words, issues):
+    if not candidates:
+        add_issue(issues, "No explicit table bounding box found; using the union of all word boxes.")
+        return union_bbox([w["bbox"] for w in words]) if words else None
+
+    scored = []
+    for priority, source, bbox in candidates:
+        inside_count = sum(1 for w in words if point_inside_bbox(w["cx"], w["cy"], bbox, tol=1.0))
+        scored.append((priority, inside_count, bbox_area(bbox), source, bbox))
+
+    scored.sort(reverse=True)
+    return scored[0][4]
+
+
+def union_bbox(bboxes):
+    bboxes = [b for b in bboxes if b]
+    if not bboxes:
+        return None
+    return (
+        min(b[0] for b in bboxes),
+        min(b[1] for b in bboxes),
+        max(b[2] for b in bboxes),
+        max(b[3] for b in bboxes),
+    )
+
+
+def filter_table_words(words, table_bbox, issues):
+    if not table_bbox:
+        add_issue(issues, "No usable table bounding box was available; all words were treated as table words.")
+        return words, []
+
+    inside, outside = [], []
+    for word in words:
+        word_area = bbox_area(word["bbox"]) or 1.0
+        overlap = intersection_area(word["bbox"], table_bbox) / word_area
+        if point_inside_bbox(word["cx"], word["cy"], table_bbox, tol=1.5) or overlap >= 0.5:
+            inside.append(word)
+        else:
+            outside.append(word)
+
+    if not inside:
+        add_issue(issues, "The table bounding box contained no OCR words; falling back to all page words.")
+        return words, []
+
+    return inside, outside
+
+
+def clean_text(text):
+    text = re.sub(r"\s+", " ", str(text)).strip()
+    text = re.sub(r"\s+([,.;:%\)\]])", r"\1", text)
+    text = re.sub(r"([\(\[])\s+", r"\1", text)
+    return text
+
+
+def make_segment(words):
+    words = sorted(words, key=lambda w: (w["x0"], w["y0"]))
+    bbox = union_bbox([w["bbox"] for w in words])
+    text = clean_text(" ".join(w["text"] for w in words))
+    return {
+        "words": words,
+        "bbox": bbox,
+        "text": text,
+        "x0": bbox[0],
+        "y0": bbox[1],
+        "x1": bbox[2],
+        "y1": bbox[3],
+        "cx": (bbox[0] + bbox[2]) / 2.0,
+        "cy": (bbox[1] + bbox[3]) / 2.0,
+    }
+
+
+def cluster_rows(words):
+    if not words:
+        return []
+
+    heights = [w["h"] for w in words if w["h"] > 0]
+    med_h = median(heights) if heights else 8.0
+    threshold = max(3.0, med_h * 0.70)
+
+    rows = []
+    for word in sorted(words, key=lambda w: (w["cy"], w["cx"])):
+        best_idx = None
+        best_dist = None
+        for idx, row in enumerate(rows):
+            dist = abs(word["cy"] - row["cy"])
+            if best_dist is None or dist < best_dist:
+                best_idx = idx
+                best_dist = dist
+
+        if best_idx is not None and best_dist <= threshold:
+            row = rows[best_idx]
+            row["words"].append(word)
+            row["cy"] = median([w["cy"] for w in row["words"]])
+        else:
+            rows.append({"words": [word], "cy": word["cy"]})
+
+    for idx, row in enumerate(rows):
+        row["words"] = sorted(row["words"], key=lambda w: (w["x0"], w["cy"]))
+        row["bbox"] = union_bbox([w["bbox"] for w in row["words"]])
+        row["row_id"] = idx
+        row["segments"] = []
+
+    return rows
+
+
+def percentile(values, pct):
+    if not values:
+        return None
+    values = sorted(values)
+    if len(values) == 1:
+        return values[0]
+    pos = (len(values) - 1) * pct
+    lo = int(math.floor(pos))
+    hi = int(math.ceil(pos))
+    if lo == hi:
+        return values[lo]
+    return values[lo] + (values[hi] - values[lo]) * (pos - lo)
+
+
+def compute_gap_threshold(rows):
+    gaps = []
+    widths = []
+    heights = []
+    for row in rows:
+        words = sorted(row["words"], key=lambda w: w["x0"])
+        widths.extend([w["w"] for w in words if w["w"] > 0])
+        heights.extend([w["h"] for w in words if w["h"] > 0])
+        for left, right in zip(words, words[1:]):
+            gap = right["x0"] - left["x1"]
+            if gap > 0:
+                gaps.append(gap)
+
+    if not gaps:
+        return float("inf")
+
+    med_width = median(widths) if widths else 8.0
+    med_height = median(heights) if heights else 8.0
+    sorted_gaps = sorted(gaps)
+
+    if len(sorted_gaps) >= 3:
+        best_idx = max(
+            range(len(sorted_gaps) - 1),
+            key=lambda i: (sorted_gaps[i + 1] + 1.0) / (sorted_gaps[i] + 1.0),
+        )
+        low = sorted_gaps[best_idx]
+        high = sorted_gaps[best_idx + 1]
+        if high >= max(low * 1.8, med_width * 0.60, med_height * 0.75):
+            return (low + high) / 2.0
+
+    return max(median(gaps) * 2.5, med_width * 0.80, med_height * 0.90)
+
+
+def segment_row(row, gap_threshold):
+    words = sorted(row["words"], key=lambda w: w["x0"])
+    if not words:
+        return []
+
+    groups = [[words[0]]]
+    for prev, curr in zip(words, words[1:]):
+        gap = curr["x0"] - prev["x1"]
+        if gap > gap_threshold:
+            groups.append([curr])
+        else:
+            groups[-1].append(curr)
+
+    return [make_segment(group) for group in groups if clean_text(" ".join(w["text"] for w in group))]
+
+
+def merge_segments(left, right):
+    return make_segment(left["words"] + right["words"])
+
+
+def coalesce_segments_to_limit(segments, limit):
+    segments = list(segments)
+    while len(segments) > limit:
+        gaps = [
+            (segments[i + 1]["x0"] - segments[i]["x1"], i)
+            for i in range(len(segments) - 1)
+        ]
+        _, idx = min(gaps, key=lambda item: item[0])
+        merged = merge_segments(segments[idx], segments[idx + 1])
+        segments = segments[:idx] + [merged] + segments[idx + 2 :]
+    return segments
+
+
+def is_numeric_metric_text(text):
+    return bool(NUMERIC_CELL_RE.match(clean_text(text).replace(",", "")))
+
+
+def parse_metric_number(text):
+    text = clean_text(text)
+    if not text or text.lower() in {"-", "na", "n/a", "none", "null"}:
+        return None
+    text = text.replace("\u2212", "-")
+    text = re.sub(r"(?<=\d),(?=\d{3}\b)", "", text)
+    text = re.split(r"(?:\+/-|\u00b1)", text)[0]
+    match = re.search(r"[-+]?\d+(?:\.\d+)?", text)
+    if not match:
+        return None
+    try:
+        return float(match.group(0))
+    except ValueError:
+        return None
+
+
+def comparable_score(value):
+    if value is None:
+        return None
+    return value / 100.0 if value > 1.0 else value
+
+
+def compact_number(value):
+    if value is None:
+        return ""
+    return f"{value:.10g}"
+
+
+def normalize_metric_value(text):
+    value = parse_metric_number(text)
+    if value is None:
+        return clean_text(text)
+    return compact_number(value)
+
+
+def header_keyword_score(text):
+    text = clean_text(text).lower()
+    patterns = [
+        r"\bmethod\b",
+        r"\bmodel\b",
+        r"\bapproach\b",
+        r"\bsystem\b",
+        r"\bdataset\b",
+        r"\bdata\s*set\b",
+        r"\bcorpus\b",
+        r"\bbenchmark\b",
+        r"\bacc(?:uracy)?\.?\b",
+        r"\bf\s*[- ]?\s*1\b",
+        r"\bf1\b",
+        r"\bf[- ]?score\b",
+        r"\bnotes?\b",
+        r"\bremarks?\b",
+        r"\bcomments?\b",
+    ]
+    return sum(1 for pattern in patterns if re.search(pattern, text))
+
+
+def classify_header_field(text):
+    text = clean_text(text).lower()
+    checks = [
+        ("f1", r"\bf\s*[- ]?\s*1\b|\bf1\b|\bf[- ]?score\b|\bf[- ]?measure\b"),
+        ("accuracy", r"\baccuracy\b|\bacc\.?\b"),
+        ("method", r"\bmethod\b|\bmodel\b|\bapproach\b|\bsystem\b|\bclassifier\b|\balgorithm\b"),
+        ("dataset", r"\bdataset\b|\bdata\s*set\b|\bcorpus\b|\bbenchmark\b|\btest\s*set\b"),
+        ("notes", r"\bnotes?\b|\bremarks?\b|\bcomments?\b|\bsetting\b|\bdetails?\b"),
+    ]
+    for field, pattern in checks:
+        if re.search(pattern, text):
+            return field
+    return None
+
+
+def row_text(row):
+    if row.get("segments"):
+        return clean_text(" ".join(seg["text"] for seg in row["segments"]))
+    return clean_text(" ".join(w["text"] for w in row["words"]))
+
+
+def numeric_segment_count(row):
+    return sum(1 for seg in row.get("segments", []) if is_numeric_metric_text(seg["text"]))
+
+
+def maybe_reverse_rows(rows):
+    if len(rows) < 3:
+        return rows
+
+    first = " ".join(row_text(r) for r in rows[: min(2, len(rows))])
+    last = " ".join(row_text(r) for r in rows[-min(2, len(rows)) :])
+    first_header = header_keyword_score(first)
+    last_header = header_keyword_score(last)
+    first_numeric = sum(numeric_segment_count(r) >= 2 for r in rows[: max(1, len(rows) // 3)])
+    last_numeric = sum(numeric_segment_count(r) >= 2 for r in rows[-max(1, len(rows) // 3) :])
+
+    if last_header > first_header and first_numeric >= last_numeric:
+        rows = list(reversed(rows))
+
+    for idx, row in enumerate(rows):
+        row["row_id"] = idx
+    return rows
+
+
+def infer_first_data_row(rows):
+    for idx, row in enumerate(rows):
+        if numeric_segment_count(row) >= 2 and len(row.get("segments", [])) >= 3:
+            return idx
+    for idx, row in enumerate(rows):
+        if numeric_segment_count(row) >= 1 and header_keyword_score(row_text(row)) == 0:
+            return idx
+    return None
+
+
+def infer_leaf_header_row(rows, first_data_idx):
+    if first_data_idx is None or first_data_idx <= 0:
+        return None
+
+    best_idx = 0
+    best_score = -1
+    for idx in range(first_data_idx):
+        text = row_text(rows[idx])
+        field_hits = sum(1 for field in FIELDS if classify_header_field(text) == field)
+        segment_hits = sum(1 for seg in rows[idx].get("segments", []) if classify_header_field(seg["text"]))
+        score = header_keyword_score(text) + segment_hits * 3 + field_hits
+        if len(rows[idx].get("segments", [])) >= len(FIELDS) - 1:
+            score += 2
+        if score >= best_score:
+            best_idx = idx
+            best_score = score
+    return best_idx
+
+
+def kmeans_1d(points, k):
+    points = sorted(points)
+    if not points:
+        return []
+    if len(points) <= k:
+        while len(points) < k:
+            points.append(points[-1])
+        return sorted(points)
+
+    centers = [percentile(points, (i + 0.5) / k) for i in range(k)]
+    for _ in range(30):
+        clusters = [[] for _ in range(k)]
+        for point in points:
+            idx = min(range(k), key=lambda i: abs(point - centers[i]))
+            clusters[idx].append(point)
+
+        new_centers = []
+        for idx, cluster in enumerate(clusters):
+            if cluster:
+                new_centers.append(median(cluster))
+            else:
+                new_centers.append(centers[idx])
+        if all(abs(a - b) < 1e-6 for a, b in zip(centers, new_centers)):
+            break
+        centers = new_centers
+
+    return sorted(centers)
+
+
+def infer_column_centers(rows, table_bbox, issues, expected_cols=5):
+    refs = []
+    for row in rows:
+        segs = row.get("segments", [])
+        if len(segs) == expected_cols:
+            priority = 3 if numeric_segment_count(row) >= 2 else 2 if header_keyword_score(row_text(row)) else 1
+            refs.append((priority, segs))
+
+    if refs:
+        max_priority = max(priority for priority, _ in refs)
+        refs = [segs for priority, segs in refs if priority == max_priority]
+        centers = []
+        for col in range(expected_cols):
+            values = [segs[col]["cx"] for segs in refs if len(segs) > col]
+            centers.append(median(values))
+        return sorted(centers)
+
+    all_centers = [seg["cx"] for row in rows for seg in row.get("segments", [])]
+    if len(all_centers) >= expected_cols:
+        add_issue(issues, "No row had exactly five reconstructed cells; inferred five columns by x-position clustering.")
+        return kmeans_1d(all_centers, expected_cols)
+
+    if table_bbox:
+        add_issue(issues, "Insufficient cell anchors for column inference; using five equal-width columns inside the table bbox.")
+        left, _, right, _ = table_bbox
+        width = right - left
+        return [left + width * (i + 0.5) / expected_cols for i in range(expected_cols)]
+
+    add_issue(issues, "Column inference failed because there were too few cell anchors and no table bbox.")
+    return list(range(expected_cols))
+
+
+def assign_increasing_nearest(segments, col_centers):
+    n = len(col_centers)
+    k = len(segments)
+    if k == 0:
+        return []
+    if k > n:
+        return [(min(range(n), key=lambda c: abs(seg["cx"] - col_centers[c])), 1) for seg in segments]
+
+    best_cols = None
+    best_cost = None
+    for cols in combinations(range(n), k):
+        cost = sum(abs(seg["cx"] - col_centers[col]) for seg, col in zip(segments, cols))
+        if best_cost is None or cost < best_cost:
+            best_cost = cost
+            best_cols = cols
+    return [(col, 1) for col in best_cols]
+
+
+def assign_partition_spans(segments, col_centers):
+    if not segments:
+        return []
+
+    segments = sorted(segments, key=lambda seg: seg["cx"])
+    cuts = [-float("inf")]
+    for left, right in zip(segments, segments[1:]):
+        cuts.append((left["cx"] + right["cx"]) / 2.0)
+    cuts.append(float("inf"))
+
+    assignments = []
+    for idx, seg in enumerate(segments):
+        cols = [c for c, center in enumerate(col_centers) if cuts[idx] <= center < cuts[idx + 1]]
+        if not cols:
+            col = min(range(len(col_centers)), key=lambda c: abs(seg["cx"] - col_centers[c]))
+            assignments.append((col, 1))
+        else:
+            start = min(cols)
+            end = max(cols)
+            assignments.append((start, end - start + 1))
+    return assignments
+
+
+def reconstruct_cells(rows, col_centers, first_data_idx, leaf_header_idx):
+    cells = []
+    ncols = len(col_centers)
+
+    for row in rows:
+        row_id = row["row_id"]
+        segs = coalesce_segments_to_limit(row.get("segments", []), ncols)
+        row["segments"] = segs
+
+        is_header = first_data_idx is not None and row_id < first_data_idx
+        if is_header and leaf_header_idx is not None and row_id < leaf_header_idx:
+            assignments = assign_partition_spans(segs, col_centers)
+        elif len(segs) == ncols:
+            assignments = [(idx, 1) for idx in range(ncols)]
+        else:
+            assignments = assign_increasing_nearest(segs, col_centers)
+
+        for seg, (col_id, col_span) in zip(segs, assignments):
+            text = clean_text(seg["text"])
+            if not text:
+                continue
+            cells.append(
+                {
+                    "row_id": row_id,
+                    "col_id": col_id,
+                    "row_span": 1,
+                    "col_span": col_span,
+                    "is_header": bool(is_header),
+                    "text": text,
+                }
+            )
+
+    return cells
+
+
+def col_ranges_overlap(a, b):
+    a0, a1 = a["col_id"], a["col_id"] + a["col_span"] - 1
+    b0, b1 = b["col_id"], b["col_id"] + b["col_span"] - 1
+    return max(a0, b0) <= min(a1, b1)
+
+
+def cell_covers_col(cell, col):
+    return cell["col_id"] <= col < cell["col_id"] + cell["col_span"]
+
+
+def adjust_row_spans(cells, rows, first_data_idx):
+    by_row = defaultdict(list)
+    for cell in cells:
+        by_row[cell["row_id"]].append(cell)
+
+    row_count = len(rows)
+    header_end = first_data_idx if first_data_idx is not None else 0
+
+    for cell in cells:
+        if not cell["is_header"]:
+            continue
+        span = 1
+        for r in range(cell["row_id"] + 1, header_end):
+            overlaps = any(other["is_header"] and col_ranges_overlap(cell, other) for other in by_row[r])
+            if overlaps:
+                break
+            span += 1
+        cell["row_span"] = max(cell["row_span"], span)
+
+    data_start = first_data_idx if first_data_idx is not None else 0
+    data_like = [numeric_segment_count(row) >= 1 for row in rows]
+
+    for target_col in (0, 1):
+        r = data_start
+        while r < row_count:
+            current = next(
+                (
+                    cell
+                    for cell in by_row[r]
+                    if not cell["is_header"] and cell_covers_col(cell, target_col)
+                ),
+                None,
+            )
+            if not current:
+                r += 1
+                continue
+
+            span = 1
+            nr = r + 1
+            while nr < row_count and data_like[nr]:
+                has_col = any(
+                    (not cell["is_header"]) and cell_covers_col(cell, target_col)
+                    for cell in by_row[nr]
+                )
+                if has_col:
+                    break
+                span += 1
+                nr += 1
+
+            current["row_span"] = max(current["row_span"], span)
+            r = max(nr, r + 1)
+
+
+def infer_column_map(cells, issues, ncols=5):
+    header_by_col = [""] * ncols
+    for cell in cells:
+        if not cell["is_header"]:
+            continue
+        for col in range(cell["col_id"], min(ncols, cell["col_id"] + cell["col_span"])):
+            header_by_col[col] = clean_text(header_by_col[col] + " " + cell["text"])
+
+    field_to_col = {}
+    used_cols = set()
+    for col, text in enumerate(header_by_col):
+        field = classify_header_field(text)
+        if field and field not in field_to_col:
+            field_to_col[field] = col
+            used_cols.add(col)
+
+    for idx, field in enumerate(FIELDS):
+        if field not in field_to_col:
+            field_to_col[field] = idx
+            if any(header_by_col):
+                add_issue(issues, f"Could not confidently map the {field!r} column from headers; used position {idx}.")
+
+    return field_to_col
+
+
+def build_grid(cells, row_count, ncols=5):
+    grid = [["" for _ in range(ncols)] for _ in range(row_count)]
+    for cell in sorted(cells, key=lambda c: (c["row_id"], c["col_id"], -c["row_span"], -c["col_span"])):
+        for r in range(cell["row_id"], min(row_count, cell["row_id"] + cell["row_span"])):
+            for c in range(cell["col_id"], min(ncols, cell["col_id"] + cell["col_span"])):
+                if not grid[r][c]:
+                    grid[r][c] = cell["text"]
+    return grid
+
+
+def normalize_metrics(cells, rows, first_data_idx, field_to_col, issues):
+    row_count = len(rows)
+    grid = build_grid(cells, row_count, len(FIELDS))
+    metrics = []
+    data_start = first_data_idx if first_data_idx is not None else 0
+
+    last_method = ""
+    last_dataset = ""
+
+    for r in range(data_start, row_count):
+        row_values = {field: clean_text(grid[r][field_to_col[field]]) for field in FIELDS}
+
+        if row_values["method"]:
+            last_method = row_values["method"]
+        elif last_method:
+            row_values["method"] = last_method
+
+        if row_values["dataset"]:
+            last_dataset = row_values["dataset"]
+        elif last_dataset:
+            row_values["dataset"] = last_dataset
+
+        acc_number = parse_metric_number(row_values["accuracy"])
+        f1_number = parse_metric_number(row_values["f1"])
+
+        if acc_number is None and f1_number is None:
+            continue
+
+        metric = {
+            "method": row_values["method"],
+            "dataset": row_values["dataset"],
+            "accuracy": normalize_metric_value(row_values["accuracy"]),
+            "f1": normalize_metric_value(row_values["f1"]),
+            "notes": row_values["notes"],
+        }
+        metrics.append(metric)
+
+        display_row = r + 1
+        if not metric["method"]:
+            add_issue(issues, f"Metric row {display_row} is missing a method value.")
+        if not metric["dataset"]:
+            add_issue(issues, f"Metric row {display_row} is missing a dataset value.")
+        if acc_number is None:
+            add_issue(issues, f"Metric row {display_row} has a missing or unparseable accuracy value.")
+        if f1_number is None:
+            add_issue(issues, f"Metric row {display_row} has a missing or unparseable F1 value.")
+
+        for field, number in (("accuracy", acc_number), ("f1", f1_number)):
+            score = comparable_score(number)
+            if score is not None and not (0.0 <= score <= 1.0):
+                add_issue(issues, f"Metric row {display_row} has {field} outside the expected 0-1 or 0-100 range.")
+
+    if not metrics:
+        add_issue(issues, "No normalized metric rows were extracted.")
+
+    return metrics
+
+
+def audit_metrics(metrics, issues):
+    best = {}
+    scale_seen = {"accuracy": set(), "f1": set()}
+
+    for idx, metric in enumerate(metrics, start=1):
+        dataset = metric["dataset"] or "(missing dataset)"
+        f1_value = parse_metric_number(metric["f1"])
+        if f1_value is None:
+            add_issue(issues, f"Metric row {idx} could not be considered for best-by-dataset because F1 is unparseable.")
+            continue
+
+        f1_score = comparable_score(f1_value)
+        if dataset not in best or f1_score > best[dataset]["_score"]:
+            best[dataset] = {
+                "_score": f1_score,
+                "method": metric["method"],
+                "f1": metric["f1"],
+                "accuracy": metric["accuracy"],
+                "notes": metric["notes"],
+            }
+
+        for field in ("accuracy", "f1"):
+            value = parse_metric_number(metric[field])
+            if value is not None:
+                scale_seen[field].add("percent" if value > 1.0 else "unit")
+
+    for field, scales in scale_seen.items():
+        if len(scales) > 1:
+            add_issue(issues, f"Mixed {field} scales detected across rows; values were compared after converting >1 values to percentages.")
+
+    clean_best = {}
+    for dataset, entry in sorted(best.items()):
+        clean_best[dataset] = {
+            "method": entry["method"],
+            "f1": entry["f1"],
+            "accuracy": entry["accuracy"],
+            "notes": entry["notes"],
+        }
+
+    return {
+        "row_count": len(metrics),
+        "best_by_dataset": clean_best,
+        "issues": issues,
+    }
+
+
+def write_cells_csv(path, cells):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(
+            f,
+            fieldnames=["row_id", "col_id", "row_span", "col_span", "is_header", "text"],
+        )
+        writer.writeheader()
+        for cell in sorted(cells, key=lambda c: (c["row_id"], c["col_id"], c["text"])):
+            writer.writerow(
+                {
+                    "row_id": cell["row_id"],
+                    "col_id": cell["col_id"],
+                    "row_span": cell["row_span"],
+                    "col_span": cell["col_span"],
+                    "is_header": "true" if cell["is_header"] else "false",
+                    "text": cell["text"],
+                }
+            )
+
+
+def write_metrics_csv(path, metrics):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=FIELDS)
+        writer.writeheader()
+        for metric in metrics:
+            writer.writerow(metric)
+
+
+def write_audit_json(path, audit):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(audit, f, indent=2, ensure_ascii=False)
+
+
+def md_escape(value):
+    return clean_text(value).replace("|", "\\|")
+
+
+def write_summary_md(path, metrics, audit):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+
+    lines = [
+        "# PubTables OCR Metric Extraction Summary",
+        "",
+        f"Extracted {audit['row_count']} normalized metric row(s) from words inside the table bounding box.",
+        "",
+        "## Best F1 by Dataset",
+        "",
+    ]
+
+    if audit["best_by_dataset"]:
+        lines.append("| Dataset | Best method | F1 | Accuracy | Notes |")
+        lines.append("|---|---:|---:|---:|---|")
+        for dataset, entry in audit["best_by_dataset"].items():
+            lines.append(
+                "| {dataset} | {method} | {f1} | {accuracy} | {notes} |".format(
+                    dataset=md_escape(dataset),
+                    method=md_escape(entry.get("method", "")),
+                    f1=md_escape(entry.get("f1", "")),
+                    accuracy=md_escape(entry.get("accuracy", "")),
+                    notes=md_escape(entry.get("notes", "")),
+                )
+            )
+    else:
+        lines.append("No best-by-dataset result could be computed because no parseable F1 values were extracted.")
+
+    lines.extend(["", "## Audit", ""])
+    if audit["issues"]:
+        for issue in audit["issues"]:
+            lines.append(f"- {issue}")
+    else:
+        lines.append("- No extraction or validation issues were found.")
+
+    lines.extend(["", "## Normalized Metrics", ""])
+    if metrics:
+        lines.append("| Method | Dataset | Accuracy | F1 | Notes |")
+        lines.append("|---|---|---:|---:|---|")
+        for metric in metrics:
+            lines.append(
+                "| {method} | {dataset} | {accuracy} | {f1} | {notes} |".format(
+                    method=md_escape(metric["method"]),
+                    dataset=md_escape(metric["dataset"]),
+                    accuracy=md_escape(metric["accuracy"]),
+                    f1=md_escape(metric["f1"]),
+                    notes=md_escape(metric["notes"]),
+                )
+            )
+    else:
+        lines.append("No metric observations were extracted.")
+
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines) + "\n")
+
+
+def main():
+    issues = []
+
+    input_path = get_path("ORIGINAL_WORDS_JSON")
+    cells_path = get_path("OUTPUT_CELLS_CSV")
+    metrics_path = get_path("OUTPUT_METRICS_CSV")
+    audit_path = get_path("OUTPUT_AUDIT_JSON")
+    summary_path = get_path("SUMMARY_MD")
+
+    with open(input_path, "r", encoding="utf-8") as f:
+        payload = json.load(f)
+
+    all_words = collect_words(payload)
+    if not all_words:
+        raise RuntimeError("No OCR words with text and bounding boxes were found in the input JSON.")
+
+    table_bbox = choose_table_bbox(collect_table_bbox_candidates(payload), all_words, issues)
+    table_words, _outside_words = filter_table_words(all_words, table_bbox, issues)
+
+    rows = cluster_rows(table_words)
+    gap_threshold = compute_gap_threshold(rows)
+    for row in rows:
+        row["segments"] = segment_row(row, gap_threshold)
+
+    rows = maybe_reverse_rows(rows)
+    first_data_idx = infer_first_data_row(rows)
+    if first_data_idx is None:
+        add_issue(issues, "Could not identify the first data row from numeric metric cells.")
+
+    leaf_header_idx = infer_leaf_header_row(rows, first_data_idx)
+    col_centers = infer_column_centers(rows, table_bbox, issues, expected_cols=len(FIELDS))
+
+    cells = reconstruct_cells(rows, col_centers, first_data_idx, leaf_header_idx)
+    adjust_row_spans(cells, rows, first_data_idx)
+
+    field_to_col = infer_column_map(cells, issues, ncols=len(FIELDS))
+    metrics = normalize_metrics(cells, rows, first_data_idx, field_to_col, issues)
+    audit = audit_metrics(metrics, issues)
+
+    write_cells_csv(cells_path, cells)
+    write_metrics_csv(metrics_path, metrics)
+    write_audit_json(audit_path, audit)
+    write_summary_md(summary_path, metrics, audit)
+
+
+if __name__ == "__main__":
+    main()

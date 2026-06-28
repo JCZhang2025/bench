@@ -1,0 +1,23 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": "88.6",
+      "accuracy": "91.2"
+    },
+    "Rule Parser ChemTable": {
+      "method": "TreeCRF",
+      "f1": "68.4",
+      "accuracy": "71"
+    },
+    "TableFormer ChemTable": {
+      "method": "TreeCRF",
+      "f1": "84.2",
+      "accuracy": "87.8"
+    }
+  },
+  "issues": [
+    "Excluded 15 word boxes outside the table bounding box as caption, footnote, or page noise."
+  ]
+}

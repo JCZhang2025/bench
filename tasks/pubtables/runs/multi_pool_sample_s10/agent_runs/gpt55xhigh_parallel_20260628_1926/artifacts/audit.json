@@ -1,0 +1,23 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2,
+      "accuracy": 87.8
+    },
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 88.6,
+      "accuracy": 91.2
+    }
+  },
+  "issues": [
+    {
+      "category": "excluded_non_table_text",
+      "message": "Words outside the table bounding box were excluded as caption/footnote candidates.",
+      "count": 15,
+      "sample": "Table 2. Model performance on two biomedical benchmarks. Footnote: scores are micro-averaged over table cells."
+    }
+  ]
+}

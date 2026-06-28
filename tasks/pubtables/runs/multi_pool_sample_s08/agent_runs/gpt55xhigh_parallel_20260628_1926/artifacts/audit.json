@@ -1,0 +1,36 @@
+{
+  "row_count": 5,
+  "best_by_dataset": {
+    "GraphNet ChemTable": {
+      "method": "GraphNet ChemTable",
+      "f1": "81.3",
+      "accuracy": "84.7",
+      "notes": "cross-domain"
+    },
+    "GraphNet PubMed QA": {
+      "method": "GraphNet PubMed QA",
+      "f1": "88.6",
+      "accuracy": "91.2",
+      "notes": "best"
+    },
+    "Rule Parser ChemTable": {
+      "method": "Rule Parser ChemTable",
+      "f1": "68.4",
+      "accuracy": "71",
+      "notes": "weak baseline"
+    },
+    "TableFormer ChemTable": {
+      "method": "TableFormer ChemTable",
+      "f1": "84.2",
+      "accuracy": "87.8",
+      "notes": "best"
+    },
+    "TreeCRF PubMed QA": {
+      "method": "TreeCRF PubMed QA",
+      "f1": "86.9",
+      "accuracy": "89.5",
+      "notes": "baseline"
+    }
+  },
+  "issues": []
+}

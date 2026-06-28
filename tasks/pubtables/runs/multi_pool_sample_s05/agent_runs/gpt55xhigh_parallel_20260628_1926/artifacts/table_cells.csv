@@ -1,0 +1,8 @@
+row_id,col_id,row_span,col_span,is_header,text
+0,1,1,1,false,Method Dataset Evaluation score (%) Notes
+1,4,1,1,false,Accuracy F1
+2,0,1,1,false,GraphNet PubMed QA 91.2 88.6 best
+3,2,1,1,false,TreeCRF PubMed QA 89.5 86.9 baseline
+4,3,1,1,false,GraphNet ChemTable 84.7 81.3 cross-domain
+5,0,1,1,false,TableFormer ChemTable 87.8 84.2 best
+6,3,1,1,false,Rule Parser ChemTable 71.0 68.4 weak baseline

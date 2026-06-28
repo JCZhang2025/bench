@@ -1,0 +1,19 @@
+{
+  "row_count": 6,
+  "best_by_dataset": {
+    "ChemTable": {
+      "method": "TableFormer",
+      "f1": 84.2
+    },
+    "PubMed QA": {
+      "method": "GraphNet",
+      "f1": 88.6
+    }
+  },
+  "issues": [
+    "Row 1, column 2 has non-numeric accuracy: 'Accuracy'.",
+    "Metric row 1 is missing method.",
+    "Metric row 1 is missing dataset.",
+    "Metric row 1 is missing numeric accuracy."
+  ]
+}
