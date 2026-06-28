@@ -1,6 +1,6 @@
 # PubTables-Style OCR Word Task
 
-This task is the scalable replacement for the Word formatting smoke test.
+This task is the current pilot for skill-composition experiments.
 
 The agent receives a local PubTables-style OCR word JSON file: page words with text, bounding boxes, a table bounding box, and a small column hint. This is closer to PubTables-1M `*_Words_JSON` data than the earlier HTML proxy. It must reconstruct the table and produce:
 

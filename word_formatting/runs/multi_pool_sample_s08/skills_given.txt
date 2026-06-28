@@ -1,3 +1,0 @@
-office-document-specialist-suite
-data-anomaly-detector
-sql-report-generator

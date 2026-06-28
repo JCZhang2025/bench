@@ -1,2 +1,0 @@
-markdown-converter
-data-anomaly-detector

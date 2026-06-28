@@ -1,3 +1,0 @@
-word-docx
-code-executor
-typora-visual-architect
